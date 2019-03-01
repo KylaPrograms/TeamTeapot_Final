@@ -1,3 +1,12 @@
+/*
+ * File:        MyGame.js
+ * Programmers: Kyla            March 1, 2019
+ *                  Note: Changed mSystemAcceleration from [0, -20] to [0, 0]
+ *                        since we're doing top-down view, otherwise things would
+ *                        fall down
+ *
+ */
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -26,7 +35,7 @@ var gEngine = gEngine || { };
  */
 gEngine.Physics = (function () {
 
-    var mSystemtAcceleration = [0, -20];        // system-wide default acceleration
+    var mSystemtAcceleration = [0, 0];        // system-wide default acceleration
     var mPosCorrectionRate = 0.8;               // percentage of separation to project objects
     var mRelaxationCount = 15;                  // number of relaxation iteration
     

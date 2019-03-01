@@ -1,3 +1,9 @@
+/*
+ * File:        MyGame.js
+ * Programmers: Kyla            March 1, 2019
+ *                  Note: Added function for incrementing velocity
+ *
+ */
 
 /*jslint node: true, vars: true, evil: true, bitwise: true */
 "use strict";
@@ -169,6 +175,17 @@ RigidShape.prototype.getVelocity = function() { return this.mVelocity;};
 RigidShape.prototype.flipVelocity = function() { 
     this.mVelocity[0] = -this.mVelocity[0];
     this.mVelocity[1] = -this.mVelocity[1];
+};
+/**
+ * Increments the velocity of the rigie shape
+ * @memberOf RigidShape
+ * @param {float} x The number to increment the xVelocity by
+ * @param {float} y The number to increment the yVelocity by
+ */
+RigidShape.prototype.incVelocity = function(x, y)
+{
+    this.mVelocity[0] += x;
+    this.mVelocity[1] += y;
 };
 
 /**
