@@ -11,11 +11,13 @@
  * and open the template in the editor.
  */
 
+"use strict";  // Operate in Strict mode such that variables must be declared before used!
+
 function Hero(spriteTexture)
 {
     this.kMinSpeed = 0.0;
-    this.kMaxSpeed = 25.0;
-    this.kSpeedDelta = 0.05;
+    this.kMaxSpeed = 1.25; // use 25 when using rigid body, 1 when not
+    this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
     this.kTurningDelta = 0.02;
     
     this.mShip = new SpriteRenderable(spriteTexture);
@@ -27,9 +29,11 @@ function Hero(spriteTexture)
     
     GameObject.call(this, this.mShip);
     
-    var r = new RigidRectangle(this.getXform(), 4, 8);
-    r.setVelocity(0, 0);
-    this.setRigidBody(r);
+//    var r = new RigidRectangle(this.getXform(), 4, 8);
+//    r.setMass(1);
+//    r.setVelocity(0, 0);
+//    this.setRigidBody(r);
+//    this.toggleDrawRigidShape();
     
     this.mSpeed = 0;
 }
@@ -39,8 +43,7 @@ Hero.prototype.update = function()
 {
     GameObject.prototype.update.call(this);
     
-    var v = this.getRigidBody().getVelocity();
-    console.log(v);
+//    var v = this.getRigidBody().getVelocity();
     
     var dir = this.getCurrentFrontDir();
     
@@ -71,14 +74,16 @@ Hero.prototype.update = function()
     }
     
     // first working attempt
-//    var pos = this.getXform().getPosition();
-//    vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
+    var pos = this.getXform().getPosition();
+    vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
 
     // second working attempt
-    vec2.scale(v, dir, this.mSpeed);
+//    vec2.scale(v, dir, this.mSpeed);
     
-    // so will face the direction it is heading
-    this.getXform().setRotationInRad(Math.atan2(v[0], -v[1]));
+    // so will face the direction it is heading and
+    // doesn't snap to facing up when stopping
+    this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+    console.log(this.mSpeed);
 };
 
 Hero.prototype.getPosition = function()

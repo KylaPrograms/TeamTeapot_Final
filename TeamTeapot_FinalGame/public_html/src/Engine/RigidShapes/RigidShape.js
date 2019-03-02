@@ -177,7 +177,7 @@ RigidShape.prototype.flipVelocity = function() {
     this.mVelocity[1] = -this.mVelocity[1];
 };
 /**
- * Increments the velocity of the rigie shape
+ * Increments the velocity of the rigid shape
  * @memberOf RigidShape
  * @param {float} x The number to increment the xVelocity by
  * @param {float} y The number to increment the yVelocity by
@@ -391,4 +391,5 @@ RigidShape.prototype.resolveParticleCollision = function(aParticle, xf) {
  */
 RigidShape.prototype.setTransform = function(xf){
     this.mXform = xf;
+    console.log(this.mXform);
 };
