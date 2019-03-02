@@ -14,8 +14,8 @@
 function Hero(spriteTexture)
 {
     this.kMinSpeed = 0.0;
-    this.kMaxSpeed = 1.75;
-    this.kSpeedDelta = 0.002;
+    this.kMaxSpeed = 25.0;
+    this.kSpeedDelta = 0.05;
     this.kTurningDelta = 0.02;
     
     this.mShip = new SpriteRenderable(spriteTexture);
@@ -27,6 +27,10 @@ function Hero(spriteTexture)
     
     GameObject.call(this, this.mShip);
     
+    var r = new RigidRectangle(this.getXform(), 4, 8);
+    r.setVelocity(0, 0);
+    this.setRigidBody(r);
+    
     this.mSpeed = 0;
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
@@ -35,8 +39,10 @@ Hero.prototype.update = function()
 {
     GameObject.prototype.update.call(this);
     
+    var v = this.getRigidBody().getVelocity();
+    console.log(v);
+    
     var dir = this.getCurrentFrontDir();
-    var pos = this.getXform().getPosition();
     
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.W))
     {
@@ -64,8 +70,15 @@ Hero.prototype.update = function()
         vec2.rotate(dir, dir, -this.kTurningDelta);
     }
     
-    vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
-    this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+    // first working attempt
+//    var pos = this.getXform().getPosition();
+//    vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
+
+    // second working attempt
+    vec2.scale(v, dir, this.mSpeed);
+    
+    // so will face the direction it is heading
+    this.getXform().setRotationInRad(Math.atan2(v[0], -v[1]));
 };
 
 Hero.prototype.getPosition = function()

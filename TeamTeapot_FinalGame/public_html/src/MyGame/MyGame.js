@@ -79,5 +79,4 @@ MyGame.prototype.update = function () {
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
     
     this.mCamera.update();
-    console.log(heroPos, this.mCamera.getWCCenter());
 };
