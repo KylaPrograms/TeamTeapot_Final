@@ -13,6 +13,11 @@
 
 function Hero(spriteTexture)
 {
+    this.kMinSpeed = 0.0;
+    this.kMaxSpeed = 1.75;
+    this.kSpeedDelta = 0.002;
+    this.kTurningDelta = 0.02;
+    
     this.mShip = new SpriteRenderable(spriteTexture);
     this.mShip.getXform().setPosition(0, 0);
     this.mShip.getXform().setSize(4, 8);
@@ -35,26 +40,35 @@ Hero.prototype.update = function()
     
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.W))
     {
-        this.mSpeed += 0.01;
+        this.mSpeed += this.kSpeedDelta;
+        if(this.mSpeed > this.kMaxSpeed)
+        {
+            this.mSpeed = this.kMaxSpeed;
+        }
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.S))
     {
-        this.mSpeed -= 0.01;
-        if(this.mSpeed < 0)
+        this.mSpeed -= this.kSpeedDelta;
+        if(this.mSpeed < this.kMinSpeed)
         {
-            this.mSpeed = 0;
+            this.mSpeed = this.kMinSpeed;
         }
     }
     
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A))
     {
-        vec2.rotate(dir, dir, 0.02);
+        vec2.rotate(dir, dir, this.kTurningDelta);
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D))
     {
-        vec2.rotate(dir, dir, -0.02);
+        vec2.rotate(dir, dir, -this.kTurningDelta);
     }
     
     vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+};
+
+Hero.prototype.getPosition = function()
+{
+    return this.getXform().getPosition();
 };

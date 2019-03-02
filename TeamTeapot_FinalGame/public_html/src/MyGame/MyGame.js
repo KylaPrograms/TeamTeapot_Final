@@ -20,20 +20,24 @@
 
 function MyGame() {
     this.kPlaceHolder = "assets/PlaceHolder.png";
+    this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     
     // The camera to view the scene
     this.mCamera = null;
     
+    this.mTempBG = null;
     this.mHeroTest = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
+    gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
 };
 
 MyGame.prototype.initialize = function () {
@@ -45,9 +49,13 @@ MyGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0, 0.79, 1, 1]);
             // sets the background to gray
+    this.mCamera.configInterpolation(0, 1);
+    
+    this.mTempBG = new TextureRenderable(this.kOceanPlaceHolder);
+    this.mTempBG.getXform().setPosition(0, 0);
+    this.mTempBG.getXform().setSize(100, 100);
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
-    console.log(this.mHeroTest);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -58,6 +66,7 @@ MyGame.prototype.draw = function () {
 
     this.mCamera.setupViewProjection();
     
+    this.mTempBG.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
 };
 
@@ -65,4 +74,10 @@ MyGame.prototype.draw = function () {
 // anything from this function!
 MyGame.prototype.update = function () {
     this.mHeroTest.update();
+    
+    var heroPos = this.mHeroTest.getXform().getPosition();
+    this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
+    
+    this.mCamera.update();
+    console.log(heroPos, this.mCamera.getWCCenter());
 };

@@ -49,6 +49,7 @@ Camera.prototype.panBy = function (dx, dy) {
  */
 Camera.prototype.panWith = function (aXform, zone) {
     var status = this.collideWCBound(aXform, zone);
+    console.log(status);
     if (status !== BoundingBox.eboundCollideStatus.eInside) {
         var pos = aXform.getPosition();
         var newC = vec2.clone(this.getWCCenter());
