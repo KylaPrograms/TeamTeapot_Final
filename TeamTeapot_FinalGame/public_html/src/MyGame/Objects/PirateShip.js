@@ -1,5 +1,5 @@
 /*
- * File:        MyGame.js
+ * File:        PirateShip.js
  * Programmers: Kyla            March 1, 2019
  *              
  *
@@ -34,6 +34,8 @@ function PirateShip(spriteTexture)
     
     this.mChaseInterpolate =
             new InterpolateVec2(this.getXform().getPosition(), 200, 0.05);
+    this.mRotateInterpolate =
+            new InterpolateVec2(this.getCurrentFrontDir(), 120, 0.5);
 }
 gEngine.Core.inheritPrototype(PirateShip, GameObject);
 
@@ -48,8 +50,10 @@ PirateShip.prototype.update = function(heroPos)
 PirateShip.prototype.chase = function(heroPos)
 {
     console.log("Chasing Hero Ship");
-    this.mChaseInterpolate.setFinalValue(heroPos);
-    var interpolateVal = this.mChaseInterpolate.getValue();
-    this.getXform().setPosition(interpolateVal[0], interpolateVal[1]);
-    this.mChaseInterpolate.updateInterpolation();
+//    this.mChaseInterpolate.setFinalValue(heroPos);
+//    var interpolateVal = this.mChaseInterpolate.getValue();
+//    this.getXform().setPosition(interpolateVal[0], interpolateVal[1]);
+//    this.mChaseInterpolate.updateInterpolation();
+    var pos = this.getXform().getPosition();
+    vec2.lerp(pos, pos, heroPos, 0.05);
 };

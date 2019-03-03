@@ -1,6 +1,6 @@
 /*
- * File:        Storm.js
- * Programmers: Kyla            March 1, 2019
+ * File:        SunkenTreasureSet.js
+ * Programmers: Kyla            March 2, 2019
  *              
  *
  */
@@ -12,3 +12,9 @@
  */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
+
+function SunkenTreasureSet()
+{
+    
+}
+gEngine.Core.inheritPrototype(SunkenTreasureSet, GameObjectSet);

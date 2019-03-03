@@ -28,6 +28,7 @@ function MyGame() {
     this.mTempBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
+    this.mSunkenTreasureTest = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -58,6 +59,7 @@ MyGame.prototype.initialize = function () {
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
+    this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -69,8 +71,9 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     
     this.mTempBG.draw(this.mCamera);
-    this.mHeroTest.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
+    this.mSunkenTreasureTest.draw(this.mCamera);
+    this.mHeroTest.draw(this.mCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -78,6 +81,7 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
     this.mHeroTest.update();
     this.mPirateTest.update(this.mHeroTest.getPosition());
+    this.mSunkenTreasureTest.update();
     
     var heroPos = this.mHeroTest.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);

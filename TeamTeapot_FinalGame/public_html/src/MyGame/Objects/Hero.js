@@ -1,5 +1,5 @@
 /*
- * File:        MyGame.js
+ * File:        Hero.js
  * Programmers: Kyla            March 1, 2019
  *              
  *
@@ -16,7 +16,7 @@
 function Hero(spriteTexture)
 {
     this.kMinSpeed = 0.0;
-    this.kMaxSpeed = 1.25; // use 25 when using rigid body, 1 when not
+    this.kMaxSpeed = 1.1; // use 25 when using rigid body, 1 when not
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
     this.kTurningDelta = 0.02;
     
@@ -83,7 +83,6 @@ Hero.prototype.update = function()
     // so will face the direction it is heading and
     // doesn't snap to facing up when stopping
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
-    console.log(this.mSpeed);
 };
 
 Hero.prototype.getPosition = function()
