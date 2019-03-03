@@ -11,9 +11,9 @@
  */
 
 /*jslint node: true, vars: true */
-/*global gEngine, Scene, GameObjectset, TextureObject, Camera, vec2,
+/*global gEngine, Scene, GameObjectSet, TextureObject, Camera, vec2,
   FontRenderable, SpriteRenderable, LineRenderable,
-  GameObject */
+  GameObject, Storm, StormSet */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -29,20 +29,27 @@ function MyGame() {
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
+    
+    this.mStormSet = null;
+    this.mAutoSpawnTimer = null;
+    
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
-MyGame.prototype.loadScene = function () {
+MyGame.prototype.loadScene = function ()
+{
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
 };
 
-MyGame.prototype.unloadScene = function () {
+MyGame.prototype.unloadScene = function ()
+{
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
 };
 
-MyGame.prototype.initialize = function () {
+MyGame.prototype.initialize = function ()
+{
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
@@ -60,11 +67,15 @@ MyGame.prototype.initialize = function () {
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
+    
+    this.mStormSet = new StormSet();
+    this.mAutoSpawnTimer = Math.random() + 2;
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-MyGame.prototype.draw = function () {
+MyGame.prototype.draw = function ()
+{
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
@@ -74,11 +85,14 @@ MyGame.prototype.draw = function () {
     this.mPirateTest.draw(this.mCamera);
     this.mSunkenTreasureTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
+    
+    this.mStormSet.draw(this.mCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-MyGame.prototype.update = function () {
+MyGame.prototype.update = function ()
+{
     this.mHeroTest.update();
     this.mPirateTest.update(this.mHeroTest.getPosition());
     this.mSunkenTreasureTest.update();
@@ -87,4 +101,15 @@ MyGame.prototype.update = function () {
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
     
     this.mCamera.update();
+    
+    this.mAutoSpawnTimer--;
+    this.mStormSet.update();
+    
+    if(this.mAutoSpawnTimer <= 0)
+    {
+        this.mAutoSpawnTimer = Math.random() * 60 + 120;
+        this.mStormSet.createStorm(this.kPlaceHolder);
+    }
+    
+    console.log(this.mStormSet);
 };

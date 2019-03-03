@@ -33,14 +33,24 @@ StormSet.prototype.addToSet = function (obj)
     this.mSet.push(obj);
 };
 
-StormSet.prototype.update = function() {
+StormSet.prototype.update = function()
+{
     var i;
-    for (i = 0; i < this.mSet.length; i++) {
+    for (i = 0; i < this.mSet.length; i++)
+    {
         //First update the object
         this.mSet[i].update();
+        
+        if (this.mSet[i].isDead())
+        {
+            this.mStormSize--;
+            this.mSet.splice(i, 1);
+            i--;
+        }
     }
 };
 
-StormSet.prototype.getPatrol1Size = function() {
+StormSet.prototype.getPatrol1Size = function()
+{
     return this.mPatrol1Size;
 };

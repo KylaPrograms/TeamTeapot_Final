@@ -15,6 +15,10 @@
 function Storm(spriteTexture, atX, atY)
 {
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
+    this.kRot = Math.random() * 45;
+    
+    this.mTotalLifeSpan = Math.random() * 2000;
+    this.mLifespan = 0;
     
     this.mStorm = new SpriteRenderable(spriteTexture);
     this.mStorm.getXform().setPosition(atX, atY);
@@ -50,33 +54,27 @@ function Storm(spriteTexture, atX, atY)
 
 gEngine.Core.inheritPrototype(Storm, GameObject);
 
-Storm.prototype.update = function () {
-    var headX = this.mPatrolHead.getXform();
-    var headXSpeed = this.mXdir * (Math.random() * 5 + 5) / 60;
-    var headYSpeed = this.mYdir * (Math.random() * 5 + 5) / 60;
+Storm.prototype.update = function () 
+{
+    this.mLifespan++;
+    var StormX = this.mStorm.getXform();
+    var stormXSpeed = this.mXdir * (Math.random() * 10) / 60;
+    var stormYSpeed = this.mYdir * (Math.random() * 10) / 60;
     
-    //Move the Brain object
-    headX.incXPosBy(headXSpeed);
-    headX.incYPosBy(headYSpeed);
-    
-    //Do not let it get out of bounds
-    if(headX.getXPos() > 96.25  || headX.getXPos() < -96.25) {
-        this.mXdir = -this.mXdir;
-    }
-    if(headX.getYPos() > 96.25  || headX.getYPos() < -96.25) {
-        this.mYdir = -this.mYdir;
-    }
+    //Move the Storm object
+    StormX.incXPosBy(stormXSpeed);
+    StormX.incYPosBy(stormYSpeed);
+    StormX.incRotationByDegree(this.kRot);
 };
 
-Storm.prototype.draw = function (aCamera) {
-    this.mPatrolHead.draw(aCamera);
-    this.mPatrolWingTop.draw(aCamera);
-    this.mPatrolWingBot.draw(aCamera);
+Storm.prototype.draw = function (aCamera)
+{
+    this.mStorm.draw(aCamera);
 };
 
-Storm.prototype.isDead = function() { // change
-    return this.isAlphaDead() || this.isOutOfBnds();
-    
+Storm.prototype.isDead = function() 
+{
+    return (this.mLifespan >= this.mTotalLifeSpan);    
 };
 
 Storm.prototype.isOutOfBnds = function() {
