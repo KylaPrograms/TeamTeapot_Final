@@ -1,7 +1,7 @@
 /*
  * File:        MyGame.js
  * Programmers: Kyla            March 1, 2019
- *              
+ *              Emily           March 2, 2019
  *
  */
 
