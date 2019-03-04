@@ -19,6 +19,8 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    this.mAmbientLight = null;
+    
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     
@@ -61,6 +63,11 @@ MyGame.prototype.unloadScene = function ()
 
 MyGame.prototype.initialize = function ()
 {
+    this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
+    this.mAmbientLight[0] = 0.8;
+    this.mAmbientLight[1] = 0.8;
+    this.mAmbientLight[2] = 0.8;
+    
     // Set up the main camera
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
