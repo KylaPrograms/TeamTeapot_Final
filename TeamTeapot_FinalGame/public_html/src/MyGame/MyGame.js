@@ -29,6 +29,7 @@ function MyGame() {
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
+    this.mRock = null;
     
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
@@ -67,6 +68,7 @@ MyGame.prototype.initialize = function ()
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
+    this.mRock = new Rock(this.kPlaceHolder);
     
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
@@ -85,6 +87,7 @@ MyGame.prototype.draw = function ()
     this.mPirateTest.draw(this.mCamera);
     this.mSunkenTreasureTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
+    this.mRock.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
 };
@@ -111,5 +114,11 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kPlaceHolder);
     }
     
-    console.log(this.mStormSet);
+    var colInfo = new CollisionInfo();
+    if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
+    {
+        this.mHeroTest.hit(this);
+    }
+    
+    //console.log(this.mStormSet);
 };
