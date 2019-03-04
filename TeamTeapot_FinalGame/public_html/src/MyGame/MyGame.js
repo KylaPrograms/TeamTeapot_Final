@@ -57,7 +57,14 @@ MyGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
     
-    var nextLevel = new GameOver();
+    //Check whether the player won or lost the game
+    var nextLevel = null;
+    if(this.mGameState.isGameWin()) 
+    {
+        nextLevel = new WinScreen();
+    } else {
+        nextLevel = new GameOver();
+    }
     gEngine.Core.startScene(nextLevel);
 };
 
@@ -194,10 +201,16 @@ MyGame.prototype.update = function ()
         this.mHeroTest.incDamageBy(10);
     }
     
-    //Pressing Q automaticaly shows you the GameOver Screen.
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
+    //Manually lose the game
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.C))
     {
-        gEngine.GameLoop.stop();
+        this.mGameState.setGameOver(true);
+    }
+    
+    //Manually win the game
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.V))
+    {
+        this.mGameState.setGameWin(true);
     }
     
     //console.log(this.mStormSet);
