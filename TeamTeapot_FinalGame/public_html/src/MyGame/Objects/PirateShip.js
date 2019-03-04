@@ -50,10 +50,22 @@ PirateShip.prototype.update = function(heroPos)
 PirateShip.prototype.chase = function(heroPos)
 {
     console.log("Chasing Hero Ship");
+    
 //    this.mChaseInterpolate.setFinalValue(heroPos);
 //    var interpolateVal = this.mChaseInterpolate.getValue();
 //    this.getXform().setPosition(interpolateVal[0], interpolateVal[1]);
 //    this.mChaseInterpolate.updateInterpolation();
     var pos = this.getXform().getPosition();
     vec2.lerp(pos, pos, heroPos, 0.05);
+    
+    // get distance between two spots
+    var x = heroPos[0] - pos[0];
+    var y = heroPos[1] - pos[1];
+    
+    // get rotation between pirateship and hero
+    var theta = Math.atan2(y,x);
+    theta += Math.PI / 2;   // rotate 90 degrees so ends point toward ship
+    
+    // rotate pirateship towards hero
+    this.getXform().setRotationInRad(theta);
 };
