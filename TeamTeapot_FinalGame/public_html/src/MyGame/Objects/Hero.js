@@ -16,8 +16,8 @@
 function Hero(spriteTexture)
 {
     this.kMinSpeed = 0.0;
-    this.kMaxSpeed = 1.1; // use 25 when using rigid body, 1 when not
-    this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
+    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
+    this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
     this.kTurningDelta = 0.02;
     
     this.mShip = new SpriteRenderable(spriteTexture);
@@ -29,13 +29,14 @@ function Hero(spriteTexture)
     
     GameObject.call(this, this.mShip);
     
-//    var r = new RigidRectangle(this.getXform(), 4, 8);
-//    r.setMass(1);
-//    r.setVelocity(0, 0);
-//    this.setRigidBody(r);
-//    this.toggleDrawRigidShape();
+    var r = new RigidRectangle(this.getXform(), 4, 8);
+    r.setMass(1);
+    r.setVelocity(0, 0);
+    this.setRigidBody(r);
+    this.toggleDrawRigidShape();
     
     this.mSpeed = 0;
+    
     this.mDamage = 0;
     this.mTreasureCollected = 0;
 }
@@ -45,12 +46,15 @@ Hero.prototype.update = function()
 {
     GameObject.prototype.update.call(this);
     
-//    var v = this.getRigidBody().getVelocity();
+    var v = this.getRigidBody().getVelocity();
     
     var dir = this.getCurrentFrontDir();
     
+    var noPress = true;
+    
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.W))
     {
+        noPress = false;
         this.mSpeed += this.kSpeedDelta;
         if(this.mSpeed > this.kMaxSpeed)
         {
@@ -59,26 +63,42 @@ Hero.prototype.update = function()
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.S))
     {
+        noPress = false;
         this.mSpeed -= this.kSpeedDelta;
         if(this.mSpeed < this.kMinSpeed)
         {
             this.mSpeed = this.kMinSpeed;
         }
     }
-    
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A))
     {
+        //noPress = false;
         vec2.rotate(dir, dir, this.kTurningDelta);
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D))
     {
+        //noPress = false;
         vec2.rotate(dir, dir, -this.kTurningDelta);
     }
+    if (noPress)
+    {
+        this.mSpeed = ((this.mSpeed > 0) ? 1 : -1) * Math.max(Math.abs(this.mSpeed) - this.kSpeedDelta, 0);
+    }
     
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
+    {
+        this.hit();
+    }
+        
     // first working attempt
-    var pos = this.getXform().getPosition();
-    vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
-
+    //var pos = this.getXform().getPosition();
+    //vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
+    //this.getRigidBody().adjustPositionBy(dir, this.mSpeed);
+    var theta = Math.atan2(dir[1], dir[0]);
+    
+    this.getRigidBody().setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
+    console.log(this.getRigidBody().getVelocity());
     // second working attempt
 //    vec2.scale(v, dir, this.mSpeed);
     
@@ -103,6 +123,20 @@ Hero.prototype.getPosition = function()
     return this.getXform().getPosition();
 };
 
+Hero.prototype.changeSpeed = function(speed)
+{
+    var pos = this.getXform().getPosition();
+    var dir = this.getCurrentFrontDir();
+    
+    vec2.scaleAndAdd(pos,pos,dir, speed);
+}
+
+Hero.prototype.hit = function(obj)
+{
+    //this.getRigidBody().setVelocity(0,5);
+    this.getRigidBody().flipVelocity();
+    this.mSpeed *= -1;
+}
 Hero.prototype.getDamage = function()
 {
     return this.mDamage;

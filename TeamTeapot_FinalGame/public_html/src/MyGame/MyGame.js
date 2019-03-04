@@ -33,6 +33,7 @@ function MyGame() {
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
     this.mSunkenTreasureSetTest = null;
+    this.mRock = null;
     
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
@@ -93,9 +94,10 @@ MyGame.prototype.initialize = function ()
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
     this.mSunkenTreasureSetTest = new SunkenTreasureSet();
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest);
-    
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
+    
+    this.mRock = new Rock(this.kPlaceHolder);
     
     this.mGameState = new GameState(this.mHeroTest);
 };
@@ -113,6 +115,8 @@ MyGame.prototype.draw = function ()
     this.mPirateTest.draw(this.mCamera);
     this.mSunkenTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
+    this.mRock.draw(this.mCamera);
+    
     this.mStormSet.draw(this.mCamera);
     this.mTreasureStatusTest.draw(this.mCamera);
     
@@ -163,6 +167,10 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kPlaceHolder);
     }
     
+    if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
+    {
+        this.mHeroTest.hit(this);
+    }
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
     {
