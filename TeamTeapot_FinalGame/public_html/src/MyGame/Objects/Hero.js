@@ -36,7 +36,7 @@ function Hero(spriteTexture)
 //    this.toggleDrawRigidShape();
     
     this.mSpeed = 0;
-    
+    this.mHealth = 100;
     this.mTreasureCollected = 0;
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
@@ -101,4 +101,9 @@ Hero.prototype.getTreasureAmount = function()
 Hero.prototype.getPosition = function()
 {
     return this.getXform().getPosition();
+};
+
+Hero.prototype.getHealth = function()
+{
+    return this.mHealth;
 };

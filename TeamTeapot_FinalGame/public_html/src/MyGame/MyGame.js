@@ -36,6 +36,7 @@ function MyGame() {
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
     
+    this.mGameState = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -49,6 +50,9 @@ MyGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    
+    var nextLevel = new GameOver();
+    gEngine.Core.startScene(nextLevel);
 };
 
 MyGame.prototype.initialize = function ()
@@ -66,6 +70,7 @@ MyGame.prototype.initialize = function ()
     this.mTempBG = new TextureRenderable(this.kOceanPlaceHolder);
     this.mTempBG.getXform().setPosition(0, 0);
     this.mTempBG.getXform().setSize(100, 100);
+    this.mTempBG.setColor([1, 1, 1, 0]);
     
     this.mTreasureStatusTest = new FontRenderable("Treasure Collected");
     this.mTreasureStatusTest.setColor([1, 1, 0, 1]);
@@ -80,6 +85,8 @@ MyGame.prototype.initialize = function ()
     
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
+    
+    this.mGameState = new GameState(this.mHeroTest);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -115,6 +122,7 @@ MyGame.prototype.update = function ()
     if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
         this.mHeroTest.addTreasure();
+        this.mGameState.addTreasure();
     }
     
     this.mSunkenTreasureSetTest.update();
@@ -122,6 +130,9 @@ MyGame.prototype.update = function ()
     
     var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
     this.mTreasureStatusTest.setText(currMsg);
+    //Testing only
+    this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
+    //Testing only
     var camPos = this.mCamera.getWCCenter();
     this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
@@ -132,6 +143,12 @@ MyGame.prototype.update = function ()
     {
         this.mAutoSpawnTimer = Math.random() * 60 + 120;
         this.mStormSet.createStorm(this.kPlaceHolder);
+    }
+    
+    //Pressing Q automaticaly shows you the GameOver Screen.
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.Q))
+    {
+        gEngine.GameLoop.stop();
     }
     
     //console.log(this.mStormSet);
