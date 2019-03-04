@@ -37,7 +37,8 @@ function Hero(spriteTexture)
     
     this.mSpeed = 0;
     
-    this.mLastHit = null;
+    this.mDamage = 0;
+    this.mTreasureCollected = 0;
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
 
@@ -106,6 +107,17 @@ Hero.prototype.update = function()
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
 };
 
+Hero.prototype.addTreasure = function()
+{
+    this.mTreasureCollected++;
+    console.log(this.mTreasureCollected);
+};
+
+Hero.prototype.getTreasureAmount = function()
+{
+    return this.mTreasureCollected;
+};
+
 Hero.prototype.getPosition = function()
 {
     return this.getXform().getPosition();
@@ -124,16 +136,20 @@ Hero.prototype.hit = function(obj)
     //this.getRigidBody().setVelocity(0,5);
     this.getRigidBody().flipVelocity();
     this.mSpeed *= -1;
-    if (this.mLastHit === null || this.mLastHit !== obj)
-    {
-        //console.log("Colliding");
-        
-        
-        this.mLastHit = obj;
-        
-    }
-    else
-    {
-        this.mLastHit = null;
-    }
 }
+Hero.prototype.getDamage = function()
+{
+    return this.mDamage;
+};
+
+Hero.prototype.incDamageBy = function(deltaD)
+{
+    this.mDamage += deltaD;
+};
+
+Hero.prototype.regenDamage = function()
+{
+    if(this.mDamage > 0) {
+        this.mDamage -=1 ;   
+    }
+};

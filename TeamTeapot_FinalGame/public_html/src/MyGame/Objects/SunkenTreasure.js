@@ -40,8 +40,7 @@ function SunkenTreasure(texture, xPos, yPos)
     // (e.g. mSpawnElapse of 10 is 1 particle per 10 updates)
     this.mSpawnElapse = 10;
     this.mUpdatesElapsed = 0;
-    
-    console.log(this);
+    this.mCollectedStatus = false;
 }
 gEngine.Core.inheritPrototype(SunkenTreasure, ParticleSystem);
 
@@ -53,9 +52,23 @@ SunkenTreasure.prototype.update = function(){
     }
     this.mUpdatesElapsed++;
     gEngine.ParticleSystem.update(this.mAllParticles);
+    
+    return this.mCollectedStatus;
 };
 
-ParticleSystem.prototype.createParticle = function(atX,atY) {
+SunkenTreasure.prototype.getBBox = function()
+{
+    // MAYBE CHANGE THE 10, 10 VALUES LATER?
+    var b = new BoundingBox(this.getPos(), 9, 9);
+    return b;
+};
+
+SunkenTreasure.prototype.collect = function()
+{
+    this.mCollectedStatus = true;
+};
+
+SunkenTreasure.prototype.createParticle = function(atX,atY) {
     var life = this.life + Math.random() * (this.life*10);
     var width = -this.width + 
                   this.width*2 *

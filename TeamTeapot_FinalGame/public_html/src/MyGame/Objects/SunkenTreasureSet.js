@@ -1,6 +1,6 @@
 /*
  * File:        SunkenTreasureSet.js
- * Programmers: Kyla            March 2, 2019
+ * Programmers: Kyla            March 3, 2019
  *              
  *
  */
@@ -15,6 +15,32 @@
 
 function SunkenTreasureSet()
 {
-    
+    this.mSet = [];
 }
 gEngine.Core.inheritPrototype(SunkenTreasureSet, GameObjectSet);
+
+SunkenTreasureSet.prototype.update = function () {
+    var i;
+    for (i = 0; i < this.mSet.length; i++) {
+        if(this.mSet[i].update())
+        {
+            this.removeFromSet(this.mSet[i]);
+        }
+    }
+};
+
+SunkenTreasureSet.prototype.collectAt = function(atX, atY)
+{
+    var treasureFound = false;
+    var i;
+    for (i = 0; i < this.mSet.length; i++) {
+        var bBox = this.mSet[i].getBBox();
+        if(bBox.containsPoint(atX, atY))
+        {
+            this.mSet[i].collect();
+            treasureFound = true;
+        }
+    }
+    
+    return treasureFound;
+};

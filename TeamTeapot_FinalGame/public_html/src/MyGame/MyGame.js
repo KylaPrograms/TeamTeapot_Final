@@ -25,15 +25,19 @@ function MyGame() {
     // The camera to view the scene
     this.mCamera = null;
     
+    this.mTreasureStatusTest = null;
+    
     this.mTempBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
+    this.mSunkenTreasureSetTest = null;
     this.mRock = null;
     
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
     
+    this.mGameState = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -47,6 +51,9 @@ MyGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    
+    var nextLevel = new GameOver();
+    gEngine.Core.startScene(nextLevel);
 };
 
 MyGame.prototype.initialize = function ()
@@ -64,14 +71,24 @@ MyGame.prototype.initialize = function ()
     this.mTempBG = new TextureRenderable(this.kOceanPlaceHolder);
     this.mTempBG.getXform().setPosition(0, 0);
     this.mTempBG.getXform().setSize(100, 100);
+    this.mTempBG.setColor([1, 1, 1, 0]);
+    
+    this.mTreasureStatusTest = new FontRenderable("Treasure Collected");
+    this.mTreasureStatusTest.setColor([1, 1, 0, 1]);
+    this.mTreasureStatusTest.getXform().setPosition(-48, 35);
+    this.mTreasureStatusTest.setTextHeight(2.5);
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
-    this.mRock = new Rock(this.kPlaceHolder);
-    
+    this.mSunkenTreasureSetTest = new SunkenTreasureSet();
+    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest);
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
+    
+    this.mRock = new Rock(this.kPlaceHolder);
+    
+    this.mGameState = new GameState(this.mHeroTest);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -85,11 +102,13 @@ MyGame.prototype.draw = function ()
     
     this.mTempBG.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
-    this.mSunkenTreasureTest.draw(this.mCamera);
+    this.mSunkenTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
     this.mRock.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
+    
+    this.mTreasureStatusTest.draw(this.mCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -98,12 +117,28 @@ MyGame.prototype.update = function ()
 {
     this.mHeroTest.update();
     this.mPirateTest.update(this.mHeroTest.getPosition());
-    this.mSunkenTreasureTest.update();
+    this.mGameState.update();
+    
     
     var heroPos = this.mHeroTest.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
     
+    if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
+    {
+        this.mHeroTest.addTreasure();
+        this.mGameState.addTreasure();
+    }
+    
+    this.mSunkenTreasureSetTest.update();
     this.mCamera.update();
+    
+    var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
+    this.mTreasureStatusTest.setText(currMsg);
+    //Testing only
+    this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
+    //Testing only
+    var camPos = this.mCamera.getWCCenter();
+    this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
     this.mAutoSpawnTimer--;
     this.mStormSet.update();
@@ -114,10 +149,20 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kPlaceHolder);
     }
     
-    var colInfo = new CollisionInfo();
     if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
     {
         this.mHeroTest.hit(this);
+    }
+    //Pressing 'x' deals damage to the ship.
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
+    {
+        this.mHeroTest.incDamageBy(10);
+    }
+    
+    //Pressing Q automaticaly shows you the GameOver Screen.
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
+    {
+        gEngine.GameLoop.stop();
     }
     
     //console.log(this.mStormSet);
