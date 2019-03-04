@@ -19,6 +19,8 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    this.mAmbientLight = null;
+    
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     
@@ -61,6 +63,11 @@ MyGame.prototype.unloadScene = function ()
 
 MyGame.prototype.initialize = function ()
 {
+    this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
+    this.mAmbientLight[0] = 0.8;
+    this.mAmbientLight[1] = 0.8;
+    this.mAmbientLight[2] = 0.8;
+    
     // Set up the main camera
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
@@ -147,6 +154,7 @@ MyGame.prototype.update = function ()
     
     var heroPos = this.mHeroTest.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
+    this.mMiniMap.setWCCenter(heroPos[0], heroPos[1]);
     
     if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
@@ -160,9 +168,9 @@ MyGame.prototype.update = function ()
     
     var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
     this.mTreasureStatusTest.setText(currMsg);
-    //Testing only
+    
+    //Test GameState update text
     this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
-    //Testing only
     var camPos = this.mCamera.getWCCenter();
     this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
@@ -178,6 +186,7 @@ MyGame.prototype.update = function ()
     if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
     {
         this.mHeroTest.hit(this);
+        this.mHeroTest.incDamageBy(10);
     }
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
