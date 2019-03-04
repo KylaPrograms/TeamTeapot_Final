@@ -19,6 +19,8 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    this.mAmbientLight = null;
+    
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     
@@ -32,6 +34,8 @@ function MyGame() {
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
+    this.mSunkenTreasureTest1 = null;
+    this.mSunkenTreasureTest2 = null;
     this.mSunkenTreasureSetTest = null;
     this.mRock = null;
     
@@ -59,6 +63,11 @@ MyGame.prototype.unloadScene = function ()
 
 MyGame.prototype.initialize = function ()
 {
+    this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
+    this.mAmbientLight[0] = 0.8;
+    this.mAmbientLight[1] = 0.8;
+    this.mAmbientLight[2] = 0.8;
+    
     // Set up the main camera
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
@@ -91,9 +100,15 @@ MyGame.prototype.initialize = function ()
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
+    
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
+    this.mSunkenTreasureTest1 = new SunkenTreasure(this.kPlaceHolder, -90, 50);
+    this.mSunkenTreasureTest2 = new SunkenTreasure(this.kPlaceHolder, 85, -40);
     this.mSunkenTreasureSetTest = new SunkenTreasureSet();
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest);
+    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest1);
+    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest2);
+    
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
     
