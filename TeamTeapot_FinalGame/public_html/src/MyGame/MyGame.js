@@ -31,6 +31,8 @@ function MyGame() {
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
+    this.mSunkenTreasureTest1 = null;
+    this.mSunkenTreasureTest2 = null;
     this.mSunkenTreasureSetTest = null;
     this.mRock = null;
     
@@ -80,9 +82,15 @@ MyGame.prototype.initialize = function ()
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
+    
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
+    this.mSunkenTreasureTest1 = new SunkenTreasure(this.kPlaceHolder, -90, 50);
+    this.mSunkenTreasureTest2 = new SunkenTreasure(this.kPlaceHolder, 85, -40);
     this.mSunkenTreasureSetTest = new SunkenTreasureSet();
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest);
+    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest1);
+    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest2);
+    
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
     
