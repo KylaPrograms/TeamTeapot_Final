@@ -33,7 +33,7 @@ function PirateShip(spriteTexture)
     this.mSpeed = 30;
     
     this.mChaseInterpolate =
-            new InterpolateVec2(this.getXform().getPosition(), 200, 0.05);
+            new InterpolateVec2(this.getXform().getPosition(), 200, 0.005);
     this.mRotateInterpolate =
             new InterpolateVec2(this.getCurrentFrontDir(), 120, 0.5);
 }
@@ -41,7 +41,7 @@ gEngine.Core.inheritPrototype(PirateShip, GameObject);
 
 PirateShip.prototype.update = function(heroPos)
 {
-    if(vec2.distance(this.getXform().getPosition(), heroPos) < 20)
+    if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
         this.chase(heroPos);
     }
@@ -56,7 +56,7 @@ PirateShip.prototype.chase = function(heroPos)
 //    this.getXform().setPosition(interpolateVal[0], interpolateVal[1]);
 //    this.mChaseInterpolate.updateInterpolation();
     var pos = this.getXform().getPosition();
-    vec2.lerp(pos, pos, heroPos, 0.05);
+    vec2.lerp(pos, pos, heroPos, 0.006);
     
     // get distance between two spots
     var x = heroPos[0] - pos[0];
