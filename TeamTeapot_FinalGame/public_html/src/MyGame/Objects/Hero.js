@@ -36,7 +36,7 @@ function Hero(spriteTexture)
 //    this.toggleDrawRigidShape();
     
     this.mSpeed = 0;
-    this.mHealth = 100;
+    this.mDamage = 0;
     this.mTreasureCollected = 0;
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
@@ -103,7 +103,19 @@ Hero.prototype.getPosition = function()
     return this.getXform().getPosition();
 };
 
-Hero.prototype.getHealth = function()
+Hero.prototype.getDamage = function()
 {
-    return this.mHealth;
+    return this.mDamage;
+};
+
+Hero.prototype.incDamageBy = function(deltaD)
+{
+    this.mDamage += deltaD;
+};
+
+Hero.prototype.regenDamage = function()
+{
+    if(this.mDamage > 0) {
+        this.mDamage -=1 ;   
+    }
 };

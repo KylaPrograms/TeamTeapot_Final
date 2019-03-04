@@ -7,23 +7,33 @@
 function GameState(mainHero) 
 {
     this.mTreasureCollected = 0;
-    this.mHealth = mainHero.getHealth();
+    this.mHero = mainHero;
     this.mGameOver = false;
+    this.mTimer = 0;
 }
 
 GameState.prototype.update = function()
 {
-    if(isGameOver()) {
+    //Update timer
+    this.mTimer++;
+    
+    if(this.isGameOver()) 
+    {
         gEngine.GameLoop.stop();
     }
-    if(this.mHealth === 0) {
-        setGameOver(true);
+    if(this.mHero.getDamage() >= 100) 
+    {
+        this.setGameOver(true);
+    }
+    if((this.mTimer % 60) === 0) 
+    {
+        this.mHero.regenDamage();
     }
 };
 
 GameState.prototype.displayStatus = function() 
 {
-    var status = "Health: " + this.mHealth + " Treasure: " 
+    var status = "Damage: " + this.mHero.getDamage() + "  Treasure: " 
             + this.mTreasureCollected;
     return status;
 };
@@ -39,6 +49,7 @@ GameState.prototype.isGameOver = function()
     return this.mGameOver;
 };
 
+// Takes in a boolean and sets it to be the value of the 
 GameState.prototype.setGameOver = function(gameStatus) {
     this.mGameOver = gameStatus;
 };

@@ -114,6 +114,7 @@ MyGame.prototype.update = function ()
 {
     this.mHeroTest.update();
     this.mPirateTest.update(this.mHeroTest.getPosition());
+    this.mGameState.update();
     
     
     var heroPos = this.mHeroTest.getPosition();
@@ -145,8 +146,14 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kPlaceHolder);
     }
     
+    //Pressing 'x' deals damage to the ship.
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
+    {
+        this.mHeroTest.incDamageBy(10);
+    }
+    
     //Pressing Q automaticaly shows you the GameOver Screen.
-    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.Q))
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
     {
         gEngine.GameLoop.stop();
     }
