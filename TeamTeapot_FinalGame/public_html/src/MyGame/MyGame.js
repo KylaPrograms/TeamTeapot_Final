@@ -25,10 +25,13 @@ function MyGame() {
     // The camera to view the scene
     this.mCamera = null;
     
+    this.mTreasureStatusTest = null;
+    
     this.mTempBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
+    this.mSunkenTreasureSetTest = null;
     
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
@@ -64,9 +67,16 @@ MyGame.prototype.initialize = function ()
     this.mTempBG.getXform().setPosition(0, 0);
     this.mTempBG.getXform().setSize(100, 100);
     
+    this.mTreasureStatusTest = new FontRenderable("Treasure Collected");
+    this.mTreasureStatusTest.setColor([1, 1, 0, 1]);
+    this.mTreasureStatusTest.getXform().setPosition(-48, 35);
+    this.mTreasureStatusTest.setTextHeight(2.5);
+    
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
+    this.mSunkenTreasureSetTest = new SunkenTreasureSet();
+    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest);
     
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
@@ -83,10 +93,12 @@ MyGame.prototype.draw = function ()
     
     this.mTempBG.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
-    this.mSunkenTreasureTest.draw(this.mCamera);
+    this.mSunkenTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
+    
+    this.mTreasureStatusTest.draw(this.mCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -95,12 +107,23 @@ MyGame.prototype.update = function ()
 {
     this.mHeroTest.update();
     this.mPirateTest.update(this.mHeroTest.getPosition());
-    this.mSunkenTreasureTest.update();
+    
     
     var heroPos = this.mHeroTest.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
     
+    if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
+    {
+        this.mHeroTest.addTreasure();
+    }
+    
+    this.mSunkenTreasureSetTest.update();
     this.mCamera.update();
+    
+    var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
+    this.mTreasureStatusTest.setText(currMsg);
+    var camPos = this.mCamera.getWCCenter();
+    this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
     this.mAutoSpawnTimer--;
     this.mStormSet.update();
@@ -111,5 +134,5 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kPlaceHolder);
     }
     
-    console.log(this.mStormSet);
+    //console.log(this.mStormSet);
 };

@@ -36,6 +36,8 @@ function Hero(spriteTexture)
 //    this.toggleDrawRigidShape();
     
     this.mSpeed = 0;
+    
+    this.mTreasureCollected = 0;
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
 
@@ -83,6 +85,17 @@ Hero.prototype.update = function()
     // so will face the direction it is heading and
     // doesn't snap to facing up when stopping
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+};
+
+Hero.prototype.addTreasure = function()
+{
+    this.mTreasureCollected++;
+    console.log(this.mTreasureCollected);
+};
+
+Hero.prototype.getTreasureAmount = function()
+{
+    return this.mTreasureCollected;
 };
 
 Hero.prototype.getPosition = function()
