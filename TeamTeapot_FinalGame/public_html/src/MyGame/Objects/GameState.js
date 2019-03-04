@@ -32,7 +32,7 @@ GameState.prototype.update = function()
     }
     if((this.mTimer % 60) === 0) 
     {
-        this.mHero.regenDamage();
+        //this.mHero.regenDamage();
     }
 };
 
