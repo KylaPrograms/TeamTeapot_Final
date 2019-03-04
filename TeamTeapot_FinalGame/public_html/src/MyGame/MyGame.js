@@ -57,7 +57,14 @@ MyGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
     
-    var nextLevel = new GameOver();
+    //Check whether the player won or lost the game
+    var nextLevel = null;
+    if(this.mGameState.isGameWin()) 
+    {
+        nextLevel = new WinScreen();
+    } else {
+        nextLevel = new GameOver();
+    }
     gEngine.Core.startScene(nextLevel);
 };
 
@@ -154,6 +161,7 @@ MyGame.prototype.update = function ()
     
     var heroPos = this.mHeroTest.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
+    this.mMiniMap.setWCCenter(heroPos[0], heroPos[1]);
     
     if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
@@ -167,9 +175,9 @@ MyGame.prototype.update = function ()
     
     var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
     this.mTreasureStatusTest.setText(currMsg);
-    //Testing only
+    
+    //Test GameState update text
     this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
-    //Testing only
     var camPos = this.mCamera.getWCCenter();
     this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
@@ -185,6 +193,7 @@ MyGame.prototype.update = function ()
     if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
     {
         this.mHeroTest.hit(this);
+        this.mHeroTest.incDamageBy(10);
     }
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
@@ -192,10 +201,16 @@ MyGame.prototype.update = function ()
         this.mHeroTest.incDamageBy(10);
     }
     
-    //Pressing Q automaticaly shows you the GameOver Screen.
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
+    //Manually lose the game
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.C))
     {
-        gEngine.GameLoop.stop();
+        this.mGameState.setGameOver(true);
+    }
+    
+    //Manually win the game
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.V))
+    {
+        this.mGameState.setGameWin(true);
     }
     
     //console.log(this.mStormSet);
