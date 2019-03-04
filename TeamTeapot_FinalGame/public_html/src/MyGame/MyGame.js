@@ -139,6 +139,7 @@ MyGame.prototype.update = function ()
     
     var heroPos = this.mHeroTest.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
+    this.mMiniMap.setWCCenter(heroPos[0], heroPos[1]);
     
     if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
@@ -152,9 +153,9 @@ MyGame.prototype.update = function ()
     
     var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
     this.mTreasureStatusTest.setText(currMsg);
-    //Testing only
+    
+    //Test GameState update text
     this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
-    //Testing only
     var camPos = this.mCamera.getWCCenter();
     this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
@@ -170,6 +171,7 @@ MyGame.prototype.update = function ()
     if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
     {
         this.mHeroTest.hit(this);
+        this.mHeroTest.incDamageBy(10);
     }
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
