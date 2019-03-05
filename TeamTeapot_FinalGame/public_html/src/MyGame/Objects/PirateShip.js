@@ -16,8 +16,8 @@
 function PirateShip(spriteTexture)
 {
     this.mPirateShip = new SpriteRenderable(spriteTexture);
-    this.mPirateShip.getXform().setPosition(100, 0);
-    this.mPirateShip.getXform().setSize(4, 8);
+    this.mPirateShip.getXform().setPosition(50, 0);
+    this.mPirateShip.getXform().setSize(8, 4);
     
     // FOR PLACEHOLDER
     this.mPirateShip.setColor([0.75, 0, 0, 1]);
@@ -51,21 +51,32 @@ PirateShip.prototype.chase = function(heroPos)
 {
     console.log("Chasing Hero Ship");
     
-//    this.mChaseInterpolate.setFinalValue(heroPos);
-//    var interpolateVal = this.mChaseInterpolate.getValue();
-//    this.getXform().setPosition(interpolateVal[0], interpolateVal[1]);
-//    this.mChaseInterpolate.updateInterpolation();
+    // get current pos of ship
     var pos = this.getXform().getPosition();
-    vec2.lerp(pos, pos, heroPos, 0.05);
     
-    // get distance between two spots
+    // get vector between hero and pirateship
     var x = heroPos[0] - pos[0];
     var y = heroPos[1] - pos[1];
     
-    // get rotation between pirateship and hero
+    // get angle of rotation between pirateship and hero
     var theta = Math.atan2(y,x);
-    theta += Math.PI / 2;   // rotate 90 degrees so ends point toward ship
+    
+    // get direction pirateship is facing
+    var curr = this.getXform().getRotationInRad();
+    
+    var facing = [];
+    
+    // get cross product to see which direction to turn
+    vec2.cross(facing, [Math.cos(curr), Math.sin(curr)], [x,y]);
+    
+    var rotateBy = .02;
+    if (facing[2] < 0)  // if pirate is on left side, rotate left;
+        rotateBy *= -1;
     
     // rotate pirateship towards hero
-    this.getXform().setRotationInRad(theta);
+    this.getXform().incRotationByRad(rotateBy);
+    
+    // move pirate ship forward in the new direction
+    var moveTowards = [pos[0] +  Math.cos(curr), pos[1] + Math.sin(curr)];
+    vec2.lerp(pos, pos, moveTowards, 0.2);
 };
