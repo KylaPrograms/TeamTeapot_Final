@@ -8,6 +8,7 @@ function GameState(mainHero)
 {
     this.mTreasureCollected = 0;
     this.mHero = mainHero;
+    this.mGameWin = false;
     this.mGameOver = false;
     this.mTimer = 0;
 }
@@ -17,7 +18,7 @@ GameState.prototype.update = function()
     //Update timer
     this.mTimer++;
     
-    if(this.isGameOver()) 
+    if(this.isGameFinished()) 
     {
         gEngine.GameLoop.stop();
     }
@@ -25,12 +26,18 @@ GameState.prototype.update = function()
     {
         this.setGameOver(true);
     }
+    if(this.mTreasureCollected >= 3)
+    {
+        this.setGameWin(true);
+    }
     if((this.mTimer % 60) === 0) 
     {
-        this.mHero.regenDamage();
+        //this.mHero.regenDamage();
     }
 };
 
+//A function that returns a string displaying the current damage and number of
+// treasures collected.
 GameState.prototype.displayStatus = function() 
 {
     var status = "Damage: " + this.mHero.getDamage() + "  Treasure: " 
@@ -50,6 +57,26 @@ GameState.prototype.isGameOver = function()
 };
 
 // Takes in a boolean and sets it to be the value of the 
-GameState.prototype.setGameOver = function(gameStatus) {
+GameState.prototype.setGameOver = function(gameStatus)
+{
     this.mGameOver = gameStatus;
+};
+
+// Returns a boolean to tell whether the game has been won
+GameState.prototype.isGameWin = function() 
+{
+    return this.mGameWin;
+};
+
+// Takes in a boolean and sets it to be the value of the GameWin status
+GameState.prototype.setGameWin = function(gameStatus)
+{
+    this.mGameWin = gameStatus;
+};
+
+//A function that checks if the game is finished (playerr has lost or 
+//player has won)
+GameState.prototype.isGameFinished = function()
+{
+    return (this.isGameOver() || this.isGameWin());
 };
