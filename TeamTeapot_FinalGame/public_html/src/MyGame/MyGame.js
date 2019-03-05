@@ -13,13 +13,14 @@
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectSet, TextureObject, Camera, vec2,
   FontRenderable, SpriteRenderable, LineRenderable,
-  GameObject, Storm, StormSet */
+  GameObject, Storm, StormSet, Light, LightSet */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
     this.mAmbientLight = null;
+    this.mGlobalLightSet = null;
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
@@ -75,6 +76,8 @@ MyGame.prototype.initialize = function ()
     this.mAmbientLight[1] = 0.8;
     this.mAmbientLight[2] = 0.8;
     
+    this._initializeLights();
+    
     // Set up the main camera
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
@@ -95,10 +98,14 @@ MyGame.prototype.initialize = function ()
     
     
     // Create the ocean background
-    this.mTempBG = new TextureRenderable(this.kOceanPlaceHolder);
-    this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(100, 100);
-    this.mTempBG.setColor([1, 1, 1, 0]);
+    var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
+    mTempBGR.setElementPixelPositions(0, 256, 0, 256);
+    mTempBGR.getXform().setPosition(0, 0);
+    mTempBGR.getXform().setSize(100, 100);
+    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
+        mTempBGR.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+    }
+    this.mTempBG = new GameObject(mTempBGR);
     
     this.mTreasureStatusTest = new FontRenderable("Treasure Collected");
     this.mTreasureStatusTest.setColor([1, 1, 0, 1]);
@@ -156,7 +163,11 @@ MyGame.prototype.draw = function ()
 MyGame.prototype.update = function ()
 {
     this.mHeroTest.update();
+    this.updateHeroLight(this.mHeroTest);
+    
     this.mPirateTest.update(this.mHeroTest.getPosition());
+    this.updatePirateLight(this.mPirateTest);
+    
     this.mGameState.update();
     
     var heroPos = this.mHeroTest.getPosition();
