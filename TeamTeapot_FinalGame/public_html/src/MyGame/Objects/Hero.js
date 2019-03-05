@@ -129,14 +129,15 @@ Hero.prototype.changeSpeed = function(speed)
     var dir = this.getCurrentFrontDir();
     
     vec2.scaleAndAdd(pos,pos,dir, speed);
-}
+};
 
 Hero.prototype.hit = function(obj)
 {
     //this.getRigidBody().setVelocity(0,5);
     this.getRigidBody().flipVelocity();
     this.mSpeed *= -1;
-}
+};
+
 Hero.prototype.getDamage = function()
 {
     return this.mDamage;

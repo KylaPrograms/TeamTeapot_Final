@@ -15,20 +15,31 @@
 function Storm(spriteTexture, atX, atY)
 {
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
-    this.kRot = Math.random() * 45;
+    this.kRot1 = Math.random() * 10;
+    this.kRot2 = Math.random() * 10;
+    this.kRot3 = Math.random() * 10;
+
     
-    this.mTotalLifeSpan = Math.random() * 2000;
+    this.mTotalLifeSpan = Math.random() * 1500;
     this.mLifespan = 0;
     
-    this.mStorm = new SpriteRenderable(spriteTexture);
-    this.mStorm.getXform().setPosition(atX, atY);
-    this.mStorm.getXform().setSize(4, 8);
+    this.mStorm1 = new SpriteRenderable(spriteTexture);
+    this.mStorm1.getXform().setPosition(atX, atY);
+    this.mStorm1.getXform().setSize(10, 10);
     
-    // FOR PLACEHOLDER
-    this.mStorm.setColor([0.42, 0.2, 0.9, 1]);
+    this.mStorm2 = new SpriteRenderable(spriteTexture);
+    this.mStorm2.getXform().setPosition(atX + 5, atY + 5);
+    this.mStorm2.getXform().setSize(8, 8);
+    
+    this.mStorm3 = new SpriteRenderable(spriteTexture);
+    this.mStorm3.getXform().setPosition(atX + 5, atY);
+    this.mStorm3.getXform().setSize(8, 8);
     
     this.mXdir = Math.random() - 0.5;
     this.mYdir = Math.random() - 0.5;
+    
+    this.mXdelta = Math.random() * 10;
+    this.mYdelta = Math.random() * 10;
     
     if(this.mXdir > 0) {
         this.mXdir = 1;
@@ -57,19 +68,31 @@ gEngine.Core.inheritPrototype(Storm, GameObject);
 Storm.prototype.update = function () 
 {
     this.mLifespan++;
-    var StormX = this.mStorm.getXform();
-    var stormXSpeed = this.mXdir * (Math.random() * 10) / 60;
-    var stormYSpeed = this.mYdir * (Math.random() * 10) / 60;
+    var StormX1 = this.mStorm1.getXform();
+    var StormX2 = this.mStorm2.getXform();
+    var StormX3 = this.mStorm3.getXform();
+    var stormXSpeed = this.mXdir * (this.mXdelta) / 60;
+    var stormYSpeed = this.mYdir * (this.mYdelta) / 60;
     
     //Move the Storm object
-    StormX.incXPosBy(stormXSpeed);
-    StormX.incYPosBy(stormYSpeed);
-    StormX.incRotationByDegree(this.kRot);
+    StormX1.incXPosBy(stormXSpeed);
+    StormX1.incYPosBy(stormYSpeed);
+    StormX1.incRotationByDegree(this.kRot1);
+    
+    StormX2.incXPosBy(stormXSpeed);
+    StormX2.incYPosBy(stormYSpeed);
+    StormX2.incRotationByDegree(this.kRot2);
+    
+    StormX3.incXPosBy(stormXSpeed);
+    StormX3.incYPosBy(stormYSpeed);
+    StormX3.incRotationByDegree(this.kRot3);
 };
 
 Storm.prototype.draw = function (aCamera)
 {
-    this.mStorm.draw(aCamera);
+    this.mStorm1.draw(aCamera);
+    this.mStorm2.draw(aCamera);
+    this.mStorm3.draw(aCamera);
 };
 
 Storm.prototype.isDead = function() 

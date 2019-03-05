@@ -25,6 +25,9 @@ function MyGame() {
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     
+    this.kStormTex = "assets/Storm.png";
+    this.kRocksText = "assets/Rocks.png";
+    
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
@@ -51,6 +54,9 @@ MyGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    
+    gEngine.Textures.loadTexture(this.kStormTex);
+    gEngine.Textures.loadTexture(this.kRocksText);
 };
 
 MyGame.prototype.unloadScene = function ()
@@ -58,6 +64,9 @@ MyGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
     
+    gEngine.Textures.unloadTexture(this.kStormTex);
+    gEngine.Textures.unloadTexture(this.kRocksText);
+
     //Check whether the player won or lost the game
     var nextLevel = null;
     if(this.mGameState.isGameWin()) 
@@ -126,7 +135,7 @@ MyGame.prototype.initialize = function ()
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
     
-    this.mRock = new Rock(this.kPlaceHolder);
+    this.mRock = new Rock(this.kRocksText);
     
     this.mGameState = new GameState(this.mHeroTest);
 };
@@ -195,10 +204,11 @@ MyGame.prototype.update = function ()
     this.mAutoSpawnTimer--;
     this.mStormSet.update();
     
+    // Spawn the storms
     if(this.mAutoSpawnTimer <= 0)
     {
         this.mAutoSpawnTimer = Math.random() * 60 + 120;
-        this.mStormSet.createStorm(this.kPlaceHolder);
+        this.mStormSet.createStorm(this.kStormTex);
     }
     
     if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
