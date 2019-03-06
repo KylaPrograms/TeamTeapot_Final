@@ -21,7 +21,7 @@ gEngine.Core.inheritPrototype(StormSet, GameObjectSet);
 
 StormSet.prototype.createStorm = function (spriteTexture)
 {
-    var xspawn = Math.random() * 100;
+    var xspawn = -50 + Math.random() * 100;
     var yspawn = -50 + Math.random() * 100;
     var storm = new Storm(spriteTexture, xspawn, yspawn);
     this.addToSet(storm);
@@ -50,7 +50,7 @@ StormSet.prototype.update = function()
     }
 };
 
-StormSet.prototype.getPatrol1Size = function()
+StormSet.prototype.getStormSize = function()
 {
-    return this.mPatrol1Size;
+    return this.mStormSize;
 };

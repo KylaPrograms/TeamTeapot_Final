@@ -13,7 +13,7 @@
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectSet, TextureObject, Camera, vec2,
   FontRenderable, SpriteRenderable, LineRenderable,
-  GameObject, Storm, StormSet, Light, LightSet */
+  GameObject, Storm, StormSet, Rock, RockSet, Light, LightSet */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -26,7 +26,7 @@ function MyGame() {
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     
     this.kStormTex = "assets/Storm.png";
-    this.kRocksText = "assets/Rocks.png";
+    this.kRocksTex = "assets/Rocks.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -41,7 +41,9 @@ function MyGame() {
     this.mSunkenTreasureTest1 = null;
     this.mSunkenTreasureTest2 = null;
     this.mSunkenTreasureSetTest = null;
+    
     this.mRock = null;
+    this.mRockSet = null;
     
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
@@ -56,7 +58,7 @@ MyGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
     
     gEngine.Textures.loadTexture(this.kStormTex);
-    gEngine.Textures.loadTexture(this.kRocksText);
+    gEngine.Textures.loadTexture(this.kRocksTex);
 };
 
 MyGame.prototype.unloadScene = function ()
@@ -65,7 +67,7 @@ MyGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
     
     gEngine.Textures.unloadTexture(this.kStormTex);
-    gEngine.Textures.unloadTexture(this.kRocksText);
+    gEngine.Textures.unloadTexture(this.kRocksTex);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -135,7 +137,14 @@ MyGame.prototype.initialize = function ()
     this.mStormSet = new StormSet();
     this.mAutoSpawnTimer = Math.random() + 2;
     
-    this.mRock = new Rock(this.kRocksText);
+    
+    // Spawn the rocks
+    this.mRockSet = new RockSet();
+    for (var i = 0; i < 10; i++)
+    {
+        this.mRockSet.createRock(this.kRocksTex);
+    }
+    this.mRock = new Rock(this.kRocksTex, 0, 20);
     
     this.mGameState = new GameState(this.mHeroTest);
 };
@@ -153,9 +162,12 @@ MyGame.prototype.draw = function ()
     this.mPirateTest.draw(this.mCamera);
     this.mSunkenTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
+    
     this.mRock.draw(this.mCamera);
+    this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
+    
     this.mTreasureStatusTest.draw(this.mCamera);
     
     //Draw for the minimap
@@ -165,6 +177,7 @@ MyGame.prototype.draw = function ()
     this.mSunkenTreasureSetTest.draw(this.mMiniMap);
     this.mHeroTest.draw(this.mMiniMap);
     this.mStormSet.draw(this.mMiniMap);
+    this.mRockSet.draw(this.mMiniMap);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw

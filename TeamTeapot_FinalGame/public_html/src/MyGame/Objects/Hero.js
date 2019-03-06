@@ -1,15 +1,14 @@
 /*
  * File:        Hero.js
  * Programmers: Kyla            March 1, 2019
- *              
+ *              Emily           March 5, 2019
  *
  */
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* jslint node: true, vars: true */
+/* global gEngine: false, GameObject: false, GameObjectSet: false,
+ * SpriteAnimateRenderable: false, vec2: false */
+/* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
@@ -98,7 +97,7 @@ Hero.prototype.update = function()
     var theta = Math.atan2(dir[1], dir[0]);
     
     this.getRigidBody().setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
-    console.log(this.getRigidBody().getVelocity());
+    //console.log(this.getRigidBody().getVelocity());
     // second working attempt
 //    vec2.scale(v, dir, this.mSpeed);
     
@@ -110,7 +109,7 @@ Hero.prototype.update = function()
 Hero.prototype.addTreasure = function()
 {
     this.mTreasureCollected++;
-    console.log(this.mTreasureCollected);
+    //console.log(this.mTreasureCollected);
 };
 
 Hero.prototype.getTreasureAmount = function()

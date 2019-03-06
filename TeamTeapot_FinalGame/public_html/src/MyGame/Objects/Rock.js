@@ -13,10 +13,10 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Rock(spriteTexture)
+function Rock(spriteTexture, atX, atY)
 {
     this.mRock = new SpriteRenderable(spriteTexture);
-    this.mRock.getXform().setPosition(0, 20);
+    this.mRock.getXform().setPosition(atX, atY);
     this.mRock.getXform().setSize(7, 8);
     this.mRock.setElementPixelPositions(15, 500, 60, 560);
     
