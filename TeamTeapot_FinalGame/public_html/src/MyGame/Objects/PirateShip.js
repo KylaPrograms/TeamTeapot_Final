@@ -49,7 +49,7 @@ PirateShip.prototype.update = function(heroPos)
 
 PirateShip.prototype.chase = function(heroPos)
 {
-    console.log("Chasing Hero Ship");
+    //console.log("Chasing Hero Ship");
     
     // get current pos of ship
     var pos = this.getXform().getPosition();

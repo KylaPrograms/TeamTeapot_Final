@@ -224,11 +224,16 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kStormTex);
     }
     
-    if (this.mRock.getRigidBody().boundTest(this.mHeroTest.getRigidBody()))
+    var touchPosition = [];
+    
+    if (this.mHeroTest.mInvincible === false)
     {
-        this.mHeroTest.hit(this);
-        this.mHeroTest.incDamageBy(10);
+        //console.log("not invincible... testing collision");
+        if (this.mRock.pixelTouches(this.mHeroTest, touchPosition))
+            this.mHeroTest.hit(this);
+        //this.mHeroTest.incDamageBy(10);
     }
+    
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
     {

@@ -18,10 +18,13 @@ function Hero(spriteTexture)
     this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
     this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
     this.kTurningDelta = 0.02;
+    this.kInvincibleTime = 120; // 120 frames aka 2 seconds
     
     this.mShip = new SpriteRenderable(spriteTexture);
     this.mShip.getXform().setPosition(0, 0);
     this.mShip.getXform().setSize(4, 8);
+    this.mInvincible = false;
+    this.mHitTimer = 0;
     
     // FOR PLACEHOLDER
     this.mShip.setColor([0.42, 0.2, 0, 1]);
@@ -89,6 +92,8 @@ Hero.prototype.update = function()
     {
         this.hit();
     }
+    
+    this.updateInvincibility();
         
     // first working attempt
     //var pos = this.getXform().getPosition();
@@ -105,6 +110,25 @@ Hero.prototype.update = function()
     // doesn't snap to facing up when stopping
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
 };
+
+Hero.prototype.updateInvincibility = function()
+{
+    if (this.mInvincible === true)
+    {
+        if (this.mHitTimer > this.kInvincibleTime)
+        {
+            this.mInvincible = false;
+            this.mHitTimer = 0;
+        }
+        else
+        {
+            this.mShip.setColor([0.42, 0.2, 0, 1 * this.mHitTimer % 4]);
+            this.mHitTimer++;
+        }
+            
+        
+    }
+}
 
 Hero.prototype.addTreasure = function()
 {
@@ -130,11 +154,16 @@ Hero.prototype.changeSpeed = function(speed)
     vec2.scaleAndAdd(pos,pos,dir, speed);
 };
 
-Hero.prototype.hit = function(obj)
+Hero.prototype.hit = function()
 {
-    //this.getRigidBody().setVelocity(0,5);
-    this.getRigidBody().flipVelocity();
-    this.mSpeed *= -1;
+    if (this.mInvincible === false)
+    {
+        console.log("ship hit rock");
+        this.mInvincible = true;
+        //this.getRigidBody().flipVelocity();
+        //this.mSpeed *= -1;
+    }
+    
 };
 
 Hero.prototype.getDamage = function()

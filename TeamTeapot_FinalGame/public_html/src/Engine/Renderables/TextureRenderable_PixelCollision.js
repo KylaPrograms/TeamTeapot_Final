@@ -17,6 +17,7 @@
  * @returns {Boolean} true if collision is detected
  */
 TextureRenderable.prototype.pixelTouches = function(other, wcTouchPos) {
+    console.log("pixelTouches");
     var pixelTouch = false;
     var xIndex = 0, yIndex;
     var otherIndex = [0, 0];
