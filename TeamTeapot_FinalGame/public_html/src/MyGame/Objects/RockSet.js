@@ -24,6 +24,14 @@ RockSet.prototype.createRock = function (spriteTexture)
     var xspawn = -50 + Math.random() * 300;
     var yspawn = -50 + Math.random() * 300;
     var rock = new Rock(spriteTexture, xspawn, yspawn);
+    rock.getXform().setRotationInRad(Math.random() * 2 * Math.PI);
+    
+    var scale = Math.random() * .5;
+    var newSize = rock.getXform().getSize();
+    newSize[0] = newSize[0] * scale + newSize[0] * .75;
+    newSize[1] = newSize[1] * scale + newSize[1] * .75;
+    
+    rock.getXform().setSize(newSize[0], newSize[1]);
     this.addToSet(rock);
     this.mRockSize++;
 };
