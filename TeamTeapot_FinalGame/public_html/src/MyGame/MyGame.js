@@ -42,7 +42,6 @@ function MyGame() {
     this.mSunkenTreasureTest2 = null;
     this.mSunkenTreasureSetTest = null;
     
-    this.mRock = null;
     this.mRockSet = null;
     
     this.mStormSet = null;
@@ -144,7 +143,6 @@ MyGame.prototype.initialize = function ()
     {
         this.mRockSet.createRock(this.kRocksTex);
     }
-    this.mRock = new Rock(this.kRocksTex, 0, 20);
     
     this.mGameState = new GameState(this.mHeroTest);
 };
@@ -163,7 +161,6 @@ MyGame.prototype.draw = function ()
     this.mSunkenTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
     
-    this.mRock.draw(this.mCamera);
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
@@ -224,14 +221,25 @@ MyGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kStormTex);
     }
     
-    var touchPosition = [];
-    
+    // Check Collision with all rocks in Rock set 
+    // if hero is invincible, don't bother checking 
     if (this.mHeroTest.mInvincible === false)
     {
-        //console.log("not invincible... testing collision");
-        if (this.mRock.pixelTouches(this.mHeroTest, touchPosition))
-            this.mHeroTest.hit(this);
-        //this.mHeroTest.incDamageBy(10);
+        
+        // cycle through all rocks
+        for (var i = 0; i < this.mRockSet.mRockSize; i++) 
+        {
+            var rock = this.mRockSet.mSet[i];
+            var isHit = this.mHeroTest.checkHit(rock);
+            
+            // if touching rock, then hit
+            if (isHit)
+            {
+                this.mHeroTest.hit();
+                this.mHeroTest.incDamageBy(10);
+            }
+        }
+        
     }
     
     //Pressing 'x' deals damage to the ship.

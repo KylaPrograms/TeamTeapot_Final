@@ -25,12 +25,13 @@ RockSet.prototype.createRock = function (spriteTexture)
     var yspawn = -50 + Math.random() * 300;
     var rock = new Rock(spriteTexture, xspawn, yspawn);
     this.addToSet(rock);
-    this.mStormSize++;
+    this.mRockSize++;
 };
 
 RockSet.prototype.addToSet = function (obj)
 {
     this.mSet.push(obj);
+
 };
 
 RockSet.prototype.getRockSize = function()

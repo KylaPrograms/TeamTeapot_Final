@@ -24,7 +24,8 @@ function Hero(spriteTexture)
     this.mShip.getXform().setPosition(0, 0);
     this.mShip.getXform().setSize(4, 8);
     this.mInvincible = false;
-    this.mHitTimer = 0;
+    this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
+    this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     
     // FOR PLACEHOLDER
     this.mShip.setColor([0.42, 0.2, 0, 1]);
@@ -74,12 +75,10 @@ Hero.prototype.update = function()
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A))
     {
-        //noPress = false;
         vec2.rotate(dir, dir, this.kTurningDelta);
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D))
     {
-        //noPress = false;
         vec2.rotate(dir, dir, -this.kTurningDelta);
     }
     if (noPress)
@@ -113,20 +112,22 @@ Hero.prototype.update = function()
 
 Hero.prototype.updateInvincibility = function()
 {
+    // check if invincible
     if (this.mInvincible === true)
     {
+        // disable invincibility if duration is over
         if (this.mHitTimer > this.kInvincibleTime)
         {
+            this.mShip.setColor([0.42, 0.2, 0, 1]);
             this.mInvincible = false;
             this.mHitTimer = 0;
         }
+        // increment timer
         else
         {
             this.mShip.setColor([0.42, 0.2, 0, 1 * this.mHitTimer % 4]);
             this.mHitTimer++;
-        }
-            
-        
+        } 
     }
 }
 
@@ -154,14 +155,29 @@ Hero.prototype.changeSpeed = function(speed)
     vec2.scaleAndAdd(pos,pos,dir, speed);
 };
 
+// Check if collided with an object
+Hero.prototype.checkHit = function(otherObj)
+{
+    var touchPos = [];
+    var result = false;
+    var FREQUENCY = 11;         // how often to check collision. Must be odd number
+    if (this.mHitCheckTimer == 0)   
+    {
+        result = this.pixelTouches(otherObj, touchPos);
+    }
+    this.mHitCheckTimer = (this.mHitCheckTimer + 1) % FREQUENCY;
+    
+    return result;
+}
+
 Hero.prototype.hit = function()
 {
     if (this.mInvincible === false)
     {
         console.log("ship hit rock");
         this.mInvincible = true;
-        //this.getRigidBody().flipVelocity();
-        //this.mSpeed *= -1;
+        this.getRigidBody().flipVelocity();
+        this.mSpeed *= -.5;
     }
     
 };
