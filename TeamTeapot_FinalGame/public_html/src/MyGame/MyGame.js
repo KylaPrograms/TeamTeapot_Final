@@ -105,6 +105,7 @@ MyGame.prototype.initialize = function ()
     );
     this.mMiniMap.setBackgroundColor([0.8, 0.8, 0.8, 1.0]);
     this.mMiniMap.configInterpolation(0, 1);
+    this.mMiniMap.setBGDraw(false);
     
     
     // Create the ocean background

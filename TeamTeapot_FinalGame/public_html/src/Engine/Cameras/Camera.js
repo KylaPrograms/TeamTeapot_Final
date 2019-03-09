@@ -66,6 +66,10 @@ function Camera(wcCenter, wcWidth, viewportArray, bound) {
         // SHOULD NOT be used except 
         // xform operations during the rendering
         // Client game should not access this!
+
+    //This variable is in charge of determining whether to display the 
+    //background or not.    
+    this.mShowBG = true;
 }
 
 /**
@@ -216,9 +220,11 @@ Camera.prototype.setupViewProjection = function () {
     // Step A3: set the color to be clear
     gl.clearColor(this.mBgColor[0], this.mBgColor[1], this.mBgColor[2], this.mBgColor[3]);  // set the color to be cleared
     // Step A4: enable the scissor area, clear, and then disable the scissor area
-    gl.enable(gl.SCISSOR_TEST);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.disable(gl.SCISSOR_TEST);
+    if(this.mShowBG) {
+        gl.enable(gl.SCISSOR_TEST);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.disable(gl.SCISSOR_TEST);
+    }
     //</editor-fold>
 
     //<editor-fold desc="Step  B: Set up the View-Projection transform operator"> 
@@ -302,5 +308,9 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
         }
     }
     return status;
+};
+
+Camera.prototype.setBGDraw= function (bool) {
+    this.mShowBG = bool;
 };
 //</editor-fold>
