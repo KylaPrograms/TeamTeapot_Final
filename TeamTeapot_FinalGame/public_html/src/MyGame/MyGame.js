@@ -236,11 +236,25 @@ MyGame.prototype.update = function ()
             // if touching rock, then hit
             if (isHit)
             {
+                // update hero
                 this.mHeroTest.hit();
                 this.mHeroTest.incDamageBy(10);
+                
+                // camera shake
+                var displacement = 2;           // move camera by 2 units
+                var frequency = 5;              // shake 5 times a second
+                var duration = 30;              // half a second
+                this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
             }
         }
-        
+    }
+    // Hero previously collided
+    // check whether or not to shake camera
+    else 
+    {
+        var camShake = this.mCamera.getCameraShake();
+        if (camShake !== null && !camShake.shakeDone())
+            camShake.updateShakeState();
     }
     
     //Pressing 'x' deals damage to the ship.
