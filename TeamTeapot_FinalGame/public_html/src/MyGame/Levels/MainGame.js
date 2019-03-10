@@ -1,6 +1,6 @@
 /*
  * File:        MainGame.js
- * Programmers: Kyla            March 9, 2019
+ * Programmers: Kyla            March 10, 2019
  *              Emily           March 2, 2019
  *
  */
@@ -235,7 +235,7 @@ MainGame.prototype.update = function ()
     {
         
         // cycle through all rocks
-        for (var i = 0; i < this.mRockSet.mRockSize; i++) 
+        for (var i = 0; i < this.mRockSet.size(); i++) 
         {
             var rock = this.mRockSet.mSet[i];
             var isHit = this.mHeroTest.checkHit(rock);
