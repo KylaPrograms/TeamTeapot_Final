@@ -25,7 +25,7 @@ WinScreen.prototype.loadScene = function () {
 };
 
 WinScreen.prototype.unloadScene = function () {
-    var nextLevel = new MyGame();
+    var nextLevel = new MainGame();
     gEngine.Core.startScene(nextLevel);
 };
 

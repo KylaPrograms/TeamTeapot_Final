@@ -24,7 +24,7 @@ GameOver.prototype.loadScene = function () {
 };
 
 GameOver.prototype.unloadScene = function () {
-    var nextLevel = new MyGame();
+    var nextLevel = new MainGame();
     gEngine.Core.startScene(nextLevel);
 };
 

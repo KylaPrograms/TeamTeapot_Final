@@ -18,12 +18,13 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function MyGame() {
+function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
+    this.kHealthBar = "assets/UI/healthbar.png";
     
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
@@ -47,23 +48,28 @@ function MyGame() {
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
     
+    this.mDamageBar = null;
+    this.mTreasureBar = null;
+    
     this.mGameState = null;
 }
-gEngine.Core.inheritPrototype(MyGame, Scene);
+gEngine.Core.inheritPrototype(MainGame, Scene);
 
-MyGame.prototype.loadScene = function ()
+MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kHealthBar);
     
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
 };
 
-MyGame.prototype.unloadScene = function ()
+MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kHealthBar);
     
     gEngine.Textures.unloadTexture(this.kStormTex);
     gEngine.Textures.unloadTexture(this.kRocksTex);
@@ -79,8 +85,10 @@ MyGame.prototype.unloadScene = function ()
     gEngine.Core.startScene(nextLevel);
 };
 
-MyGame.prototype.initialize = function ()
+MainGame.prototype.initialize = function ()
 {
+    gEngine.DefaultResources.setGlobalAmbientIntensity(1);
+    
     this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
     this.mAmbientLight[0] = 0.8;
     this.mAmbientLight[1] = 0.8;
@@ -146,11 +154,15 @@ MyGame.prototype.initialize = function ()
     }
     
     this.mGameState = new GameState(this.mHeroTest);
+    
+    this.mDamageBar = new UIDamageBar(this.kHealthBar,[130,580],[175,20],0);
+    this.mTreasureBar = new UIDamageBar(this.kHealthBar,[130,550],[175,20],0);
+    this.mTreasureBar.setMaxHP(3);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-MyGame.prototype.draw = function ()
+MainGame.prototype.draw = function ()
 {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
@@ -168,6 +180,9 @@ MyGame.prototype.draw = function ()
     
     this.mTreasureStatusTest.draw(this.mCamera);
     
+    this.mDamageBar.draw(this.mCamera);
+    this.mTreasureBar.draw(this.mCamera);
+    
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
     this.mTempBG.draw(this.mMiniMap);
@@ -180,7 +195,7 @@ MyGame.prototype.draw = function ()
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-MyGame.prototype.update = function ()
+MainGame.prototype.update = function ()
 {
     this.mHeroTest.update();
     this.updateHeroLight(this.mHeroTest);
@@ -198,6 +213,8 @@ MyGame.prototype.update = function ()
     {
         this.mHeroTest.addTreasure();
         this.mGameState.addTreasure();
+        this.mTreasureBar.setCurrentHP(this.mHeroTest.getTreasureAmount());
+        this.mTreasureBar.update();
     }
     
     this.mSunkenTreasureSetTest.update();
@@ -206,6 +223,7 @@ MyGame.prototype.update = function ()
     
     var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
     this.mTreasureStatusTest.setText(currMsg);
+    
     
     //Test GameState update text
     this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
@@ -238,6 +256,8 @@ MyGame.prototype.update = function ()
             {
                 this.mHeroTest.hit();
                 this.mHeroTest.incDamageBy(10);
+                this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
+                this.mDamageBar.update();
             }
         }
         
