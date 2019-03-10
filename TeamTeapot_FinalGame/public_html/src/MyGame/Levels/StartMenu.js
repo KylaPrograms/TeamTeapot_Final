@@ -1,3 +1,10 @@
+/*
+ * File:        StartMenu.js
+ * Programmers: Kyla            March 9, 2019
+ *
+ * This is the first scene that the player should encounter
+ */
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates

@@ -1,5 +1,5 @@
 /*
- * File:        MyGame_Lights.js
+ * File:        MainGame_Lights.js
  * Programmers: Emily           March 4, 2019
  *
  */

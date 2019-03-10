@@ -1,6 +1,6 @@
 /*
- * File:        MyGame.js
- * Programmers: Kyla            March 1, 2019
+ * File:        MainGame.js
+ * Programmers: Kyla            March 9, 2019
  *              Emily           March 2, 2019
  *
  */
@@ -33,8 +33,6 @@ function MainGame() {
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
-    
-    this.mTreasureStatusTest = null;
     
     this.mTempBG = null;
     this.mHeroTest = null;
@@ -130,11 +128,6 @@ MainGame.prototype.initialize = function ()
     }
     this.mTempBG = new GameObject(mTempBGR);
     
-    this.mTreasureStatusTest = new FontRenderable("Treasure Collected");
-    this.mTreasureStatusTest.setColor([1, 1, 0, 1]);
-    this.mTreasureStatusTest.getXform().setPosition(-48, 35);
-    this.mTreasureStatusTest.setTextHeight(2.5);
-    
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     
@@ -162,7 +155,7 @@ MainGame.prototype.initialize = function ()
     this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
     
     this.mTreasureSet = new UIItemSlotSet([30, 540]);
-    for(var i = 0; i < 3; i++)
+    for(var i = 0; i < 7; i++)
     {
         this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
@@ -185,8 +178,6 @@ MainGame.prototype.draw = function ()
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
-    
-    this.mTreasureStatusTest.draw(this.mCamera);
     
     this.mDamageBar.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
@@ -227,15 +218,6 @@ MainGame.prototype.update = function ()
     this.mSunkenTreasureSetTest.update();
     this.mCamera.update();
     this.mMiniMap.update();
-    
-    var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
-    this.mTreasureStatusTest.setText(currMsg);
-    
-    
-    //Test GameState update text
-    this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
-    var camPos = this.mCamera.getWCCenter();
-    this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
     this.mAutoSpawnTimer--;
     this.mStormSet.update();

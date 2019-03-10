@@ -1,3 +1,9 @@
+/*
+ * File:        UIDamageBar.js
+ * Programmers: Kyla            March 9, 2019
+ *
+ */
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,6 +12,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+// Similar to a UIHealthBar but starts at 0
 function UIDamageBar (sprite, position, size, buffer)
 {
     UIHealthBar.call(this, sprite, position, size, buffer);
