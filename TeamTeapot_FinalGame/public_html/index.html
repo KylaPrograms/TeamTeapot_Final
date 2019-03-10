@@ -112,6 +112,8 @@
         <!-- Client game code -->
        
         <script type="text/javascript" src="src/Engine/UI/UIDamageBar.js"></script>
+        <script type="text/javascript" src="src/Engine/UI/UIItemSlot.js"></script>
+        <script type="text/javascript" src="src/Engine/UI/UIItemSlotSet.js"></script>
         
         <!-- Game Objects -->
         <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
@@ -137,7 +139,7 @@
     </head>
 
     <body onload="
-        var myGame = new StartMenu();
+        var myGame = new MainGame();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
      ">
         <div id="LoadingIconParent" style="width: 800px; height:600px;">

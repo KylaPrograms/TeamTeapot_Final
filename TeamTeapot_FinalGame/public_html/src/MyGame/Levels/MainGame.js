@@ -28,6 +28,7 @@ function MainGame() {
     
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
+    this.kGemTex = "assets/Gems.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -49,7 +50,8 @@ function MainGame() {
     this.mAutoSpawnTimer = null;
     
     this.mDamageBar = null;
-    this.mTreasureBar = null;
+    this.mTreasureSet = null;
+    this.mTreasureUITest = null;
     
     this.mGameState = null;
 }
@@ -63,6 +65,7 @@ MainGame.prototype.loadScene = function ()
     
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
+    gEngine.Textures.loadTexture(this.kGemTex);
 };
 
 MainGame.prototype.unloadScene = function ()
@@ -73,6 +76,7 @@ MainGame.prototype.unloadScene = function ()
     
     gEngine.Textures.unloadTexture(this.kStormTex);
     gEngine.Textures.unloadTexture(this.kRocksTex);
+    gEngine.Textures.unloadTexture(this.kGemTex);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -155,9 +159,13 @@ MainGame.prototype.initialize = function ()
     
     this.mGameState = new GameState(this.mHeroTest);
     
-    this.mDamageBar = new UIDamageBar(this.kHealthBar,[130,580],[175,20],0);
-    this.mTreasureBar = new UIDamageBar(this.kHealthBar,[130,550],[175,20],0);
-    this.mTreasureBar.setMaxHP(3);
+    this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
+    
+    this.mTreasureSet = new UIItemSlotSet([30, 540]);
+    for(var i = 0; i < 3; i++)
+    {
+        this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
+    }
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -181,7 +189,7 @@ MainGame.prototype.draw = function ()
     this.mTreasureStatusTest.draw(this.mCamera);
     
     this.mDamageBar.draw(this.mCamera);
-    this.mTreasureBar.draw(this.mCamera);
+    this.mTreasureSet.draw(this.mCamera);
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
@@ -213,8 +221,7 @@ MainGame.prototype.update = function ()
     {
         this.mHeroTest.addTreasure();
         this.mGameState.addTreasure();
-        this.mTreasureBar.setCurrentHP(this.mHeroTest.getTreasureAmount());
-        this.mTreasureBar.update();
+        this.mTreasureSet.fillSlot();
     }
     
     this.mSunkenTreasureSetTest.update();
