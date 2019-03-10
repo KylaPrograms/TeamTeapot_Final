@@ -18,6 +18,7 @@ function Storm(spriteTexture, atX, atY)
     this.kRot1 = Math.random() * 10;
     this.kRot2 = Math.random() * 10;
     this.kRot3 = Math.random() * 10;
+    this.kSize = Math.random() * 15 + 5;
 
     
     this.mTotalLifeSpan = Math.random() * 1500;
@@ -25,16 +26,16 @@ function Storm(spriteTexture, atX, atY)
     
     this.mStorm1 = new SpriteRenderable(spriteTexture);
     this.mStorm1.getXform().setPosition(atX, atY);
-    this.mStorm1.getXform().setSize(10, 10);
+    this.mStorm1.getXform().setSize(this.kSize, this.kSize);
     
-    this.mStorm2 = new SpriteRenderable(spriteTexture);
-    this.mStorm2.getXform().setPosition(atX + 5, atY + 5);
-    this.mStorm2.getXform().setSize(8, 8);
-    
-    this.mStorm3 = new SpriteRenderable(spriteTexture);
-    this.mStorm3.getXform().setPosition(atX + 5, atY);
-    this.mStorm3.getXform().setSize(8, 8);
-    
+//    this.mStorm2 = new SpriteRenderable(spriteTexture);
+//    this.mStorm2.getXform().setPosition(atX + 5, atY + 5);
+//    this.mStorm2.getXform().setSize(8, 8);
+//    
+//    this.mStorm3 = new SpriteRenderable(spriteTexture);
+//    this.mStorm3.getXform().setPosition(atX + 5, atY);
+//    this.mStorm3.getXform().setSize(8, 8);
+//    
     this.mXdir = Math.random() - 0.5;
     this.mYdir = Math.random() - 0.5;
     
@@ -69,8 +70,8 @@ Storm.prototype.update = function ()
 {
     this.mLifespan++;
     var StormX1 = this.mStorm1.getXform();
-    var StormX2 = this.mStorm2.getXform();
-    var StormX3 = this.mStorm3.getXform();
+//    var StormX2 = this.mStorm2.getXform();
+//    var StormX3 = this.mStorm3.getXform();
     var stormXSpeed = this.mXdir * (this.mXdelta) / 60;
     var stormYSpeed = this.mYdir * (this.mYdelta) / 60;
     
@@ -79,20 +80,20 @@ Storm.prototype.update = function ()
     StormX1.incYPosBy(stormYSpeed);
     StormX1.incRotationByDegree(this.kRot1);
     
-    StormX2.incXPosBy(stormXSpeed);
-    StormX2.incYPosBy(stormYSpeed);
-    StormX2.incRotationByDegree(this.kRot2);
-    
-    StormX3.incXPosBy(stormXSpeed);
-    StormX3.incYPosBy(stormYSpeed);
-    StormX3.incRotationByDegree(this.kRot3);
+//    StormX2.incXPosBy(stormXSpeed);
+//    StormX2.incYPosBy(stormYSpeed);
+//    StormX2.incRotationByDegree(this.kRot2);
+//    
+//    StormX3.incXPosBy(stormXSpeed);
+//    StormX3.incYPosBy(stormYSpeed);
+//    StormX3.incRotationByDegree(this.kRot3);
 };
 
 Storm.prototype.draw = function (aCamera)
 {
     this.mStorm1.draw(aCamera);
-    this.mStorm2.draw(aCamera);
-    this.mStorm3.draw(aCamera);
+//    this.mStorm2.draw(aCamera);
+//    this.mStorm3.draw(aCamera);
 };
 
 Storm.prototype.isDead = function() 
