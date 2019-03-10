@@ -15,6 +15,7 @@ function StormSet()
 {
     this.mSet = [];
     this.mStormSize = 0;
+    this.mTotalStorms = 5;
 }
 
 gEngine.Core.inheritPrototype(StormSet, GameObjectSet);
@@ -28,10 +29,10 @@ StormSet.prototype.createStorm = function (spriteTexture)
     this.mStormSize++;
 };
 
-StormSet.prototype.addToSet = function (obj)
-{
-    this.mSet.push(obj);
-};
+//StormSet.prototype.addToSet = function (obj)
+//{
+//    this.mSet.push(obj);
+//};
 
 StormSet.prototype.update = function()
 {

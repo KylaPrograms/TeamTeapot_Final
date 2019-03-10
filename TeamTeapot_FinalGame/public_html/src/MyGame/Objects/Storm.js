@@ -15,7 +15,7 @@
 function Storm(spriteTexture, atX, atY)
 {
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
-    this.kRot1 = Math.random() * 10;
+    this.kRot1 = 15 ;//+ Math.random() * 10;
     this.kRot2 = Math.random() * 10;
     this.kRot3 = Math.random() * 10;
     this.kSize = Math.random() * 15 + 5;
