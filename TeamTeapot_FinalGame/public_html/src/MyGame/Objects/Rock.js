@@ -20,14 +20,7 @@ function Rock(spriteTexture, atX, atY)
     this.mRock.getXform().setSize(7, 8);
     this.mRock.setElementPixelPositions(15, 500, 60, 560);
     
-    // FOR PLACEHOLDER
-    this.mRock.setColor([1, 1, 1, 0]);
-    
     GameObject.call(this, this.mRock);
-    
-    var rb = new RigidRectangle(this.getXform(), this.getXform().getWidth(), this.getXform().getHeight());
-    this.setRigidBody(rb);
-    rb.setMass(100);
 }
 gEngine.Core.inheritPrototype(Rock, GameObject);
 
