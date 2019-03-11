@@ -36,6 +36,8 @@ function MainGame() {
     this.mCamera = null;
     this.mMiniMap = null;
     this.mMiniMapTranslucent = null;
+    this.mMiniMapXOffset = 74.375;
+    this.mMiniMapYOffset = 55.625;
     
     this.mWorldWCxRange = 100;
     this.mWorldWCyRange = 100;
@@ -130,19 +132,13 @@ MainGame.prototype.initialize = function ()
     
     this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
     this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
-    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
     this.mMiniMapTranslucent.getXform().setSize(300, 300);
+    //this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMapXOffset, 
+    //                                                this.mMiniMapYOffset);
+    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
-    
-//    this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
-//    var miniMapCenter = this.mMiniMap.getWCCenter();
-//    //this.mMiniMapTranslucent.getXform().setPosition(miniMapCenter[0], 
-//      //                                          miniMapCenter[1]);
-//    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
-//    this.mMiniMapTranslucent.getXform().setSize(200, 150);
-//    //this.mMiniMapTranslucent.setColor([1, 1, 1, 0]);
     
     // Create the ocean background
     var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
@@ -217,8 +213,9 @@ MainGame.prototype.draw = function ()
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
-    this.mMiniMapTranslucent.draw(this.mMiniMap);
+    
     //this.mTempBG.draw(this.mMiniMap);
+    this.mMiniMapTranslucent.draw(this.mMiniMap);
     this.mPirateTest.drawForMap(this.mMiniMap);
     this.mSunkenTreasureSetTest.drawForMap(this.mMiniMap);
     this.mHeroTest.drawForMap(this.mMiniMap);
