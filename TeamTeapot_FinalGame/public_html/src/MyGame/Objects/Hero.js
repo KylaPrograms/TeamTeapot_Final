@@ -15,16 +15,11 @@
 function Hero(spriteTexture)
 {
     this.mWithinWorldBounds = true;
-//    this.kMinSpeed = 0.0;
-//    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
-    this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
-//    this.kTurningDelta = 0.02;
-    this.kInvincibleTime = 120; // 120 frames aka 2 seconds
+    this.kSpeedDelta = 0.1; 
+    this.kInvincibleTime = 120;
     this.mWCWorldBounds = 300;
-//    this.mShip = new SpriteRenderable(spriteTexture);
-//    this.mShip.getXform().setPosition(0, 0);
-//    this.mShip.getXform().setSize(4, 8);
-
+    this.mInvincible = false;
+    
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
@@ -32,16 +27,16 @@ function Hero(spriteTexture)
     
     // FOR PLACEHOLDER
     this.mShip.setElementPixelPositions(107, 507, 1024, 0);
-    this.mInvincible = false;
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
     r.setVelocity(0, 0);
     this.setRigidBody(r);
-//    this.toggleDrawRigidShape();
+    //this.toggleDrawRigidShape();
     
     this.mTreasureCollected = 0;
         
+    //The renderable for the minimap    
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([1, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
@@ -59,7 +54,6 @@ Hero.prototype.update = function()
         this.mWithinWorldBounds = false;
     }
     
-//    GameObject.prototype.update.call(this);
     Ship.prototype.update.call(this);
     
     var currXform = this.mShip.getXform();
@@ -108,6 +102,7 @@ Hero.prototype.update = function()
     // doesn't snap to facing up when stopping
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
     
+    //Update the renderable's position on the map
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
                                                 currXform.getYPos());
 };
