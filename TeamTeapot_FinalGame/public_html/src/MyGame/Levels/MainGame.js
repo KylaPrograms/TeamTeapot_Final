@@ -1,6 +1,6 @@
 /*
  * File:        MainGame.js
- * Programmers: Kyla            March 9, 2019
+ * Programmers: Kyla            March 10, 2019
  *              Emily           March 2, 2019
  *
  */
@@ -102,9 +102,9 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(1.25);
     
-    this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
+    this.mAmbientLight = [];
     this.mAmbientLight[0] = 0.8;
     this.mAmbientLight[1] = 0.8;
     this.mAmbientLight[2] = 0.8;
@@ -145,10 +145,10 @@ MainGame.prototype.initialize = function ()
     mTempBGR.setElementPixelPositions(0, 256, 0, 256);
     mTempBGR.getXform().setPosition(0, 0);
     mTempBGR.getXform().setSize(300, 300);
+
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
-        mTempBGR.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+        this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
-    this.mTempBG = new GameObject(mTempBGR);
     
     this.mSpaceBG = new SpriteRenderable(this.kSpaceTex);
     this.mSpaceBG.setElementPixelPositions(0, 2048, 0, 2048);
@@ -252,7 +252,7 @@ MainGame.prototype.update = function ()
     {
         
         // cycle through all rocks
-        for (var i = 0; i < this.mRockSet.mRockSize; i++) 
+        for (var i = 0; i < this.mRockSet.size(); i++) 
         {
             var rock = this.mRockSet.mSet[i];
             var isHit = this.mHeroTest.checkHit(rock);
@@ -260,13 +260,30 @@ MainGame.prototype.update = function ()
             // if touching rock, then hit
             if (isHit)
             {
+                // update hero
                 this.mHeroTest.hit();
                 this.mHeroTest.incDamageBy(10);
+                
+                // camera shake
+                var displacement = 2;           // move camera by 2 units
+                var frequency = 5;              // shake 5 times a second
+                var duration = 30;              // half a second
+				
+                this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
+				
+				// Update Damage barcode
                 this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
                 this.mDamageBar.update();
             }
         }
-        
+    }
+    // Hero previously collided
+    // check whether or not to shake camera
+    else 
+    {
+        var camShake = this.mCamera.getCameraShake();
+        if (camShake !== null && !camShake.shakeDone())
+            camShake.updateShakeState();
     }
     
     //Pressing 'x' deals damage to the ship.

@@ -313,4 +313,15 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
 Camera.prototype.setBGDraw= function (bool) {
     this.mShowBG = bool;
 };
+
+Camera.prototype.setCameraShake = function (xDelta, yDelta, shakeFrequency, shakeDuration)
+{
+    var camShake = new CameraShake(this.mCameraState, xDelta, yDelta, shakeFrequency, shakeDuration);
+    this.mCameraShake = camShake;  
+};
+
+Camera.prototype.getCameraShake = function ()
+{
+    return this.mCameraShake;  
+};
 //</editor-fold>

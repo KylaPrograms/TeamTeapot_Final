@@ -1,6 +1,7 @@
 /*
  * File:        StormSet.js
  * Programmers: Emily           March 2, 2019
+ *              Kyla            March 10, 2019
  *
  */
 
@@ -26,6 +27,7 @@ function StormSet(spriteTexture, xRange, yRange, shipPosition)
     
     this.mStormSpawnTimer = 60;
     this.mTimer = 0;
+    GameObjectSet.call(this);
 }
 
 gEngine.Core.inheritPrototype(StormSet, GameObjectSet);

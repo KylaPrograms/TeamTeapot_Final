@@ -1,6 +1,7 @@
 /*
  * File:        RockSet.js
  * Programmers: Emily           March 2, 2019
+ *              Kyla            March 10, 2019
  *
  */
 
@@ -20,6 +21,7 @@ function RockSet(kTexture)
     {
         this.createRock();
     }
+    GameObjectSet.call(this);
 }
 
 gEngine.Core.inheritPrototype(RockSet, GameObjectSet);
