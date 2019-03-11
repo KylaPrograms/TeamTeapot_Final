@@ -89,7 +89,7 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(1.25);
     
     this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
     this.mAmbientLight[0] = 0.8;
