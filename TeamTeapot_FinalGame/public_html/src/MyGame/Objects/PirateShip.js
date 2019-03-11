@@ -13,14 +13,14 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PirateShip(spriteTexture)
+function PirateShip(spriteTexture, wakeTexture)
 {    
     //GameObject.call(this, this.mPirateShip);
     
     this.kSpeedDelta = 0.05;
     this.mOriginalColor = [0.75, 0, 0, 1];
     
-    Ship.call(this, spriteTexture, [50, 0], [8,4], 10, 0, -15, 15, 0.02);
+    Ship.call(this, spriteTexture, [50, 0], [4,8], 10, 0, -15, 15, .02, wakeTexture);
     
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([0, 0, 0, 1.0]);
@@ -34,6 +34,8 @@ PirateShip.prototype.update = function(heroPos)
 {
     Ship.prototype.update.call(this);
     //console.log(this.getXform().getRotationInRad() + "\n" + this.getCurrentFrontDir());
+    
+    //this.getXform().setRotationInRad(Math.PI / 2)
     
     var direction = .1 * ((this.getRigidBody().getAngularVelocity() < 0) ? 1 : -1);
     this.getRigidBody().setAngularVelocityDelta(direction);
@@ -60,7 +62,7 @@ PirateShip.prototype.chase = function(heroPos)
 
     
     // get direction pirateship is facing
-    var curr = currXform.getRotationInRad();
+    var curr = currXform.getRotationInRad() + Math.PI / 2;
     
     var facing = [Math.cos(curr), Math.sin(curr)];
     //console.log(facing, [x,y]);
@@ -79,11 +81,11 @@ PirateShip.prototype.chase = function(heroPos)
     //var dir = this.getCurrentFrontDir();
     //vec2.rotate(dir, dir, rotateBy);
     
-    var r = this.getXform().getRotationInRad();
+    var r = this.getXform().getRotationInRad() + Math.PI / 2;
     this.setVelocity(-this.mSpeed * Math.cos(r), -this.mSpeed * Math.sin(r));
     //this.getRigidBody().incVelocity(-this.mSpeed * Math.cos(r) * .01, -this.mSpeed * Math.sin(r) * .01);
     
-    this.getXform().setRotationInRad(curr + rotateBy);
+    this.getXform().setRotationInRad(curr + rotateBy - Math.PI / 2);
     //this.getXform().incRotationByRad(rotateBy);
     
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());    

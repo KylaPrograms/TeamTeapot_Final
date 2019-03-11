@@ -12,7 +12,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Hero(spriteTexture)
+function Hero(spriteTexture, wakeTexture)
 {
     this.mWithinWorldBounds = true;
     this.kSpeedDelta = 0.1; 
@@ -24,7 +24,7 @@ function Hero(spriteTexture)
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     //Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
-    Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02);
+    Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02, wakeTexture);
 
     console.log(this);
     
@@ -179,11 +179,6 @@ Hero.prototype.regenDamage = function()
     if(this.mDamage > 0) {
         this.mDamage -=1 ;   
     }
-};
-
-Hero.prototype.drawForMap = function (aCamera)
-{
-    this.mMapRenderable.draw(aCamera);
 };
 
 Hero.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };

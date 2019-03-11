@@ -13,7 +13,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function Ship(spriteTexture, position, size, maxDamage,
-                currSpeed, minSpeed, maxSpeed,  turningDelta)
+                currSpeed, minSpeed, maxSpeed,  turningDelta, wakeTexture)
 {
     this.mShip = new SpriteRenderable(spriteTexture);
     this.mShip.getXform().setPosition(position[0], position[1]);
@@ -35,11 +35,16 @@ function Ship(spriteTexture, position, size, maxDamage,
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     this.mOriginalColor = [0.75, 0, 0, 1];
     this.mShip.setColor(this.mOriginalColor);
+    
+    this.mWakeSet = new WakeSet();
+    this.mWakeTimer = 0;
+    this.mWakeTexture = wakeTexture;
+    
     GameObject.call(this, this.mShip);
     
     var r = new RigidRectangle(this.getXform(), size[0], size[1]);
     r.setMass(.7);
-    r.setRestitution(1);
+    r.setRestitution(30);
     r.setFriction(0);
     r.setVelocity(0, 0);
     this.setRigidBody(r);
@@ -49,9 +54,25 @@ gEngine.Core.inheritPrototype(Ship, GameObject);
 
 Ship.prototype.update = function()
 {
+    
     GameObject.prototype.update.call(this);
     this.updateInvincibility();
     //console.log(this.mSpeed);
+    
+    this.mWakeSet.update();
+    if(this.mWakeTimer >= 20)
+    {
+        this.mWakeSet.createWakeFromShip(this, this.mWakeTexture, [2, 1], 0.01);
+        this.mWakeTimer = 0;
+    }
+ 
+    this.mWakeTimer++;
+}
+
+Ship.prototype.draw = function(camera)
+{
+    GameObject.prototype.draw.call(this, camera);
+    this.mWakeSet.draw(camera);
 }
 
 Ship.prototype.getSpeed = function() { return this.mSpeed; };

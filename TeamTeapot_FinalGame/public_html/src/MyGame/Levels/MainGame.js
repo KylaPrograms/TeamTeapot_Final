@@ -170,8 +170,8 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mHeroTest = new Hero(this.kShipTex);
-    this.mPirateTest = new PirateShip(this.kPlaceHolder);
+    this.mHeroTest = new Hero(this.kShipTex, this.kPlaceHolder);
+    this.mPirateTest = new PirateShip(this.kPlaceHolder, this.kPlaceHolder);
     
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
     this.mSunkenTreasureTest1 = new SunkenTreasure(this.kPlaceHolder, -90, 50);
@@ -218,7 +218,7 @@ MainGame.prototype.draw = function ()
     
     this.mStormSet.draw(this.mCamera);
     
-    this.mWakeTest.draw(this.mCamera);
+    //this.mWakeTest.draw(this.mCamera);
     
     this.mDamageBar.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
@@ -362,21 +362,21 @@ MainGame.prototype.update = function ()
         }
     }
     
-    this.mWakeTest.update();
-    if(this.mWakeTestTimer >= 20)
-    {
-        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
-        this.mWakeTestTimer = 0;
-    }
- 
-    this.mWakeTestTimer++;
+//    this.mWakeTest.update();
+//    if(this.mWakeTestTimer >= 20)
+//    {
+//        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+//        this.mWakeTestTimer = 0;
+//    }
+// 
+//    this.mWakeTestTimer++;
     
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
-    this.mWakeTest.update();
-    if(this.mWakeTestTimer >= 20)
-    {
-        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
-        this.mWakeTestTimer = 0;
-    }
-    this.mWakeTestTimer++;
+//    this.mWakeTest.update();
+//    if(this.mWakeTestTimer >= 20)
+//    {
+//        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+//        this.mWakeTestTimer = 0;
+//    }
+//    this.mWakeTestTimer++;
 };
