@@ -14,23 +14,25 @@
 
 function Hero(spriteTexture)
 {
-    this.kMinSpeed = 0.0;
-    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
+//    this.kMinSpeed = 0.0;
+//    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
     this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
-    this.kTurningDelta = 0.02;
+//    this.kTurningDelta = 0.02;
     this.kInvincibleTime = 120; // 120 frames aka 2 seconds
     
-    this.mShip = new SpriteRenderable(spriteTexture);
-    this.mShip.getXform().setPosition(0, 0);
-    this.mShip.getXform().setSize(4, 8);
+//    this.mShip = new SpriteRenderable(spriteTexture);
+//    this.mShip.getXform().setPosition(0, 0);
+//    this.mShip.getXform().setSize(4, 8);
     this.mInvincible = false;
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     
+    Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, 0, 25, 0.02);
+    console.log(this);
     // FOR PLACEHOLDER
     this.mShip.setColor([0.42, 0.2, 0, 1]);
     
-    GameObject.call(this, this.mShip);
+    
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -38,12 +40,12 @@ function Hero(spriteTexture)
     this.setRigidBody(r);
     this.toggleDrawRigidShape();
     
-    this.mSpeed = 0;
-    
-    this.mDamage = 0;
+//    this.mSpeed = 0;
+//    
+//    this.mDamage = 0;
     this.mTreasureCollected = 0;
 }
-gEngine.Core.inheritPrototype(Hero, GameObject);
+gEngine.Core.inheritPrototype(Hero, Ship);
 
 Hero.prototype.update = function()
 {
@@ -58,28 +60,20 @@ Hero.prototype.update = function()
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.W))
     {
         noPress = false;
-        this.mSpeed += this.kSpeedDelta;
-        if(this.mSpeed > this.kMaxSpeed)
-        {
-            this.mSpeed = this.kMaxSpeed;
-        }
+        this.incSpeedBy(this.kSpeedDelta);
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.S))
     {
         noPress = false;
-        this.mSpeed -= this.kSpeedDelta;
-        if(this.mSpeed < this.kMinSpeed)
-        {
-            this.mSpeed = this.kMinSpeed;
-        }
+        this.incSpeedBy(-this.kSpeedDelta);
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A))
     {
-        vec2.rotate(dir, dir, this.kTurningDelta);
+        vec2.rotate(dir, dir, this.getTurningDelta());
     }
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D))
     {
-        vec2.rotate(dir, dir, -this.kTurningDelta);
+        vec2.rotate(dir, dir, -this.getTurningDelta());
     }
     if (noPress)
     {
@@ -142,11 +136,6 @@ Hero.prototype.getTreasureAmount = function()
     return this.mTreasureCollected;
 };
 
-Hero.prototype.getPosition = function()
-{
-    return this.getXform().getPosition();
-};
-
 Hero.prototype.changeSpeed = function(speed)
 {
     var pos = this.getXform().getPosition();
@@ -161,14 +150,14 @@ Hero.prototype.checkHit = function(otherObj)
     var touchPos = [];
     var result = false;
     var FREQUENCY = 11;         // how often to check collision. Must be odd number
-    if (this.mHitCheckTimer == 0)   
+    if (this.mHitCheckTimer === 0)   
     {
         result = this.pixelTouches(otherObj, touchPos);
     }
     this.mHitCheckTimer = (this.mHitCheckTimer + 1) % FREQUENCY;
     
     return result;
-}
+};
 
 Hero.prototype.hit = function()
 {
@@ -180,16 +169,6 @@ Hero.prototype.hit = function()
         this.mSpeed *= -.5;
     }
     
-};
-
-Hero.prototype.getDamage = function()
-{
-    return this.mDamage;
-};
-
-Hero.prototype.incDamageBy = function(deltaD)
-{
-    this.mDamage += deltaD;
 };
 
 Hero.prototype.regenDamage = function()
