@@ -15,17 +15,15 @@
 function Hero(spriteTexture)
 {
     this.mWithinWorldBounds = true;
-//    this.kMinSpeed = 0.0;
-//    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
-    this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
-//    this.kTurningDelta = 0.02;
-    //this.kInvincibleTime = 120; // 120 frames aka 2 seconds
+    this.kSpeedDelta = 0.1; 
+    this.kInvincibleTime = 120;
+    this.mWCWorldBounds = 300;
+    this.mInvincible = false;
     
-//    this.mShip = new SpriteRenderable(spriteTexture);
-//    this.mShip.getXform().setPosition(0, 0);
-//    this.mShip.getXform().setSize(4, 8);
-
     
+    this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
+    this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
+    //Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
     Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02);
 
     console.log(this);
@@ -34,9 +32,16 @@ function Hero(spriteTexture)
     this.mShip.setColor(this.mOriginalColor);
 
     // FOR PLACEHOLDER
+    // For smaller ship image
+    //this.mShip.setElementPixelPositions(53, 256, 0, 512);
     this.mShip.setElementPixelPositions(53, 256, 0, 512);
-
     
+    var r = new RigidRectangle(this.getXform(), 4, 8);
+    r.setMass(1);
+    r.setVelocity(0, 0);
+    this.setRigidBody(r);
+    this.toggleDrawRigidShape();
+
     this.mTreasureCollected = 0;
         
     //The renderable for the minimap    
@@ -49,10 +54,10 @@ gEngine.Core.inheritPrototype(Hero, Ship);
 
 Hero.prototype.update = function()
 {
-    if (this.getXform().getPosition()[1] >= this.wWorldBounds/2 ||
-            this.getXform().getPosition()[1] <= -this.wWorldBounds/2 ||
-            this.getXform().getPosition()[0] <= -this.wWorldBounds/2 ||
-            this.getXform().getPosition()[0] >= this.wWorldBounds/2)
+    if (this.getXform().getPosition()[1] >= this.mWCWorldBounds/2 ||
+            this.getXform().getPosition()[1] <= -this.mWCWorldBounds/2 ||
+            this.getXform().getPosition()[0] <= -this.mWCWorldBounds/2 ||
+            this.getXform().getPosition()[0] >= this.mWCWorldBounds/2)
     {
         this.mWithinWorldBounds = false;
     }
@@ -120,6 +125,34 @@ Hero.prototype.update = function()
     //Update the renderable's position on the map
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
                                                 currXform.getYPos());
+};
+
+Hero.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
+};
+
+Hero.prototype.updateInvincibility = function()
+{
+    // check if invincible
+    if (this.mInvincible === true)
+    {
+        // disable invincibility if duration is over
+        if (this.mHitTimer > this.kInvincibleTime)
+        {
+            this.mShip.setColor([0.42, 0.2, 0, 1]);
+            this.mInvincible = false;
+            this.mHitTimer = 0;
+        }
+        // increment timer
+        else
+        {
+            this.mShip.setColor([0.42, 0.2, 0, 1 * this.mHitTimer % 4]);
+            this.mHitTimer++;
+        } 
+    } else {
+        this.mShip.setColor(this.mOriginalColor);
+    }
 };
 
 Hero.prototype.addTreasure = function()
