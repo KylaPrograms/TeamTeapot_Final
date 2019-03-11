@@ -296,7 +296,7 @@ MainGame.prototype.update = function ()
     this.mWakeTest.update();
     if(this.mWakeTestTimer >= 20)
     {
-        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.02);
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
         this.mWakeTestTimer = 0;
     }
     this.mWakeTestTimer++;

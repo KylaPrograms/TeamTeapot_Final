@@ -20,7 +20,7 @@ function Wake(spriteTexture, position, size, forwardDir, speed)
     
     this.mSpeed = speed;
     
-    this.mLifeSpan = 45;
+    this.mLifeSpan = 60;
     this.mLifeTimer = 0;
     
     GameObject.call(this, this.mWake);
