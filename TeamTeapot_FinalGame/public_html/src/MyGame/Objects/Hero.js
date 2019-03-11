@@ -29,8 +29,8 @@ function Hero(spriteTexture)
     Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02);
     console.log(this);
     // FOR PLACEHOLDER
-    this.mOriginalColor = [0.42, 0.2, 0, 1];
-    //this.mShip.setColor([0.42, 0.2, 0, 1]);
+    this.mOriginalColor = [1, 1, 1, 0];
+    this.mShip.setColor(this.mOriginalColor);
 
     // FOR PLACEHOLDER
     this.mShip.setElementPixelPositions(53, 256, 0, 512);
