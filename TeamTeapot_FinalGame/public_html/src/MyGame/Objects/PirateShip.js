@@ -24,19 +24,22 @@ function PirateShip(spriteTexture)
     
     //GameObject.call(this, this.mPirateShip);
     
-    Ship.call(this, spriteTexture, [50, 0], [8,4], 10, 0, 0, 20, 0.02);
+    this.kSpeedDelta = 0.05;
+    this.mOriginalColor = [0.75, 0, 0, 1];
     
-//    var r = new RigidRectangle(this.getXform(), 4, 8);
-//    r.setMass(1);
-//    r.setVelocity(0, 0);
-//    this.setRigidBody(r);
-//    this.toggleDrawRigidShape();
+    Ship.call(this, spriteTexture, [50, 0], [8,4], 10, 0, -15, 15, 0.02);
     
 }
 gEngine.Core.inheritPrototype(PirateShip, Ship);
 
 PirateShip.prototype.update = function(heroPos)
 {
+    Ship.prototype.update.call(this);
+    //console.log(this.getXform().getRotationInRad() + "\n" + this.getCurrentFrontDir());
+    
+    var direction = .1 * ((this.getRigidBody().getAngularVelocity() < 0) ? 1 : -1);
+    this.getRigidBody().setAngularVelocityDelta(direction);
+    
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
         this.chase(heroPos);
@@ -47,6 +50,8 @@ PirateShip.prototype.chase = function(heroPos)
 {
     //console.log("Chasing Hero Ship");
     
+    this.incSpeedBy(this.kSpeedDelta);
+    
     // get current pos of ship
     var pos = this.getXform().getPosition();
     
@@ -54,13 +59,13 @@ PirateShip.prototype.chase = function(heroPos)
     var x = heroPos[0] - pos[0];
     var y = heroPos[1] - pos[1];
     
-    // get angle of rotation between pirateship and hero
-    var theta = Math.atan2(y,x);
+
     
     // get direction pirateship is facing
     var curr = this.getXform().getRotationInRad();
     
-    var facing = [];
+    var facing = [Math.cos(curr), Math.sin(curr)];
+    //console.log(facing, [x,y]);
     
     // get cross product to see which direction to turn
     vec2.cross(facing, [Math.cos(curr), Math.sin(curr)], [x,y]);
@@ -68,13 +73,21 @@ PirateShip.prototype.chase = function(heroPos)
     //console.log(this.getTurningDelta());
     
     var rotateBy = this.getTurningDelta();
-    if (facing[2] < 0)  // if pirate is on left side, rotate left;
+    if (facing[2] > 0)  // if pirate is on left side, rotate left;
         rotateBy *= -1;
     
-    // rotate pirateship towards hero
-    this.getXform().incRotationByRad(rotateBy);
+  
     
-    // move pirate ship forward in the new direction
-    var moveTowards = [pos[0] +  Math.cos(curr), pos[1] + Math.sin(curr)];
-    vec2.lerp(pos, pos, moveTowards, 0.2);
+    //this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
+    //var dir = this.getCurrentFrontDir();
+    //vec2.rotate(dir, dir, rotateBy);
+    
+    var r = this.getXform().getRotationInRad();
+    this.setVelocity(-this.mSpeed * Math.cos(r), -this.mSpeed * Math.sin(r));
+    //this.getRigidBody().incVelocity(-this.mSpeed * Math.cos(r) * .01, -this.mSpeed * Math.sin(r) * .01);
+    
+    this.getXform().setRotationInRad(curr + rotateBy);
+    //this.getXform().incRotationByRad(rotateBy);
+    
+    //vec2.lerp(pos, pos, moveTowards, 0.2);
 };

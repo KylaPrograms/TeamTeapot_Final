@@ -226,45 +226,64 @@ MainGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kStormTex);
     }
     
-    // Check Collision with all rocks in Rock set 
-    // if hero is invincible, don't bother checking 
-    if (this.mHeroTest.mInvincible === false)
-    {
-        
-        // cycle through all rocks
+            // cycle through all rocks
         for (var i = 0; i < this.mRockSet.size(); i++) 
         {
             var rock = this.mRockSet.mSet[i];
-            var isHit = this.mHeroTest.checkHit(rock);
             
-            // if touching rock, then hit
-            if (isHit)
+            // Check Collision with all rocks in Rock set 
+            // if hero is invincible, don't bother checking 
+            //if (this.mHeroTest.mInvincible === false)
             {
-                // update hero
-                this.mHeroTest.hit();
-                this.mHeroTest.incDamageBy(10);
-                
-                // camera shake
-                var displacement = 2;           // move camera by 2 units
-                var frequency = 5;              // shake 5 times a second
-                var duration = 30;              // half a second
-				
-                this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
-				
-				// Update Damage barcode
-                this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
-                this.mDamageBar.update();
+                var isHit = this.mHeroTest.checkHit(rock);
+
+                    // if touching rock, then hit
+                    if (isHit)
+                    {
+                        // update herowddd
+                        //this.mHeroTest.hit(rock);
+                        //if (this.mHeroTest.mInvincible === false)
+                            
+
+                        // camera shake
+                        var displacement = 2;           // move camera by 2 units
+                        var frequency = 5;              // shake 5 times a second
+                        var duration = 30;              // half a second
+
+                        this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
+
+                                        // Update Damage barcode
+                        this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
+                        this.mDamageBar.update();
+                    }
+            }
+            // Hero previously collided
+            // check whether or not to shake camera
+            if (this.mHeroTest.mInvincible === true) 
+            {
+                var camShake = this.mCamera.getCameraShake();
+                if (camShake !== null && !camShake.shakeDone())
+                    camShake.updateShakeState();
+            }
+            
+            if (this.mPirateTest.checkHit(rock))
+            {
+                //this.mPirateTest.hit(rock);
             }
         }
-    }
-    // Hero previously collided
-    // check whether or not to shake camera
-    else 
-    {
-        var camShake = this.mCamera.getCameraShake();
-        if (camShake !== null && !camShake.shakeDone())
-            camShake.updateShakeState();
-    }
+        
+        var c = new CollisionInfo();
+        if (this.mHeroTest.getRigidBody().collisionTest(this.mPirateTest.getRigidBody(), c))
+        {
+            gEngine.Physics.resolveCollision(this.mHeroTest.getRigidBody(), this.mPirateTest.getRigidBody(), c);
+            this.mHeroTest.getRigidBody().setAngularVelocity(0);
+            this.mPirateTest.getRigidBody().setAngularVelocity(0);
+            //this.mHeroTest.hit(this.mPirateTest);
+            //this.mPirateTest.hit(this.mHeroTest);
+            
+        }
+
+    
     
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))

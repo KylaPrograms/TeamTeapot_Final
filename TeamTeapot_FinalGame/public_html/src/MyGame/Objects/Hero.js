@@ -18,19 +18,19 @@ function Hero(spriteTexture)
 //    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
     this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
 //    this.kTurningDelta = 0.02;
-    this.kInvincibleTime = 120; // 120 frames aka 2 seconds
+    //this.kInvincibleTime = 120; // 120 frames aka 2 seconds
     
 //    this.mShip = new SpriteRenderable(spriteTexture);
 //    this.mShip.getXform().setPosition(0, 0);
 //    this.mShip.getXform().setSize(4, 8);
-    this.mInvincible = false;
-    this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
-    this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
+
     
     Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02);
     console.log(this);
     // FOR PLACEHOLDER
+    this.mOriginalColor = [0.42, 0.2, 0, 1];
     this.mShip.setColor([0.42, 0.2, 0, 1]);
+    
     
     this.mTreasureCollected = 0;
 }
@@ -90,32 +90,12 @@ Hero.prototype.update = function()
     
     // rotate ship sprite
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
-        
+    
     // set ship velocity in new direction
     var theta = Math.atan2(dir[1], dir[0]);
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
+    //this.getRigidBody().incVelocity(.1 * Math.cos(theta), .1 * Math.sin(theta));
     
-};
-
-Hero.prototype.updateInvincibility = function()
-{
-    // check if invincible
-    if (this.mInvincible === true)
-    {
-        // disable invincibility if duration is over
-        if (this.mHitTimer > this.kInvincibleTime)
-        {
-            this.mShip.setColor([0.42, 0.2, 0, 1]);
-            this.mInvincible = false;
-            this.mHitTimer = 0;
-        }
-        // increment timer
-        else
-        {
-            this.mShip.setColor([0.42, 0.2, 0, 1 * this.mHitTimer % 4]);
-            this.mHitTimer++;
-        } 
-    }
 };
 
 Hero.prototype.addTreasure = function()
