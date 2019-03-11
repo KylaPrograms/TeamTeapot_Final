@@ -14,40 +14,30 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function PirateShip(spriteTexture)
-{
-    this.mPirateShip = new SpriteRenderable(spriteTexture);
-    var currXform = this.mPirateShip.getXform();
-    currXform.setPosition(50, 0);
-    currXform.setSize(8, 4);
+{    
+    //GameObject.call(this, this.mPirateShip);
     
-    // FOR PLACEHOLDER
-    this.mPirateShip.setColor([0.75, 0, 0, 1]);
+    this.kSpeedDelta = 0.05;
+    this.mOriginalColor = [0.75, 0, 0, 1];
     
-    GameObject.call(this, this.mPirateShip);
-    
-//    var r = new RigidRectangle(this.getXform(), 4, 8);
-//    r.setMass(1);
-//    r.setVelocity(0, 0);
-//    this.setRigidBody(r);
-//    this.toggleDrawRigidShape();
-    
-    this.mSpeed = 30;
-    
-    this.mChaseInterpolate =
-            new InterpolateVec2(this.getXform().getPosition(), 200, 0.005);
-    this.mRotateInterpolate =
-            new InterpolateVec2(this.getCurrentFrontDir(), 120, 0.5);
+    Ship.call(this, spriteTexture, [50, 0], [8,4], 10, 0, -15, 15, 0.02);
     
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([0, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
-    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
-                                                        currXform.getYPos());
+    this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
+                                                        this.getXform().getYPos());
 }
-gEngine.Core.inheritPrototype(PirateShip, GameObject);
+gEngine.Core.inheritPrototype(PirateShip, Ship);
 
 PirateShip.prototype.update = function(heroPos)
 {
+    Ship.prototype.update.call(this);
+    //console.log(this.getXform().getRotationInRad() + "\n" + this.getCurrentFrontDir());
+    
+    var direction = .1 * ((this.getRigidBody().getAngularVelocity() < 0) ? 1 : -1);
+    this.getRigidBody().setAngularVelocityDelta(direction);
+    
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
         this.chase(heroPos);
@@ -57,7 +47,9 @@ PirateShip.prototype.update = function(heroPos)
 PirateShip.prototype.chase = function(heroPos)
 {
     //console.log("Chasing Hero Ship");
-    var currXform = this.mPirateShip.getXform();
+    this.incSpeedBy(this.kSpeedDelta);
+    
+    var currXform = this.getXform();
     // get current pos of ship
     var pos = currXform.getPosition();
     
@@ -65,30 +57,36 @@ PirateShip.prototype.chase = function(heroPos)
     var x = heroPos[0] - pos[0];
     var y = heroPos[1] - pos[1];
     
-    // get angle of rotation between pirateship and hero
-    var theta = Math.atan2(y,x);
+
     
     // get direction pirateship is facing
     var curr = currXform.getRotationInRad();
     
-    var facing = [];
+    var facing = [Math.cos(curr), Math.sin(curr)];
+    //console.log(facing, [x,y]);
     
     // get cross product to see which direction to turn
     vec2.cross(facing, [Math.cos(curr), Math.sin(curr)], [x,y]);
     
-    var rotateBy = .02;
-    if (facing[2] < 0)  // if pirate is on left side, rotate left;
+    //console.log(this.getTurningDelta());
+    
+    var rotateBy = this.getTurningDelta();
+    if (facing[2] > 0)  // if pirate is on left side, rotate left;
         rotateBy *= -1;
+  
     
-    // rotate pirateship towards hero
-    currXform.incRotationByRad(rotateBy);
+    //this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
+    //var dir = this.getCurrentFrontDir();
+    //vec2.rotate(dir, dir, rotateBy);
     
-    // move pirate ship forward in the new direction
-    var moveTowards = [pos[0] +  Math.cos(curr), pos[1] + Math.sin(curr)];
-    vec2.lerp(pos, pos, moveTowards, 0.2);
+    var r = this.getXform().getRotationInRad();
+    this.setVelocity(-this.mSpeed * Math.cos(r), -this.mSpeed * Math.sin(r));
+    //this.getRigidBody().incVelocity(-this.mSpeed * Math.cos(r) * .01, -this.mSpeed * Math.sin(r) * .01);
     
-    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());
+    this.getXform().setRotationInRad(curr + rotateBy);
+    //this.getXform().incRotationByRad(rotateBy);
     
+    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());    
 };
 
 PirateShip.prototype.drawForMap = function(aCamera)

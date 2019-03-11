@@ -251,6 +251,7 @@ gEngine.Physics = (function () {
     var mPublic = {
         getSystemAcceleration: getSystemtAcceleration,
         processCollision: processCollision,
+        resolveCollision: resolveCollision,
         togglePositionalCorrection: togglePositionalCorrection,
         getPositionalCorrection: getPositionalCorrection,
         incRelaxationCount: incRelaxationCount,
