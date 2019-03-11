@@ -27,7 +27,7 @@ function MainGame() {
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
-    this.kShipTex = "assets/Ships.png";
+    this.kShipTex = "assets/Ships512.png";
     this.kOceanNormal = "assets/OceanNormal.png";
     this.kOceanPlaceHolder = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";

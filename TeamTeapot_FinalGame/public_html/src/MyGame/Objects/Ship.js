@@ -37,7 +37,7 @@ function Ship(spriteTexture, position, size, maxDamage,
     this.mShip.setColor(this.mOriginalColor);
     GameObject.call(this, this.mShip);
     
-    var r = new RigidRectangle(this.mShip.getXform(), size[0], size[1]);
+    var r = new RigidRectangle(this.getXform(), size[0], size[1]);
     r.setMass(.7);
     r.setRestitution(1);
     r.setFriction(0);

@@ -30,10 +30,10 @@ function Hero(spriteTexture)
     console.log(this);
     // FOR PLACEHOLDER
     this.mOriginalColor = [0.42, 0.2, 0, 1];
-    this.mShip.setColor([0.42, 0.2, 0, 1]);
+    //this.mShip.setColor([0.42, 0.2, 0, 1]);
 
     // FOR PLACEHOLDER
-    this.mShip.setElementPixelPositions(107, 507, 1024, 0);
+    this.mShip.setElementPixelPositions(53, 256, 0, 512);
     
     this.mTreasureCollected = 0;
         
@@ -119,11 +119,6 @@ Hero.prototype.update = function()
                                                 currXform.getYPos());
 };
 
-Hero.prototype.drawForMap = function (aCamera)
-{
-    this.mMapRenderable.draw(aCamera);
-};
-
 Hero.prototype.addTreasure = function()
 {
     this.mTreasureCollected++;
@@ -135,19 +130,24 @@ Hero.prototype.getTreasureAmount = function()
     return this.mTreasureCollected;
 };
 
-//Hero.prototype.changeSpeed = function(speed)
-//{
-//    var pos = this.getXform().getPosition();
-//    var dir = this.getCurrentFrontDir();
-//    
-//    vec2.scaleAndAdd(pos,pos,dir, speed);
-//};
+Hero.prototype.changeSpeed = function(speed)
+{
+    var pos = this.getXform().getPosition();
+    var dir = this.getCurrentFrontDir();
+    
+    vec2.scaleAndAdd(pos,pos,dir, speed);
+};
 
 Hero.prototype.regenDamage = function()
 {
     if(this.mDamage > 0) {
         this.mDamage -=1 ;   
     }
+};
+
+Hero.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 };
 
 Hero.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };
