@@ -15,10 +15,9 @@
 function Storm(spriteTexture, atX, atY)
 {
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
-    this.kRot1 = Math.random() * 10;
-    this.kRot2 = Math.random() * 10;
-    this.kRot3 = Math.random() * 10;
+    this.kRot1 = Math.random() * 10 + 5;
     this.kSize = Math.random() * 15 + 5;
+    this.mGrowStorm = true;
 
     
     this.mTotalLifeSpan = Math.random() * 1500;
@@ -26,7 +25,11 @@ function Storm(spriteTexture, atX, atY)
     
     this.mStorm1 = new SpriteRenderable(spriteTexture);
     this.mStorm1.getXform().setPosition(atX, atY);
-    this.mStorm1.getXform().setSize(this.kSize, this.kSize);
+    this.mStorm1.getXform().setSize(0.01, 0.01);
+    
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([0, 0, 1.0, 1.0]);
+    this.mMapRenderable.getXform().setSize(0.01, 0.01);
     
 //    this.mStorm2 = new SpriteRenderable(spriteTexture);
 //    this.mStorm2.getXform().setPosition(atX + 5, atY + 5);
@@ -68,10 +71,12 @@ gEngine.Core.inheritPrototype(Storm, GameObject);
 
 Storm.prototype.update = function () 
 {
+    if(this.mGrowStorm) 
+    {
+        this.growStorm();
+    }
     this.mLifespan++;
     var StormX1 = this.mStorm1.getXform();
-//    var StormX2 = this.mStorm2.getXform();
-//    var StormX3 = this.mStorm3.getXform();
     var stormXSpeed = this.mXdir * (this.mXdelta) / 60;
     var stormYSpeed = this.mYdir * (this.mYdelta) / 60;
     
@@ -80,18 +85,31 @@ Storm.prototype.update = function ()
     StormX1.incYPosBy(stormYSpeed);
     StormX1.incRotationByDegree(this.kRot1);
     
-//    StormX2.incXPosBy(stormXSpeed);
-//    StormX2.incYPosBy(stormYSpeed);
-//    StormX2.incRotationByDegree(this.kRot2);
-//    
-//    StormX3.incXPosBy(stormXSpeed);
-//    StormX3.incYPosBy(stormYSpeed);
-//    StormX3.incRotationByDegree(this.kRot3);
+    this.mMapRenderable.getXform().setPosition(StormX1.getXPos(), StormX1.getYPos());
+};
+
+Storm.prototype.growStorm = function ()
+{
+    var size = this.mStorm1.getXform().getSize();
+    var deltaSize = 5 / 60;
+    if(size[0] <= this.kSize) {
+        this.mStorm1.getXform().setSize(size[0] + deltaSize, size[0] + deltaSize);
+        this.mMapRenderable.getXform().setSize(size[0] + deltaSize, size[0] + deltaSize);
+    } else {
+        this.mGrowStorm = false;
+    }
 };
 
 Storm.prototype.draw = function (aCamera)
 {
     this.mStorm1.draw(aCamera);
+//    this.mStorm2.draw(aCamera);
+//    this.mStorm3.draw(aCamera);
+};
+
+Storm.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 //    this.mStorm2.draw(aCamera);
 //    this.mStorm3.draw(aCamera);
 };

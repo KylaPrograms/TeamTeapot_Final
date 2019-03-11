@@ -18,23 +18,38 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+var wWorldBounds = 300;
+
 function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
     
+    this.kBGMusic = "assets/Sounds/GameBackground.mp3";
+    
     this.kPlaceHolder = "assets/PlaceHolder.png";
-    this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
+    this.kShipTex = "assets/Ships.png";
+    this.kOceanNormal = "assets/OceanNormal.png";
+    this.kOceanPlaceHolder = "assets/Ocean.png";
+    this.kSpaceTex = "assets/Space.png";
     this.kHealthBar = "assets/UI/healthbar.png";
     
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
     this.kGemTex = "assets/Gems.png";
+    this.kMiniMap = "assets/miniMap.png";
     
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
+    this.mMiniMapTranslucent = null;
+    this.mMiniMapXOffset = 74.375;
+    this.mMiniMapYOffset = 55.625;
+    
+    this.mWorldWCxRange = 300;
+    this.mWorldWCyRange = 300;
     
     this.mTempBG = null;
+    this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
@@ -51,6 +66,8 @@ function MainGame() {
     this.mTreasureSet = null;
     this.mTreasureUITest = null;
     
+    this.mWakeTest = null;
+    
     this.mGameState = null;
 }
 gEngine.Core.inheritPrototype(MainGame, Scene);
@@ -58,23 +75,36 @@ gEngine.Core.inheritPrototype(MainGame, Scene);
 MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
+    gEngine.Textures.loadTexture(this.kShipTex);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kOceanNormal);
+    gEngine.Textures.loadTexture(this.kSpaceTex);
     gEngine.Textures.loadTexture(this.kHealthBar);
     
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
     gEngine.Textures.loadTexture(this.kGemTex);
+    gEngine.Textures.loadTexture(this.kMiniMap);
+    
+    gEngine.AudioClips.loadAudio(this.kBGMusic);
 };
 
 MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kShipTex);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kOceanNormal);
+    gEngine.Textures.unloadTexture(this.kSpaceTex);
     gEngine.Textures.unloadTexture(this.kHealthBar);
     
     gEngine.Textures.unloadTexture(this.kStormTex);
     gEngine.Textures.unloadTexture(this.kRocksTex);
     gEngine.Textures.unloadTexture(this.kGemTex);
+    gEngine.Textures.unloadTexture(this.kMiniMap);
+    
+    gEngine.AudioClips.stopBackgroundAudio();
+    gEngine.AudioClips.unloadAudio(this.kBGMusic);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -89,12 +119,13 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1.25);
+    //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
-    this.mAmbientLight = [];
-    this.mAmbientLight[0] = 0.8;
-    this.mAmbientLight[1] = 0.8;
-    this.mAmbientLight[2] = 0.8;
+//    this.mAmbientLight = [];
+//    this.mAmbientLight[0] = 0.8;
+//    this.mAmbientLight[1] = 0.8;
+//    this.mAmbientLight[2] = 0.8;
     
     this._initializeLights();
     
@@ -117,15 +148,32 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.configInterpolation(0, 1);
     this.mMiniMap.setBGDraw(false);
     
+    this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
+    this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
+    this.mMiniMapTranslucent.getXform().setSize(400, 400);
+    //this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMapXOffset, 
+    //                                                this.mMiniMapYOffset);
+    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
+    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
+        this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+    }
+    
     // Create the ocean background
-    this.mTempBG = new LightRenderable(this.kOceanPlaceHolder);
+    this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
+    this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
     this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(100, 100);
+    this.mTempBG.getXform().setSize(wWorldBounds, wWorldBounds);
+
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
     
-    this.mHeroTest = new Hero(this.kPlaceHolder);
+    this.mSpaceBG = new SpriteRenderable(this.kSpaceTex);
+    this.mSpaceBG.setElementPixelPositions(0, 2048, 0, 2048);
+    this.mSpaceBG.getXform().setPosition(0, 0);
+    this.mSpaceBG.getXform().setSize(100, 100);
+    
+    this.mHeroTest = new Hero(this.kShipTex);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
@@ -136,17 +184,12 @@ MainGame.prototype.initialize = function ()
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest1);
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest2);
     
-    this.mStormSet = new StormSet();
+    this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
+                                                    this.mHeroTest);
     this.mAutoSpawnTimer = Math.random() + 2;
     
-    
-    // Spawn the rocks
-    this.mRockSet = new RockSet();
-    for (var i = 0; i < 10; i++)
-    {
-        this.mRockSet.createRock(this.kRocksTex);
-    }
-    
+        // Spawn the rocks
+    this.mRockSet = new RockSet(this.kRocksTex);
     this.mGameState = new GameState(this.mHeroTest);
     
     this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
@@ -156,6 +199,8 @@ MainGame.prototype.initialize = function ()
     {
         this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
+    
+    this.mWakeTest = new WakeSet();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -167,6 +212,7 @@ MainGame.prototype.draw = function ()
 
     //Draw for the main camera
     this.mCamera.setupViewProjection();
+    this.mSpaceBG.draw(this.mCamera);
     this.mTempBG.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
     this.mSunkenTreasureSetTest.draw(this.mCamera);
@@ -176,17 +222,21 @@ MainGame.prototype.draw = function ()
     
     this.mStormSet.draw(this.mCamera);
     
+    this.mWakeTest.draw(this.mCamera);
+    
     this.mDamageBar.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
-    this.mTempBG.draw(this.mMiniMap);
-    this.mPirateTest.draw(this.mMiniMap);
-    this.mSunkenTreasureSetTest.draw(this.mMiniMap);
-    this.mHeroTest.draw(this.mMiniMap);
-    this.mStormSet.draw(this.mMiniMap);
-    this.mRockSet.draw(this.mMiniMap);
+    
+    //this.mTempBG.draw(this.mMiniMap);
+    this.mMiniMapTranslucent.draw(this.mMiniMap);
+    this.mPirateTest.drawForMap(this.mMiniMap);
+    this.mSunkenTreasureSetTest.drawForMap(this.mMiniMap);
+    this.mHeroTest.drawForMap(this.mMiniMap);
+    this.mStormSet.drawForMap(this.mMiniMap);
+    this.mRockSet.drawForMap(this.mMiniMap);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -194,6 +244,10 @@ MainGame.prototype.draw = function ()
 MainGame.prototype.update = function ()
 {
     this.mHeroTest.update();
+    if (!this.mHeroTest.getWithinWorldBounds())
+    {
+        this.mGameState.setGameOver(true);
+    }
     this.updateHeroLight(this.mHeroTest);
     
     this.mPirateTest.update(this.mHeroTest.getPosition());
@@ -216,7 +270,6 @@ MainGame.prototype.update = function ()
     this.mCamera.update();
     this.mMiniMap.update();
     
-    this.mAutoSpawnTimer--;
     this.mStormSet.update();
     
     // Spawn the storms
@@ -226,7 +279,7 @@ MainGame.prototype.update = function ()
         this.mStormSet.createStorm(this.kStormTex);
     }
     
-            // cycle through all rocks
+        // cycle through all rocks
         for (var i = 0; i < this.mRockSet.size(); i++) 
         {
             var rock = this.mRockSet.mSet[i];
@@ -303,5 +356,17 @@ MainGame.prototype.update = function ()
         this.mGameState.setGameWin(true);
     }
     
-    //console.log(this.mStormSet);
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.M))
+    {
+        if(gEngine.AudioClips.isBackgroundAudioPlaying())
+        {
+            gEngine.AudioClips.stopBackgroundAudio();
+        } else {
+            gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+        }
+    }
+    
+    this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
+    this.mWakeTest.update();
+    this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 2);
 };

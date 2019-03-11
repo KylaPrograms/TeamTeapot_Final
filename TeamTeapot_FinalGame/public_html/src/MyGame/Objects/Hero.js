@@ -14,6 +14,7 @@
 
 function Hero(spriteTexture)
 {
+    this.mWithinWorldBounds = true;
 //    this.kMinSpeed = 0.0;
 //    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
     this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
@@ -30,15 +31,33 @@ function Hero(spriteTexture)
     // FOR PLACEHOLDER
     this.mOriginalColor = [0.42, 0.2, 0, 1];
     this.mShip.setColor([0.42, 0.2, 0, 1]);
-    
+
+    // FOR PLACEHOLDER
+    this.mShip.setElementPixelPositions(107, 507, 1024, 0);
     
     this.mTreasureCollected = 0;
+        
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([1, 0, 0, 1.0]);
+    this.mMapRenderable.getXform().setSize(8, 8);
+    this.mMapRenderable.getXform().setPosition(0, 0);
 }
 gEngine.Core.inheritPrototype(Hero, Ship);
 
 Hero.prototype.update = function()
 {
+    if (this.getXform().getPosition()[1] >= this.wWorldBounds/2 ||
+            this.getXform().getPosition()[1] <= -this.wWorldBounds/2 ||
+            this.getXform().getPosition()[0] <= -this.wWorldBounds/2 ||
+            this.getXform().getPosition()[0] >= this.wWorldBounds/2)
+    {
+        this.mWithinWorldBounds = false;
+    }
+    
+//    GameObject.prototype.update.call(this);
     Ship.prototype.update.call(this);
+    
+    var currXform = this.mShip.getXform();
     
     // get direction ship is facing
     var dir = this.getCurrentFrontDir();
@@ -96,6 +115,13 @@ Hero.prototype.update = function()
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
     //this.getRigidBody().incVelocity(.1 * Math.cos(theta), .1 * Math.sin(theta));
     
+    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
+                                                currXform.getYPos());
+};
+
+Hero.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 };
 
 Hero.prototype.addTreasure = function()
@@ -109,13 +135,13 @@ Hero.prototype.getTreasureAmount = function()
     return this.mTreasureCollected;
 };
 
-Hero.prototype.changeSpeed = function(speed)
-{
-    var pos = this.getXform().getPosition();
-    var dir = this.getCurrentFrontDir();
-    
-    vec2.scaleAndAdd(pos,pos,dir, speed);
-};
+//Hero.prototype.changeSpeed = function(speed)
+//{
+//    var pos = this.getXform().getPosition();
+//    var dir = this.getCurrentFrontDir();
+//    
+//    vec2.scaleAndAdd(pos,pos,dir, speed);
+//};
 
 Hero.prototype.regenDamage = function()
 {
@@ -123,3 +149,5 @@ Hero.prototype.regenDamage = function()
         this.mDamage -=1 ;   
     }
 };
+
+Hero.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };

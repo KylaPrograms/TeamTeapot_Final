@@ -20,6 +20,11 @@ function Rock(spriteTexture, atX, atY)
     this.mRock.getXform().setSize(7, 8);
     this.mRock.setElementPixelPositions(15, 500, 60, 560);
     
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([1, 1, 1, 1.0]);
+    this.mMapRenderable.getXform().setSize(7, 8);
+    this.mMapRenderable.getXform().setPosition(atX, atY);
+    
     GameObject.call(this, this.mRock);
 }
 gEngine.Core.inheritPrototype(Rock, GameObject);
@@ -27,4 +32,9 @@ gEngine.Core.inheritPrototype(Rock, GameObject);
 Rock.prototype.draw = function (aCamera)
 {
     this.mRock.draw(aCamera);
+};
+
+Rock.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 };

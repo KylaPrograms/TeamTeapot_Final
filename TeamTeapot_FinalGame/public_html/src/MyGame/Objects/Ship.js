@@ -128,7 +128,11 @@ Ship.prototype.checkHit = function(otherObj)
     {
         result = this.pixelTouches(otherObj, touchPos);
         if (result)
+        {
+            console.log("Hit rock");
             this.hit(otherObj, touchPos);
+        }
+            
     }
     this.mHitCheckTimer = (this.mHitCheckTimer + 1) % FREQUENCY;
     

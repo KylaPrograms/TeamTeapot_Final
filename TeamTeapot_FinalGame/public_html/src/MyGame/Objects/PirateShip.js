@@ -14,14 +14,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function PirateShip(spriteTexture)
-{
-//    this.mPirateShip = new SpriteRenderable(spriteTexture);
-//    this.mPirateShip.getXform().setPosition(50, 0);
-//    this.mPirateShip.getXform().setSize(8, 4);
-//    
-//    // FOR PLACEHOLDER
-//    this.mPirateShip.setColor([0.75, 0, 0, 1]);
-    
+{    
     //GameObject.call(this, this.mPirateShip);
     
     this.kSpeedDelta = 0.05;
@@ -29,6 +22,11 @@ function PirateShip(spriteTexture)
     
     Ship.call(this, spriteTexture, [50, 0], [8,4], 10, 0, -15, 15, 0.02);
     
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([0, 0, 0, 1.0]);
+    this.mMapRenderable.getXform().setSize(8, 8);
+    this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
+                                                        this.getXform().getYPos());
 }
 gEngine.Core.inheritPrototype(PirateShip, Ship);
 
@@ -49,11 +47,11 @@ PirateShip.prototype.update = function(heroPos)
 PirateShip.prototype.chase = function(heroPos)
 {
     //console.log("Chasing Hero Ship");
-    
     this.incSpeedBy(this.kSpeedDelta);
     
+    var currXform = this.getXform();
     // get current pos of ship
-    var pos = this.getXform().getPosition();
+    var pos = currXform.getPosition();
     
     // get vector between hero and pirateship
     var x = heroPos[0] - pos[0];
@@ -62,7 +60,7 @@ PirateShip.prototype.chase = function(heroPos)
 
     
     // get direction pirateship is facing
-    var curr = this.getXform().getRotationInRad();
+    var curr = currXform.getRotationInRad();
     
     var facing = [Math.cos(curr), Math.sin(curr)];
     //console.log(facing, [x,y]);
@@ -75,7 +73,6 @@ PirateShip.prototype.chase = function(heroPos)
     var rotateBy = this.getTurningDelta();
     if (facing[2] > 0)  // if pirate is on left side, rotate left;
         rotateBy *= -1;
-    
   
     
     //this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
@@ -89,5 +86,10 @@ PirateShip.prototype.chase = function(heroPos)
     this.getXform().setRotationInRad(curr + rotateBy);
     //this.getXform().incRotationByRad(rotateBy);
     
-    //vec2.lerp(pos, pos, moveTowards, 0.2);
+    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());    
+};
+
+PirateShip.prototype.drawForMap = function(aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 };

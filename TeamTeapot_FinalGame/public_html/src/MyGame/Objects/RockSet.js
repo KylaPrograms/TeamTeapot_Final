@@ -12,18 +12,25 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function RockSet()
+function RockSet(kTexture)
 {
+    //this.mSet = [];
+    this.mRockSize = 0;
+    this.kRockTexture = kTexture;
     GameObjectSet.call(this);
+    for (var i = 0; i < 10; i++)
+    {
+        this.createRock();
+    }
 }
 
 gEngine.Core.inheritPrototype(RockSet, GameObjectSet);
 
-RockSet.prototype.createRock = function (spriteTexture)
+RockSet.prototype.createRock = function ()
 {
-    var xspawn = -50 + Math.random() * 300;
-    var yspawn = -50 + Math.random() * 300;
-    var rock = new Rock(spriteTexture, xspawn, yspawn);
+    var xspawn = -160 + Math.random() * 300;
+    var yspawn = -160 + Math.random() * 300;
+    var rock = new Rock(this.kRockTexture, xspawn, yspawn);
     rock.getXform().setRotationInRad(Math.random() * 2 * Math.PI);
     
     var scale = Math.random() * .5;
@@ -32,12 +39,26 @@ RockSet.prototype.createRock = function (spriteTexture)
     newSize[1] = newSize[1] * scale + newSize[1] * .75;
     
     rock.getXform().setSize(newSize[0], newSize[1]);
+    //this.mSet.push(rock);
     this.addToSet(rock);
     this.mRockSize++;
 };
 
-RockSet.prototype.addToSet = function (obj)
-{
-    this.mSet.push(obj);
+//RockSet.prototype.addToSet = function (obj)
+//{
+//    this.mSet.push(obj);
+//
+//};
 
+RockSet.prototype.getRockSize = function()
+{
+    return this.mRockSize;
+};
+
+RockSet.prototype.drawForMap = function (aCamera)
+{
+    for (var i = 0; i < this.mSet.length; i++)
+    {
+        this.mSet[i].drawForMap(aCamera);
+    }
 };
