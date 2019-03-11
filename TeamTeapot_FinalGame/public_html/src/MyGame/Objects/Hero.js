@@ -26,7 +26,7 @@ function Hero(spriteTexture)
     console.log(this);
     
     // FOR PLACEHOLDER
-    this.mShip.setElementPixelPositions(107, 507, 1024, 0);
+    this.mShip.setElementPixelPositions(107, 507, 0, 1024);
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -130,6 +130,8 @@ Hero.prototype.updateInvincibility = function()
             this.mShip.setColor([0.42, 0.2, 0, 1 * this.mHitTimer % 4]);
             this.mHitTimer++;
         } 
+    } else {
+        this.mShip.setColor([1, 1, 1, 0]);
     }
 };
 
