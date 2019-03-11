@@ -18,8 +18,6 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-var wWorldBounds = 300;
-
 function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
@@ -27,7 +25,7 @@ function MainGame() {
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
-    this.kShipTex = "assets/Ships.png";
+    this.kShipTex = "assets/Ships512.png";
     this.kOceanNormal = "assets/OceanNormal.png";
     this.kOceanPlaceHolder = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";
@@ -58,13 +56,14 @@ function MainGame() {
     this.mSunkenTreasureSetTest = null;
     
     this.mRockSet = null;
-    
     this.mStormSet = null;
-    this.mAutoSpawnTimer = null;
     
     this.mDamageBar = null;
     this.mTreasureSet = null;
     this.mTreasureUITest = null;
+    
+    this.mWakeTest = null;
+    this.mWakeTestTimer = 0;
     
     this.mGameState = null;
 }
@@ -117,7 +116,7 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
 //    this.mAmbientLight = [];
@@ -160,7 +159,7 @@ MainGame.prototype.initialize = function ()
     this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
     this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
     this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(wWorldBounds, wWorldBounds);
+    this.mTempBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
 
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
@@ -184,7 +183,6 @@ MainGame.prototype.initialize = function ()
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
-    this.mAutoSpawnTimer = Math.random() + 2;
     
         // Spawn the rocks
     this.mRockSet = new RockSet(this.kRocksTex);
@@ -197,6 +195,8 @@ MainGame.prototype.initialize = function ()
     {
         this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
+    
+    this.mWakeTest = new WakeSet();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -217,6 +217,8 @@ MainGame.prototype.draw = function ()
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
+    
+    this.mWakeTest.draw(this.mCamera);
     
     this.mDamageBar.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
@@ -266,45 +268,71 @@ MainGame.prototype.update = function ()
     
     this.mStormSet.update();
     
-    // Check Collision with all rocks in Rock set 
-    // if hero is invincible, don't bother checking 
-    if (this.mHeroTest.mInvincible === false)
+    // Spawn the storms
+    if(this.mAutoSpawnTimer <= 0)
     {
-        
+        this.mAutoSpawnTimer = Math.random() * 60 + 120;
+        this.mStormSet.createStorm(this.kStormTex);
+    }
+    
         // cycle through all rocks
         for (var i = 0; i < this.mRockSet.size(); i++) 
         {
             var rock = this.mRockSet.mSet[i];
-            var isHit = this.mHeroTest.checkHit(rock);
             
-            // if touching rock, then hit
-            if (isHit)
+            // Check Collision with all rocks in Rock set 
+            // if hero is invincible, don't bother checking 
+            //if (this.mHeroTest.mInvincible === false)
             {
-                // update hero
-                this.mHeroTest.hit();
-                this.mHeroTest.incDamageBy(10);
-                
-                // camera shake
-                var displacement = 2;           // move camera by 2 units
-                var frequency = 5;              // shake 5 times a second
-                var duration = 30;              // half a second
-				
-                this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
-				
-				// Update Damage barcode
-                this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
-                this.mDamageBar.update();
+                var isHit = this.mHeroTest.checkHit(rock);
+
+                    // if touching rock, then hit
+                    if (isHit)
+                    {
+                        // update herowddd
+                        //this.mHeroTest.hit(rock);
+                        //if (this.mHeroTest.mInvincible === false)
+                            
+
+                        // camera shake
+                        var displacement = 2;           // move camera by 2 units
+                        var frequency = 5;              // shake 5 times a second
+                        var duration = 30;              // half a second
+
+                        this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
+
+                                        // Update Damage barcode
+                        this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
+                        this.mDamageBar.update();
+                    }
+            }
+            // Hero previously collided
+            // check whether or not to shake camera
+            if (this.mHeroTest.mInvincible === true) 
+            {
+                var camShake = this.mCamera.getCameraShake();
+                if (camShake !== null && !camShake.shakeDone())
+                    camShake.updateShakeState();
+            }
+            
+            if (this.mPirateTest.checkHit(rock))
+            {
+                //this.mPirateTest.hit(rock);
             }
         }
-    }
-    // Hero previously collided
-    // check whether or not to shake camera
-    else 
-    {
-        var camShake = this.mCamera.getCameraShake();
-        if (camShake !== null && !camShake.shakeDone())
-            camShake.updateShakeState();
-    }
+        
+        var c = new CollisionInfo();
+        if (this.mHeroTest.getRigidBody().collisionTest(this.mPirateTest.getRigidBody(), c))
+        {
+            gEngine.Physics.resolveCollision(this.mHeroTest.getRigidBody(), this.mPirateTest.getRigidBody(), c);
+            this.mHeroTest.getRigidBody().setAngularVelocity(0);
+            this.mPirateTest.getRigidBody().setAngularVelocity(0);
+            //this.mHeroTest.hit(this.mPirateTest);
+            //this.mPirateTest.hit(this.mHeroTest);
+            
+        }
+
+    
     
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
@@ -334,7 +362,21 @@ MainGame.prototype.update = function ()
         }
     }
     
-    //console.log(this.mStormSet);
+    this.mWakeTest.update();
+    if(this.mWakeTestTimer >= 20)
+    {
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+        this.mWakeTestTimer = 0;
+    }
+ 
+    this.mWakeTestTimer++;
     
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
+    this.mWakeTest.update();
+    if(this.mWakeTestTimer >= 20)
+    {
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+        this.mWakeTestTimer = 0;
+    }
+    this.mWakeTestTimer++;
 };

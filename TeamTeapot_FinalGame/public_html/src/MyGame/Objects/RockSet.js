@@ -14,14 +14,14 @@
 
 function RockSet(kTexture)
 {
-    this.mSet = [];
     this.mRockSize = 0;
     this.kRockTexture = kTexture;
+    
+    GameObjectSet.call(this);
     for (var i = 0; i < 10; i++)
     {
         this.createRock();
     }
-    GameObjectSet.call(this);
 }
 
 gEngine.Core.inheritPrototype(RockSet, GameObjectSet);
@@ -39,14 +39,14 @@ RockSet.prototype.createRock = function ()
     newSize[1] = newSize[1] * scale + newSize[1] * .75;
     
     rock.getXform().setSize(newSize[0], newSize[1]);
+    //this.mSet.push(rock);
     this.addToSet(rock);
     this.mRockSize++;
 };
 
-RockSet.prototype.addToSet = function (obj)
+RockSet.prototype.getRockSet = function ()
 {
-    this.mSet.push(obj);
-
+    return this.mSet;
 };
 
 RockSet.prototype.getRockSize = function()
