@@ -312,6 +312,16 @@ MainGame.prototype.update = function ()
         this.mGameState.setGameWin(true);
     }
     
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.M))
+    {
+        if(gEngine.AudioClips.isBackgroundAudioPlaying())
+        {
+            gEngine.AudioClips.stopBackgroundAudio();
+        } else {
+            gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+        }
+    }
+    
     //console.log(this.mStormSet);
     
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
