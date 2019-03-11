@@ -23,13 +23,18 @@ function Hero(spriteTexture)
     
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
-    Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
-    
+    //Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
+    Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02);
+
     console.log(this);
-    // FOR PLACEHOLDER
-    this.mShip.setElementPixelPositions(107, 507, 0, 1024);
+    
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
+
+    // FOR PLACEHOLDER
+    // For smaller ship image
+    //this.mShip.setElementPixelPositions(53, 256, 0, 512);
+    this.mShip.setElementPixelPositions(53, 256, 0, 512);
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -37,11 +42,6 @@ function Hero(spriteTexture)
     this.setRigidBody(r);
     //this.toggleDrawRigidShape();
 
-    // FOR PLACEHOLDER
-    // For smaller ship image
-    //this.mShip.setElementPixelPositions(53, 256, 0, 512);
-
-    
     this.mTreasureCollected = 0;
         
     //The renderable for the minimap    
@@ -126,7 +126,6 @@ Hero.prototype.update = function()
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
                                                 currXform.getYPos());
 };
-
 
 Hero.prototype.drawForMap = function (aCamera)
 {
