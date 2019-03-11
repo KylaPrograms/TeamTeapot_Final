@@ -34,7 +34,7 @@ MainGame.prototype._initializeLights = function () {
     var l = this._createALight(
         [0, 0, 5],       // Hero
         [0.2, 0.2, 0.2, 0.5],  // some color
-        0, 15,             // Near and Far
+        0, 20,             // Near and Far
         3.5                // intensity
     );
     this.mGlobalLightSet.addToSet(l);

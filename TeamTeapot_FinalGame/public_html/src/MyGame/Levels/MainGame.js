@@ -18,6 +18,8 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+var wWorldBounds = 300;
+
 function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
@@ -25,6 +27,7 @@ function MainGame() {
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
+    this.kOceanNormal = "assets/OceanNormal.png";
     this.kOceanPlaceHolder = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";
     this.kHealthBar = "assets/UI/healthbar.png";
@@ -70,6 +73,7 @@ MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kOceanNormal);
     gEngine.Textures.loadTexture(this.kSpaceTex);
     gEngine.Textures.loadTexture(this.kHealthBar);
     
@@ -85,6 +89,7 @@ MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kOceanNormal);
     gEngine.Textures.unloadTexture(this.kSpaceTex);
     gEngine.Textures.unloadTexture(this.kHealthBar);
     
@@ -149,10 +154,10 @@ MainGame.prototype.initialize = function ()
     }
     
     // Create the ocean background
-    this.mTempBG = new LightRenderable(this.kOceanPlaceHolder);
+    this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
     this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
     this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(300, 300);
+    this.mTempBG.getXform().setSize(wWorldBounds, wWorldBounds);
 
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
@@ -230,6 +235,10 @@ MainGame.prototype.draw = function ()
 MainGame.prototype.update = function ()
 {
     this.mHeroTest.update();
+    if (!this.mHeroTest.getWithinWorldBounds())
+    {
+        this.mGameState.setGameOver(true);
+    }
     this.updateHeroLight(this.mHeroTest);
     
     this.mPirateTest.update(this.mHeroTest.getPosition());

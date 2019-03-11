@@ -14,6 +14,7 @@
 
 function Hero(spriteTexture)
 {
+    this.mWithinWorldBounds = true;
 //    this.kMinSpeed = 0.0;
 //    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
     this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
@@ -54,6 +55,14 @@ gEngine.Core.inheritPrototype(Hero, Ship);
 
 Hero.prototype.update = function()
 {
+    if (this.getXform().getPosition()[1] >= wWorldBounds/2 ||
+            this.getXform().getPosition()[1] <= -wWorldBounds/2 ||
+            this.getXform().getPosition()[0] <= -wWorldBounds/2 ||
+            this.getXform().getPosition()[0] >= wWorldBounds/2)
+    {
+        this.mWithinWorldBounds = false;
+    }
+    
     GameObject.prototype.update.call(this);
     
     var currXform = this.mShip.getXform();
@@ -191,3 +200,5 @@ Hero.prototype.regenDamage = function()
         this.mDamage -=1 ;   
     }
 };
+
+Hero.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };
