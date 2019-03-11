@@ -11,7 +11,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function StormSet(spriteTexture, xRange, yRange, camera)
+function StormSet(spriteTexture, xRange, yRange, shipPosition)
 {
     this.kStormTex = spriteTexture;
     this.mSet = [];
@@ -19,10 +19,10 @@ function StormSet(spriteTexture, xRange, yRange, camera)
     this.mTotalStorms = 50;
     this.mOffsetX = xRange / 2;
     this.mOffsetY = yRange / 2;
-    this.mBoundCenter = camera.getWCCenter();
+    this.mBoundCenter = shipPosition.getXform().getPosition();
     
     //this.mBoundCenter[0] = center[0];
-    //this.mBoundCenter[1] = center[1];
+    //this.mBoundCenter[1] = shipPosition.getXform().getYPos();
     
     this.mStormSpawnTimer = 60;
     this.mTimer = 0;
@@ -58,7 +58,6 @@ StormSet.prototype.createStorm = function (spriteTexture)
     var storm = new Storm(spriteTexture, xspawn, yspawn);
     this.addToSet(storm);
     this.mStormSize++;
-    console.log(this.mBoundCenter[0]);
 };
 
 //StormSet.prototype.addToSet = function (obj)

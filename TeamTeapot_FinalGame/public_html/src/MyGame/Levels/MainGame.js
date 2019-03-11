@@ -81,6 +81,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kStormTex);
     gEngine.Textures.unloadTexture(this.kRocksTex);
     gEngine.Textures.unloadTexture(this.kGemTex);
+    gEngine.Textures.unloadTexture(this.kMiniMap);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -123,14 +124,13 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.configInterpolation(0, 1);
     this.mMiniMap.setBGDraw(false);
     
-    this.mMiniMapTranslucent = new SpriteRenderable(this.kMiniMap);
+    this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
     var miniMapCenter = this.mMiniMap.getWCCenter();
     //this.mMiniMapTranslucent.getXform().setPosition(miniMapCenter[0], 
       //                                          miniMapCenter[1]);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
     this.mMiniMapTranslucent.getXform().setSize(200, 150);
     this.mMiniMapTranslucent.setColor([1, 1, 1, 0]);
-    
     
     // Create the ocean background
     var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
@@ -154,7 +154,7 @@ MainGame.prototype.initialize = function ()
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest2);
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
-                                                    this.mCamera);
+                                                    this.mHeroTest);
     this.mAutoSpawnTimer = Math.random() + 2;
     
     
