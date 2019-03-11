@@ -20,7 +20,7 @@ function Hero(spriteTexture)
     this.kTurningDelta = 0.02;
     this.kInvincibleTime = 120; // 120 frames aka 2 seconds
     
-    this.mShip = new SpriteRenderable(spriteTexture);
+    this.mShip = new SpriteRenderable(spriteTexture);    
     this.mShip.getXform().setPosition(0, 0);
     this.mShip.getXform().setSize(4, 8);
     this.mInvincible = false;
@@ -42,13 +42,15 @@ function Hero(spriteTexture)
     
     this.mDamage = 0;
     this.mTreasureCollected = 0;
+    
+    this.mCannonTest = false;
+    this.mCannonTimer = 0;
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
 
 Hero.prototype.update = function()
 {
     GameObject.prototype.update.call(this);
-    
     var v = this.getRigidBody().getVelocity();
     
     var dir = this.getCurrentFrontDir();
@@ -89,7 +91,25 @@ Hero.prototype.update = function()
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
     {
-        this.hit();
+        this.mCannonTest = true;
+        //this.hit();
+    }
+    
+    if (this.mCannonTest === true)
+    {
+        var MAXTIME = 180;
+        if (this.mCannonTimer < MAXTIME) {
+            var multiplier = 5;
+            var scale = (2 * Math.PI / MAXTIME) * Math.sin(Math.PI * 2 / MAXTIME * this.mCannonTimer);
+            scale = scale * multiplier;
+            this.getXform().incSizeBy(scale);
+            this.mCannonTimer++;
+        }
+        else
+        {
+            this.mCannonTimer = 0;
+            this.mCannonTest = false;
+        }
     }
     
     this.updateInvincibility();

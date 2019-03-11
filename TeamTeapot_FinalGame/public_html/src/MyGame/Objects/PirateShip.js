@@ -22,6 +22,13 @@ function PirateShip(spriteTexture)
     // FOR PLACEHOLDER
     this.mPirateShip.setColor([0.75, 0, 0, 1]);
     
+    this.kAngryAnim = "assets/AngrySkullSpriteSheet.png"
+    
+    gEngine.Textures.loadTexture(this.kAngryAnim);
+    this.mAngryAnim = new SpriteAnimateRenderable(this.kAngryAnim);
+    this.mAngryAnim.setSpriteSequence(128,0, 100, 100, 61, 0);
+    //this.mAngryAnim.setAnimationSpeed(2);
+    
     GameObject.call(this, this.mPirateShip);
     
 //    var r = new RigidRectangle(this.getXform(), 4, 8);
@@ -43,6 +50,7 @@ PirateShip.prototype.update = function(heroPos)
 {
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
+        //this.mAngryAnim.draw();
         this.chase(heroPos);
     }
 };
@@ -50,11 +58,12 @@ PirateShip.prototype.update = function(heroPos)
 PirateShip.prototype.chase = function(heroPos)
 {
     //console.log("Chasing Hero Ship");
+    this.mAngryAnim.updateAnimation();
     
     // get current pos of ship
     var pos = this.getXform().getPosition();
     
-    // get vector between hero and pirateship
+    // get vector between hero and1. Unsafe landings
     var x = heroPos[0] - pos[0];
     var y = heroPos[1] - pos[1];
     
