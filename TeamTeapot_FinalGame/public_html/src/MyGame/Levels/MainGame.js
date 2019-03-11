@@ -52,6 +52,7 @@ function MainGame() {
     this.mTreasureUITest = null;
     
     this.mWakeTest = null;
+    this.mWakeTestTimer = 0;
     
     this.mGameState = null;
 }
@@ -293,5 +294,10 @@ MainGame.prototype.update = function ()
     //console.log(this.mStormSet);
     
     this.mWakeTest.update();
-    this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 2);
+    if(this.mWakeTestTimer >= 20)
+    {
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.02);
+        this.mWakeTestTimer = 0;
+    }
+    this.mWakeTestTimer++;
 };
