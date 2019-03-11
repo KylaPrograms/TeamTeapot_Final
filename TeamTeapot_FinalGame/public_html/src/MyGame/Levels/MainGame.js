@@ -347,5 +347,10 @@ MainGame.prototype.update = function ()
     
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
     this.mWakeTest.update();
-    this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 2);
+    if(this.mWakeTestTimer >= 20)
+    {
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+        this.mWakeTestTimer = 0;
+    }
+    this.mWakeTestTimer++;
 };

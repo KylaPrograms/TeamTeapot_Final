@@ -39,6 +39,7 @@ WakeSet.prototype.createWakeFromShip = function(ship, sprite, size, speed)
     var forward = [-Math.cos(theta), -Math.sin(theta)];
     
     var leftWake = new Wake(sprite, [xPos, yPos], size, forward, speed);
+    leftWake.getXform().setRotationInRad(-forward[0], forward[1]);
     
     this.addToSet(leftWake);
     
@@ -49,6 +50,7 @@ WakeSet.prototype.createWakeFromShip = function(ship, sprite, size, speed)
     forward = [-Math.cos(theta), -Math.sin(theta)];
     
     var rightWake = new Wake(sprite, [xPos, yPos], size, forward, speed);
+    rightWake.getXform().setRotationInRad(-forward[0], forward[1]);
     
     this.addToSet(rightWake);
 };
