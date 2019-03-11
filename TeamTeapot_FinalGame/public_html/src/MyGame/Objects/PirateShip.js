@@ -15,14 +15,16 @@
 
 function PirateShip(spriteTexture)
 {
-    this.mPirateShip = new SpriteRenderable(spriteTexture);
-    this.mPirateShip.getXform().setPosition(50, 0);
-    this.mPirateShip.getXform().setSize(8, 4);
+//    this.mPirateShip = new SpriteRenderable(spriteTexture);
+//    this.mPirateShip.getXform().setPosition(50, 0);
+//    this.mPirateShip.getXform().setSize(8, 4);
+//    
+//    // FOR PLACEHOLDER
+//    this.mPirateShip.setColor([0.75, 0, 0, 1]);
     
-    // FOR PLACEHOLDER
-    this.mPirateShip.setColor([0.75, 0, 0, 1]);
+    //GameObject.call(this, this.mPirateShip);
     
-    GameObject.call(this, this.mPirateShip);
+    Ship.call(this, spriteTexture, [50, 0], [8,4], 10, 0, 0, 20, 0.02);
     
 //    var r = new RigidRectangle(this.getXform(), 4, 8);
 //    r.setMass(1);
@@ -30,14 +32,8 @@ function PirateShip(spriteTexture)
 //    this.setRigidBody(r);
 //    this.toggleDrawRigidShape();
     
-    this.mSpeed = 30;
-    
-    this.mChaseInterpolate =
-            new InterpolateVec2(this.getXform().getPosition(), 200, 0.005);
-    this.mRotateInterpolate =
-            new InterpolateVec2(this.getCurrentFrontDir(), 120, 0.5);
 }
-gEngine.Core.inheritPrototype(PirateShip, GameObject);
+gEngine.Core.inheritPrototype(PirateShip, Ship);
 
 PirateShip.prototype.update = function(heroPos)
 {
@@ -69,7 +65,9 @@ PirateShip.prototype.chase = function(heroPos)
     // get cross product to see which direction to turn
     vec2.cross(facing, [Math.cos(curr), Math.sin(curr)], [x,y]);
     
-    var rotateBy = .02;
+    //console.log(this.getTurningDelta());
+    
+    var rotateBy = this.getTurningDelta();
     if (facing[2] < 0)  // if pirate is on left side, rotate left;
         rotateBy *= -1;
     

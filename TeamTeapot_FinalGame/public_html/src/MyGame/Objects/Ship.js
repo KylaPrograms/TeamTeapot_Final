@@ -26,10 +26,22 @@ function Ship(spriteTexture, position, size, maxDamage,
     
     this.mDamage = 0;
     this.mMaxDamage = (maxDamage === null) ? 100 : maxDamage;
-    
+        
     GameObject.call(this, this.mShip);
+    
+    var r = new RigidRectangle(this.mShip.getXform(), 4, 8);
+    r.setMass(1);
+    r.setVelocity(0, 0);
+    this.setRigidBody(r);
+    this.toggleDrawRigidShape();
 }
 gEngine.Core.inheritPrototype(Ship, GameObject);
+
+Ship.prototype.update = function()
+{
+    GameObject.prototype.update.call(this);
+    console.log(this.mSpeed);
+}
 
 Ship.prototype.getSpeed = function() { return this.mSpeed; };
 Ship.prototype.setSpeed = function(value)
@@ -45,7 +57,7 @@ Ship.prototype.setSpeed = function(value)
     }
     this.mSpeed = newSpeed;
 };
-Ship.prototype.incSpeedBy = function(value) { this.setSpeed(this.mSpeed+value); };
+Ship.prototype.incSpeedBy = function(value) { this.setSpeed(this.mSpeed + value); };
 
 Ship.prototype.getTurningDelta = function() { return this.mTurningDelta; };
 Ship.prototype.setTurningDelta = function(value) { this.mTurningDelta = value; };
@@ -94,4 +106,35 @@ Ship.prototype.incDamageBy = function (value) { this.setDamage(this.mDamage+valu
 Ship.prototype.getShipRenderable = function() { return this.mShip; };
 
 Ship.prototype.getPosition = function() { return this.getXform().getPosition(); };
+
+// Check if collided with an object
+Ship.prototype.checkHit = function(otherObj)
+{
+    var touchPos = [];
+    var result = false;
+    var FREQUENCY = 9;         // how often to check collision. Must be odd number
+    if (this.mHitCheckTimer === 0)   
+    {
+        result = this.pixelTouches(otherObj, touchPos);
+    }
+    this.mHitCheckTimer = (this.mHitCheckTimer + 1) % FREQUENCY;
+    
+    return result;
+};
+
+Ship.prototype.hit = function()
+{
+    if (this.mInvincible === false)
+    {
+        console.log("ship hit rock");
+        this.mInvincible = true;
+        //this.getRigidBody().flipVelocity();
+        this.mSpeed *= -.5;
+    }
+};
+
+Ship.prototype.setVelocity = function(x,y)
+{
+    this.getRigidBody().setVelocity(x,y);
+}
 
