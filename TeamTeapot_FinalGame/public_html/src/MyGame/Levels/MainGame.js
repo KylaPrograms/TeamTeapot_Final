@@ -132,7 +132,7 @@ MainGame.prototype.initialize = function ()
     
     this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
     this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
-    this.mMiniMapTranslucent.getXform().setSize(300, 300);
+    this.mMiniMapTranslucent.getXform().setSize(400, 400);
     //this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMapXOffset, 
     //                                                this.mMiniMapYOffset);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
