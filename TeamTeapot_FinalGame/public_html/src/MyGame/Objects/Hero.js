@@ -20,20 +20,19 @@ function Hero(spriteTexture)
     this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
 //    this.kTurningDelta = 0.02;
     this.kInvincibleTime = 120; // 120 frames aka 2 seconds
-    
+    this.mWCWorldBounds = 300;
 //    this.mShip = new SpriteRenderable(spriteTexture);
 //    this.mShip.getXform().setPosition(0, 0);
 //    this.mShip.getXform().setSize(4, 8);
 
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
-    
     Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
     console.log(this);
     
     // FOR PLACEHOLDER
     this.mShip.setElementPixelPositions(107, 507, 1024, 0);
-    
+    this.mInvincible = false;
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -52,10 +51,10 @@ gEngine.Core.inheritPrototype(Hero, Ship);
 
 Hero.prototype.update = function()
 {
-    if (this.getXform().getPosition()[1] >= wWorldBounds/2 ||
-            this.getXform().getPosition()[1] <= -wWorldBounds/2 ||
-            this.getXform().getPosition()[0] <= -wWorldBounds/2 ||
-            this.getXform().getPosition()[0] >= wWorldBounds/2)
+    if (this.getXform().getPosition()[1] >= this.mWCWorldBounds/2 ||
+            this.getXform().getPosition()[1] <= -this.mWCWorldBounds/2 ||
+            this.getXform().getPosition()[0] <= -this.mWCWorldBounds/2 ||
+            this.getXform().getPosition()[0] >= this.mWCWorldBounds/2)
     {
         this.mWithinWorldBounds = false;
     }
