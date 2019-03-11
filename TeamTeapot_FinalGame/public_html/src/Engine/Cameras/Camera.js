@@ -310,7 +310,7 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
     return status;
 };
 
-Camera.prototype.setBGDraw= function (bool) {
+Camera.prototype.setBGDraw = function (bool) {
     this.mShowBG = bool;
 };
 

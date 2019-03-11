@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            body {
+                background-color: rgb(0, 40, 65);
+                background-image: url("./assets/SPAAAAAAAACE.png");
+                background-size: 125%;
+            }
+            
+            #display {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                font-size: 100px;
+                border-collapse: collapse;
+                width: 100%;
+                border: none;
+            }
+            
+            #display td, #display th {
+                border: none;
+                width: 33.33333333%;
+            }
+            
+            #title {
+                text-align: center;
+                color: #ccffff;
+            }
+        </style>
+        
         <title>Stormy Seas by Team Teapot</title>
         <link rel ="icon" type ="image/x-icon" href="./assets/TeamTeapotIcon.png">
 
@@ -143,15 +169,29 @@
         var myGame = new StartMenu();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
      ">
-        <div id="LoadingIconParent" style="width: 800px; height:600px;">
-            <canvas id="GLCanvas">
-                <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
-                Your browser does not support the HTML5 canvas.
-                <!-- this message will show only if WebGL clearing failed -->
-            </canvas>
-            <script type="text/javascript"> gEngine.LoadingIconConfig.setup(); </script>
-        </div>
-        
+        <table id="display">
+            <tr>
+                <td></td>
+                <td id="title">
+                    STORMY SEAS
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="LoadingIconParent" style="width: 800px; height:600px;">
+                        <canvas id="GLCanvas">
+                        <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
+                            Your browser does not support the HTML5 canvas.
+                            <!-- this message will show only if WebGL clearing failed -->
+                        </canvas>
+                        <script type="text/javascript"> gEngine.LoadingIconConfig.setup(); </script>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
     </body>
     
 </html>
