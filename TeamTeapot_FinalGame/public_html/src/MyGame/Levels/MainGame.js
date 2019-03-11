@@ -191,7 +191,7 @@ MainGame.prototype.initialize = function ()
     this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
     
     this.mTreasureSet = new UIItemSlotSet([30, 540]);
-    for(var i = 0; i < 7; i++)
+    for(var i = 0; i < 3; i++)
     {
         this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
