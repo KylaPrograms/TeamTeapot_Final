@@ -11,19 +11,24 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function RockSet()
+function RockSet(kTexture)
 {
     this.mSet = [];
     this.mRockSize = 0;
+    this.kRockTexture = kTexture;
+    for (var i = 0; i < 10; i++)
+    {
+        this.createRock();
+    }
 }
 
 gEngine.Core.inheritPrototype(RockSet, GameObjectSet);
 
-RockSet.prototype.createRock = function (spriteTexture)
+RockSet.prototype.createRock = function ()
 {
-    var xspawn = -50 + Math.random() * 300;
-    var yspawn = -50 + Math.random() * 300;
-    var rock = new Rock(spriteTexture, xspawn, yspawn);
+    var xspawn = -160 + Math.random() * 300;
+    var yspawn = -160 + Math.random() * 300;
+    var rock = new Rock(this.kRockTexture, xspawn, yspawn);
     rock.getXform().setRotationInRad(Math.random() * 2 * Math.PI);
     
     var scale = Math.random() * .5;

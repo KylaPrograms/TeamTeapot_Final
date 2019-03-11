@@ -39,8 +39,8 @@ function MainGame() {
     this.mMiniMapXOffset = 74.375;
     this.mMiniMapYOffset = 55.625;
     
-    this.mWorldWCxRange = 100;
-    this.mWorldWCyRange = 100;
+    this.mWorldWCxRange = 300;
+    this.mWorldWCyRange = 300;
     
     this.mTempBG = null;
     this.mSpaceBG = null;
@@ -170,14 +170,8 @@ MainGame.prototype.initialize = function ()
                                                     this.mHeroTest);
     this.mAutoSpawnTimer = Math.random() + 2;
     
-    
-    // Spawn the rocks
-    this.mRockSet = new RockSet();
-    for (var i = 0; i < 10; i++)
-    {
-        this.mRockSet.createRock(this.kRocksTex);
-    }
-    
+        // Spawn the rocks
+    this.mRockSet = new RockSet(this.kRocksTex);
     this.mGameState = new GameState(this.mHeroTest);
     
     this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
