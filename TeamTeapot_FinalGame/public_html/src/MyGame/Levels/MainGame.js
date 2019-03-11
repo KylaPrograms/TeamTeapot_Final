@@ -22,6 +22,8 @@ function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
     
+    this.kBGMusic = "assets/Sounds/GameBackground.mp3";
+    
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
     this.kSpaceTex = "assets/Space.png";
@@ -75,6 +77,8 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kRocksTex);
     gEngine.Textures.loadTexture(this.kGemTex);
     gEngine.Textures.loadTexture(this.kMiniMap);
+    
+    gEngine.AudioClips.loadAudio(this.kBGMusic);
 };
 
 MainGame.prototype.unloadScene = function ()
@@ -88,6 +92,9 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kRocksTex);
     gEngine.Textures.unloadTexture(this.kGemTex);
     gEngine.Textures.unloadTexture(this.kMiniMap);
+    
+    gEngine.AudioClips.stopBackgroundAudio();
+    gEngine.AudioClips.unloadAudio(this.kBGMusic);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -102,12 +109,13 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1.25);
+    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
-    this.mAmbientLight = [];
-    this.mAmbientLight[0] = 0.8;
-    this.mAmbientLight[1] = 0.8;
-    this.mAmbientLight[2] = 0.8;
+//    this.mAmbientLight = [];
+//    this.mAmbientLight[0] = 0.8;
+//    this.mAmbientLight[1] = 0.8;
+//    this.mAmbientLight[2] = 0.8;
     
     this._initializeLights();
     
@@ -141,10 +149,10 @@ MainGame.prototype.initialize = function ()
     }
     
     // Create the ocean background
-    var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
-    mTempBGR.setElementPixelPositions(0, 256, 0, 256);
-    mTempBGR.getXform().setPosition(0, 0);
-    mTempBGR.getXform().setSize(300, 300);
+    this.mTempBG = new LightRenderable(this.kOceanPlaceHolder);
+    this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
+    this.mTempBG.getXform().setPosition(0, 0);
+    this.mTempBG.getXform().setSize(300, 300);
 
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
