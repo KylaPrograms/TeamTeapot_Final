@@ -116,7 +116,7 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
 //    this.mAmbientLight = [];
@@ -171,7 +171,7 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setSize(100, 100);
     
     this.mHeroTest = new Hero(this.kShipTex, this.kPlaceHolder);
-    this.mPirateTest = new PirateShip(this.kPlaceHolder, this.kPlaceHolder);
+    this.mPirateTest = new PirateShip(this.kShipTex, this.kPlaceHolder);
     
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
     this.mSunkenTreasureTest1 = new SunkenTreasure(this.kPlaceHolder, -90, 50);

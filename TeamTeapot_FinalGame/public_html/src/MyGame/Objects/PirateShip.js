@@ -20,13 +20,20 @@ function PirateShip(spriteTexture, wakeTexture)
     this.kSpeedDelta = 0.05;
     this.mOriginalColor = [0.75, 0, 0, 1];
     
-    Ship.call(this, spriteTexture, [50, 0], [4,8], 10, 0, -15, 15, .02, wakeTexture);
+    Ship.call(this, spriteTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02, wakeTexture);
+    
+    this.mOriginalColor = [1, 1, 1, 0];
+    this.mShip.setColor(this.mOriginalColor);
+    
+    this.mShip.setElementPixelPositions(53, 256, 0, 512);
     
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([0, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
+                                                        
+    this.toggleDrawRigidShape();
 }
 gEngine.Core.inheritPrototype(PirateShip, Ship);
 
