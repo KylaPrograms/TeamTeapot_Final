@@ -29,10 +29,15 @@ function MainGame() {
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
     this.kGemTex = "assets/Gems.png";
+    this.kMiniMap = "assets/miniMap.png";
     
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
+    this.mMiniMapTranslucent = null;
+    
+    this.mWorldWCxRange = 100;
+    this.mWorldWCyRange = 100;
     
     this.mTempBG = null;
     this.mHeroTest = null;
@@ -64,6 +69,7 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
     gEngine.Textures.loadTexture(this.kGemTex);
+    gEngine.Textures.loadTexture(this.kMiniMap);
 };
 
 MainGame.prototype.unloadScene = function ()
@@ -117,6 +123,14 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.configInterpolation(0, 1);
     this.mMiniMap.setBGDraw(false);
     
+    this.mMiniMapTranslucent = new SpriteRenderable(this.kMiniMap);
+    var miniMapCenter = this.mMiniMap.getWCCenter();
+    //this.mMiniMapTranslucent.getXform().setPosition(miniMapCenter[0], 
+      //                                          miniMapCenter[1]);
+    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
+    this.mMiniMapTranslucent.getXform().setSize(200, 150);
+    this.mMiniMapTranslucent.setColor([1, 1, 1, 0]);
+    
     
     // Create the ocean background
     var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
@@ -139,7 +153,8 @@ MainGame.prototype.initialize = function ()
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest1);
     this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest2);
     
-    this.mStormSet = new StormSet();
+    this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
+                                                    this.mCamera);
     this.mAutoSpawnTimer = Math.random() + 2;
     
     
@@ -184,12 +199,14 @@ MainGame.prototype.draw = function ()
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
+    this.mMiniMapTranslucent.draw(this.mMiniMap);
     this.mTempBG.draw(this.mMiniMap);
     this.mPirateTest.draw(this.mMiniMap);
     this.mSunkenTreasureSetTest.draw(this.mMiniMap);
     this.mHeroTest.draw(this.mMiniMap);
     this.mStormSet.draw(this.mMiniMap);
     this.mRockSet.draw(this.mMiniMap);
+    
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -219,15 +236,7 @@ MainGame.prototype.update = function ()
     this.mCamera.update();
     this.mMiniMap.update();
     
-    this.mAutoSpawnTimer--;
     this.mStormSet.update();
-    
-    // Spawn the storms
-    if(this.mAutoSpawnTimer <= 0)
-    {
-        this.mAutoSpawnTimer = Math.random() * 60 + 120;
-        this.mStormSet.createStorm(this.kStormTex);
-    }
     
     // Check Collision with all rocks in Rock set 
     // if hero is invincible, don't bother checking 
