@@ -24,6 +24,7 @@ function MainGame() {
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
+    this.kSpaceTex = "assets/Space.png";
     this.kHealthBar = "assets/UI/healthbar.png";
     
     this.kStormTex = "assets/Storm.png";
@@ -40,6 +41,7 @@ function MainGame() {
     this.mWorldWCyRange = 100;
     
     this.mTempBG = null;
+    this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
     this.mSunkenTreasureTest = null;
@@ -64,6 +66,7 @@ MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kSpaceTex);
     gEngine.Textures.loadTexture(this.kHealthBar);
     
     gEngine.Textures.loadTexture(this.kStormTex);
@@ -76,6 +79,7 @@ MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kSpaceTex);
     gEngine.Textures.unloadTexture(this.kHealthBar);
     
     gEngine.Textures.unloadTexture(this.kStormTex);
@@ -144,11 +148,16 @@ MainGame.prototype.initialize = function ()
     var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
     mTempBGR.setElementPixelPositions(0, 256, 0, 256);
     mTempBGR.getXform().setPosition(0, 0);
-    mTempBGR.getXform().setSize(100, 100);
+    mTempBGR.getXform().setSize(300, 300);
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         mTempBGR.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
     this.mTempBG = new GameObject(mTempBGR);
+    
+    this.mSpaceBG = new SpriteRenderable(this.kSpaceTex);
+    this.mSpaceBG.setElementPixelPositions(0, 2048, 0, 2048);
+    this.mSpaceBG.getXform().setPosition(0, 0);
+    this.mSpaceBG.getXform().setSize(100, 100);
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
@@ -193,6 +202,7 @@ MainGame.prototype.draw = function ()
 
     //Draw for the main camera
     this.mCamera.setupViewProjection();
+    this.mSpaceBG.draw(this.mCamera);
     this.mTempBG.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
     this.mSunkenTreasureSetTest.draw(this.mCamera);
@@ -287,4 +297,6 @@ MainGame.prototype.update = function ()
     }
     
     //console.log(this.mStormSet);
+    
+    this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
