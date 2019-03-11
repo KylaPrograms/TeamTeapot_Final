@@ -40,7 +40,7 @@ function Hero(spriteTexture)
     r.setMass(1);
     r.setVelocity(0, 0);
     this.setRigidBody(r);
-    //this.toggleDrawRigidShape();
+    this.toggleDrawRigidShape();
 
     this.mTreasureCollected = 0;
         
