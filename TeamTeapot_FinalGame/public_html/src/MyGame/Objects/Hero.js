@@ -42,6 +42,11 @@ function Hero(spriteTexture)
     
     this.mDamage = 0;
     this.mTreasureCollected = 0;
+        
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([1, 0, 0, 1.0]);
+    this.mMapRenderable.getXform().setSize(8, 8);
+    this.mMapRenderable.getXform().setPosition(0, 0);
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
 
@@ -49,6 +54,7 @@ Hero.prototype.update = function()
 {
     GameObject.prototype.update.call(this);
     
+    var currXform = this.mShip.getXform();
     var v = this.getRigidBody().getVelocity();
     
     var dir = this.getCurrentFrontDir();
@@ -108,6 +114,14 @@ Hero.prototype.update = function()
     // so will face the direction it is heading and
     // doesn't snap to facing up when stopping
     this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+    
+    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
+                                                currXform.getYPos());
+};
+
+Hero.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 };
 
 Hero.prototype.updateInvincibility = function()

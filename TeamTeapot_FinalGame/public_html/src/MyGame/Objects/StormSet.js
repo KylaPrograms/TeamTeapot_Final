@@ -96,6 +96,14 @@ StormSet.prototype.update = function()
     }
 };
 
+StormSet.prototype.drawForMap = function(aCamera)
+{
+    for (var i = 0; i < this.mSet.length; i++)
+    {
+        this.mSet[i].drawForMap(aCamera);
+    }
+};
+
 StormSet.prototype.getStormSize = function()
 {
     return this.mStormSize;

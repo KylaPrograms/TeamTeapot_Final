@@ -28,6 +28,10 @@ function Storm(spriteTexture, atX, atY)
     this.mStorm1.getXform().setPosition(atX, atY);
     this.mStorm1.getXform().setSize(this.kSize, this.kSize);
     
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([0, 0, 1.0, 1.0]);
+    this.mMapRenderable.getXform().setSize(this.kSize, this.kSize);
+    
 //    this.mStorm2 = new SpriteRenderable(spriteTexture);
 //    this.mStorm2.getXform().setPosition(atX + 5, atY + 5);
 //    this.mStorm2.getXform().setSize(8, 8);
@@ -80,6 +84,8 @@ Storm.prototype.update = function ()
     StormX1.incYPosBy(stormYSpeed);
     StormX1.incRotationByDegree(this.kRot1);
     
+    this.mMapRenderable.getXform().setPosition(StormX1.getXPos(), StormX1.getYPos());
+    
 //    StormX2.incXPosBy(stormXSpeed);
 //    StormX2.incYPosBy(stormYSpeed);
 //    StormX2.incRotationByDegree(this.kRot2);
@@ -92,6 +98,13 @@ Storm.prototype.update = function ()
 Storm.prototype.draw = function (aCamera)
 {
     this.mStorm1.draw(aCamera);
+//    this.mStorm2.draw(aCamera);
+//    this.mStorm3.draw(aCamera);
+};
+
+Storm.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 //    this.mStorm2.draw(aCamera);
 //    this.mStorm3.draw(aCamera);
 };

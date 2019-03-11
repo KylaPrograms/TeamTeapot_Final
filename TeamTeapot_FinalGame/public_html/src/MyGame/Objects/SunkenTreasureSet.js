@@ -44,3 +44,11 @@ SunkenTreasureSet.prototype.collectAt = function(atX, atY)
     
     return treasureFound;
 };
+
+SunkenTreasureSet.prototype.drawForMap = function(aCamera)
+{
+    for (var i = 0; i < this.mSet.length; i++)
+    {
+        this.mSet[i].drawForMap(aCamera);
+    }
+};

@@ -41,6 +41,11 @@ function SunkenTreasure(texture, xPos, yPos)
     this.mSpawnElapse = 10;
     this.mUpdatesElapsed = 0;
     this.mCollectedStatus = false;
+    
+    this.mMapRenderable = new Renderable();
+    this.mMapRenderable.setColor([1, 1, 0, 1.0]);
+    this.mMapRenderable.getXform().setSize(10, 10);
+    this.mMapRenderable.getXform().setPosition(xPos, yPos);
 }
 gEngine.Core.inheritPrototype(SunkenTreasure, ParticleSystem);
 
@@ -94,4 +99,9 @@ SunkenTreasure.prototype.createParticle = function(atX,atY) {
     p.setSizeDelta(1-(this.flicker*.005));
     p.getParticle().setAcceleration([this.xAcceleration*5, this.yMultiplier*this.yAcceleration*5]);
     return p;
+};
+
+SunkenTreasure.prototype.drawForMap = function (aCamera)
+{
+    this.mMapRenderable.draw(aCamera);
 };

@@ -125,12 +125,20 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.setBGDraw(false);
     
     this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
-    var miniMapCenter = this.mMiniMap.getWCCenter();
-    //this.mMiniMapTranslucent.getXform().setPosition(miniMapCenter[0], 
-      //                                          miniMapCenter[1]);
+    this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
-    this.mMiniMapTranslucent.getXform().setSize(200, 150);
-    this.mMiniMapTranslucent.setColor([1, 1, 1, 0]);
+    this.mMiniMapTranslucent.getXform().setSize(300, 300);
+    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
+        this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+    }
+    
+//    this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
+//    var miniMapCenter = this.mMiniMap.getWCCenter();
+//    //this.mMiniMapTranslucent.getXform().setPosition(miniMapCenter[0], 
+//      //                                          miniMapCenter[1]);
+//    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
+//    this.mMiniMapTranslucent.getXform().setSize(200, 150);
+//    //this.mMiniMapTranslucent.setColor([1, 1, 1, 0]);
     
     // Create the ocean background
     var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
@@ -200,13 +208,12 @@ MainGame.prototype.draw = function ()
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
     this.mMiniMapTranslucent.draw(this.mMiniMap);
-    this.mTempBG.draw(this.mMiniMap);
-    this.mPirateTest.draw(this.mMiniMap);
-    this.mSunkenTreasureSetTest.draw(this.mMiniMap);
-    this.mHeroTest.draw(this.mMiniMap);
-    this.mStormSet.draw(this.mMiniMap);
-    this.mRockSet.draw(this.mMiniMap);
-    
+    //this.mTempBG.draw(this.mMiniMap);
+    this.mPirateTest.drawForMap(this.mMiniMap);
+    this.mSunkenTreasureSetTest.drawForMap(this.mMiniMap);
+    this.mHeroTest.drawForMap(this.mMiniMap);
+    this.mStormSet.drawForMap(this.mMiniMap);
+    this.mRockSet.drawForMap(this.mMiniMap);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw

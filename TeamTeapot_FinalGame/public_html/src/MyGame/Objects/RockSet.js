@@ -46,3 +46,11 @@ RockSet.prototype.getRockSize = function()
 {
     return this.mRockSize;
 };
+
+RockSet.prototype.drawForMap = function (aCamera)
+{
+    for (var i = 0; i < this.mSet.length; i++)
+    {
+        this.mSet[i].drawForMap(aCamera);
+    }
+};
