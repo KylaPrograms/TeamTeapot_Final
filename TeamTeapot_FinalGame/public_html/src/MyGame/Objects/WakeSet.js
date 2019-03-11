@@ -28,3 +28,27 @@ WakeSet.prototype.update = function()
         }
     }
 };
+
+WakeSet.prototype.createWakeFromShip = function(ship, sprite, size, speed)
+{
+    var xform = ship.getXform();
+    var xPos = xform.getPosition()[0]-(xform.getSize()[0]/2);
+    var yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    var theta = Math.atan2(ship.getCurrentFrontDir()[1], ship.getCurrentFrontDir()[0]);
+    theta -= 45;
+    var forward = [-Math.cos(theta), -Math.sin(theta)];
+    
+    var leftWake = new Wake(sprite, [xPos, yPos], size, forward, speed);
+    
+    this.addToSet(leftWake);
+    
+    xPos = xform.getPosition()[0]+(xform.getSize()[0]/2);
+    yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    theta = Math.atan2(ship.getCurrentFrontDir()[1], ship.getCurrentFrontDir()[0]);
+    theta += 45;
+    forward = [-Math.cos(theta), -Math.sin(theta)];
+    
+    var rightWake = new Wake(sprite, [xPos, yPos], size, forward, speed);
+    
+    this.addToSet(rightWake);
+};
