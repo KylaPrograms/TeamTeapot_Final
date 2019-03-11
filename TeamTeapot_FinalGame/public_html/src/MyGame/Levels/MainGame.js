@@ -18,8 +18,6 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-var wWorldBounds = 300;
-
 function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
@@ -58,15 +56,14 @@ function MainGame() {
     this.mSunkenTreasureSetTest = null;
     
     this.mRockSet = null;
-    
     this.mStormSet = null;
-    this.mAutoSpawnTimer = null;
     
     this.mDamageBar = null;
     this.mTreasureSet = null;
     this.mTreasureUITest = null;
     
     this.mWakeTest = null;
+    this.mWakeTestTimer = 0;
     
     this.mGameState = null;
 }
@@ -162,7 +159,7 @@ MainGame.prototype.initialize = function ()
     this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
     this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
     this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(wWorldBounds, wWorldBounds);
+    this.mTempBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
 
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
@@ -186,7 +183,6 @@ MainGame.prototype.initialize = function ()
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
-    this.mAutoSpawnTimer = Math.random() + 2;
     
         // Spawn the rocks
     this.mRockSet = new RockSet(this.kRocksTex);
@@ -366,7 +362,21 @@ MainGame.prototype.update = function ()
         }
     }
     
+    this.mWakeTest.update();
+    if(this.mWakeTestTimer >= 20)
+    {
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+        this.mWakeTestTimer = 0;
+    }
+ 
+    this.mWakeTestTimer++;
+    
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
     this.mWakeTest.update();
-    this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 2);
+    if(this.mWakeTestTimer >= 20)
+    {
+        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
+        this.mWakeTestTimer = 0;
+    }
+    this.mWakeTestTimer++;
 };

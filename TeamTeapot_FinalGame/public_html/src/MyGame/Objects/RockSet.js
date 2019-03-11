@@ -14,9 +14,9 @@
 
 function RockSet(kTexture)
 {
-    //this.mSet = [];
     this.mRockSize = 0;
     this.kRockTexture = kTexture;
+    
     GameObjectSet.call(this);
     for (var i = 0; i < 10; i++)
     {
@@ -44,11 +44,10 @@ RockSet.prototype.createRock = function ()
     this.mRockSize++;
 };
 
-//RockSet.prototype.addToSet = function (obj)
-//{
-//    this.mSet.push(obj);
-//
-//};
+RockSet.prototype.getRockSet = function ()
+{
+    return this.mSet;
+};
 
 RockSet.prototype.getRockSize = function()
 {

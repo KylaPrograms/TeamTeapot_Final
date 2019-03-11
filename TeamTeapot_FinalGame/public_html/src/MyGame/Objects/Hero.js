@@ -27,16 +27,19 @@ function Hero(spriteTexture)
 
     
     Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, -25, 25, 0.02);
+
     console.log(this);
-    // FOR PLACEHOLDER
+    
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
 
     // FOR PLACEHOLDER
     this.mShip.setElementPixelPositions(53, 256, 0, 512);
+
     
     this.mTreasureCollected = 0;
         
+    //The renderable for the minimap    
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([1, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
@@ -54,7 +57,6 @@ Hero.prototype.update = function()
         this.mWithinWorldBounds = false;
     }
     
-//    GameObject.prototype.update.call(this);
     Ship.prototype.update.call(this);
     
     var currXform = this.mShip.getXform();
@@ -115,6 +117,7 @@ Hero.prototype.update = function()
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
     //this.getRigidBody().incVelocity(.1 * Math.cos(theta), .1 * Math.sin(theta));
     
+    //Update the renderable's position on the map
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
                                                 currXform.getYPos());
 };
