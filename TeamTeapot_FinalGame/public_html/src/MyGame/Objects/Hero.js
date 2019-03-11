@@ -123,7 +123,7 @@ Hero.prototype.updateInvincibility = function()
             this.mHitTimer++;
         } 
     }
-}
+};
 
 Hero.prototype.addTreasure = function()
 {

@@ -19,9 +19,6 @@ function Ship(spriteTexture, position, size, maxDamage,
     this.mShip.getXform().setPosition(position[0], position[1]);
     this.mShip.getXform().setSize(size[0], size[1]);
     
-    // FOR PLACEHOLDER
-    //this.mShip.setColor([0.42, 0.2, 0, 1]);
-    
     this.mSpeed = (currSpeed === null) ? 0 : currSpeed;
     this.mMinSpeed = (minSpeed === null) ? 0 : minSpeed;
     this.mMaxSpeed = (maxSpeed === null) ? 100 : maxSpeed;

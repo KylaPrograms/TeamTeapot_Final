@@ -91,7 +91,7 @@ MainGame.prototype.initialize = function ()
 {
     gEngine.DefaultResources.setGlobalAmbientIntensity(1.25);
     
-    this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
+    this.mAmbientLight = [];
     this.mAmbientLight[0] = 0.8;
     this.mAmbientLight[1] = 0.8;
     this.mAmbientLight[2] = 0.8;
@@ -117,16 +117,13 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.configInterpolation(0, 1);
     this.mMiniMap.setBGDraw(false);
     
-    
     // Create the ocean background
-    var mTempBGR = new LightRenderable(this.kOceanPlaceHolder);
-    mTempBGR.setElementPixelPositions(0, 256, 0, 256);
-    mTempBGR.getXform().setPosition(0, 0);
-    mTempBGR.getXform().setSize(100, 100);
+    this.mTempBG = new LightRenderable(this.kOceanPlaceHolder);
+    this.mTempBG.getXform().setPosition(0, 0);
+    this.mTempBG.getXform().setSize(100, 100);
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
-        mTempBGR.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+        this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
-    this.mTempBG = new GameObject(mTempBGR);
     
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
