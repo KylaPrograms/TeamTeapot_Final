@@ -28,10 +28,11 @@ function Hero(spriteTexture)
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     
-    Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, 0, 25, 0.02);
+    Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
     console.log(this);
     // FOR PLACEHOLDER
-    this.mShip.setColor([0.42, 0.2, 0, 1]);
+    this.mShip.setElementPixelPositions(107, 507, 1024, 0);
+    
     
     
     
@@ -39,7 +40,7 @@ function Hero(spriteTexture)
     r.setMass(1);
     r.setVelocity(0, 0);
     this.setRigidBody(r);
-    this.toggleDrawRigidShape();
+//    this.toggleDrawRigidShape();
     
 //    this.mSpeed = 0;
 //    

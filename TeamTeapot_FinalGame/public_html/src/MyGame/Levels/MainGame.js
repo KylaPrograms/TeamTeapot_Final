@@ -27,6 +27,7 @@ function MainGame() {
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
+    this.kShipTex = "assets/Ships.png";
     this.kOceanNormal = "assets/OceanNormal.png";
     this.kOceanPlaceHolder = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";
@@ -72,6 +73,7 @@ gEngine.Core.inheritPrototype(MainGame, Scene);
 MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
+    gEngine.Textures.loadTexture(this.kShipTex);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanNormal);
     gEngine.Textures.loadTexture(this.kSpaceTex);
@@ -88,6 +90,7 @@ MainGame.prototype.loadScene = function ()
 MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kShipTex);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanNormal);
     gEngine.Textures.unloadTexture(this.kSpaceTex);
@@ -168,7 +171,7 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mHeroTest = new Hero(this.kPlaceHolder);
+    this.mHeroTest = new Hero(this.kShipTex);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
