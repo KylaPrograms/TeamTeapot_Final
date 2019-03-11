@@ -14,25 +14,18 @@
 
 function Hero(spriteTexture)
 {
-//    this.kMinSpeed = 0.0;
-//    this.kMaxSpeed = 25; // use 25 when using rigid body, 1 when not
-    this.kSpeedDelta = 0.1; // use 0.05 when using rigid body, 0.002 when not
-//    this.kTurningDelta = 0.02;
-    this.kInvincibleTime = 120; // 120 frames aka 2 seconds
+    this.kSpeedDelta = 0.1;
+    this.kInvincibleTime = 120;
     
-//    this.mShip = new SpriteRenderable(spriteTexture);
-//    this.mShip.getXform().setPosition(0, 0);
-//    this.mShip.getXform().setSize(4, 8);
     this.mInvincible = false;
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     
     Ship.call(this, spriteTexture, [0, 0], [4, 8], 100, 0, 0, 25, 0.02);
     console.log(this);
+    
     // FOR PLACEHOLDER
     this.mShip.setColor([0.42, 0.2, 0, 1]);
-    
-    
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -40,16 +33,13 @@ function Hero(spriteTexture)
     this.setRigidBody(r);
     this.toggleDrawRigidShape();
     
-//    this.mSpeed = 0;
-//    
-//    this.mDamage = 0;
     this.mTreasureCollected = 0;
 }
 gEngine.Core.inheritPrototype(Hero, Ship);
 
 Hero.prototype.update = function()
 {
-    GameObject.prototype.update.call(this);
+    Ship.prototype.update.call(this);
     
     var v = this.getRigidBody().getVelocity();
     
@@ -87,17 +77,10 @@ Hero.prototype.update = function()
     }
     
     this.updateInvincibility();
-        
-    // first working attempt
-    //var pos = this.getXform().getPosition();
-    //vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
-    //this.getRigidBody().adjustPositionBy(dir, this.mSpeed);
+    
     var theta = Math.atan2(dir[1], dir[0]);
     
     this.getRigidBody().setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
-    //console.log(this.getRigidBody().getVelocity());
-    // second working attempt
-//    vec2.scale(v, dir, this.mSpeed);
     
     // so will face the direction it is heading and
     // doesn't snap to facing up when stopping
