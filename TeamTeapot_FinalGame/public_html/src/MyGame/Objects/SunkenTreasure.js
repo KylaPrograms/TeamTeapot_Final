@@ -22,7 +22,7 @@ function SunkenTreasure(texture, xPos, yPos)
         2.25,               // width (maximum horizontal offset)
         0,                  // yAcceleration
         10,                 // life
-        0,                  // OVERRIDEN
+        0,                  // OVERRIDDEN
         0,                  // OVERRIDDEN
         1,                  // flicker (how quickly particles shrink)
         0,                  // OVERRIDDEN

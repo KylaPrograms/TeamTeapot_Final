@@ -24,16 +24,15 @@ function Hero(spriteTexture)
 //    this.mShip = new SpriteRenderable(spriteTexture);
 //    this.mShip.getXform().setPosition(0, 0);
 //    this.mShip.getXform().setSize(4, 8);
-    this.mInvincible = false;
+
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     
     Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
     console.log(this);
+    
     // FOR PLACEHOLDER
     this.mShip.setElementPixelPositions(107, 507, 1024, 0);
-    
-    
     
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
@@ -42,9 +41,6 @@ function Hero(spriteTexture)
     this.setRigidBody(r);
 //    this.toggleDrawRigidShape();
     
-//    this.mSpeed = 0;
-//    
-//    this.mDamage = 0;
     this.mTreasureCollected = 0;
         
     this.mMapRenderable = new Renderable();
@@ -64,7 +60,8 @@ Hero.prototype.update = function()
         this.mWithinWorldBounds = false;
     }
     
-    GameObject.prototype.update.call(this);
+//    GameObject.prototype.update.call(this);
+    Ship.prototype.update.call(this);
     
     var currXform = this.mShip.getXform();
     var v = this.getRigidBody().getVelocity();
@@ -103,17 +100,10 @@ Hero.prototype.update = function()
     }
     
     this.updateInvincibility();
-        
-    // first working attempt
-    //var pos = this.getXform().getPosition();
-    //vec2.scaleAndAdd(pos, pos, dir, this.mSpeed);
-    //this.getRigidBody().adjustPositionBy(dir, this.mSpeed);
+    
     var theta = Math.atan2(dir[1], dir[0]);
     
     this.getRigidBody().setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
-    //console.log(this.getRigidBody().getVelocity());
-    // second working attempt
-//    vec2.scale(v, dir, this.mSpeed);
     
     // so will face the direction it is heading and
     // doesn't snap to facing up when stopping

@@ -94,4 +94,3 @@ Ship.prototype.incDamageBy = function (value) { this.setDamage(this.mDamage+valu
 Ship.prototype.getShipRenderable = function() { return this.mShip; };
 
 Ship.prototype.getPosition = function() { return this.getXform().getPosition(); };
-

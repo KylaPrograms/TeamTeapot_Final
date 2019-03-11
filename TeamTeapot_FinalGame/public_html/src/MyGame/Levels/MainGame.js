@@ -66,6 +66,8 @@ function MainGame() {
     this.mTreasureSet = null;
     this.mTreasureUITest = null;
     
+    this.mWakeTest = null;
+    
     this.mGameState = null;
 }
 gEngine.Core.inheritPrototype(MainGame, Scene);
@@ -197,6 +199,8 @@ MainGame.prototype.initialize = function ()
     {
         this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
+    
+    this.mWakeTest = new WakeSet();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -217,6 +221,8 @@ MainGame.prototype.draw = function ()
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
+    
+    this.mWakeTest.draw(this.mCamera);
     
     this.mDamageBar.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
@@ -334,7 +340,7 @@ MainGame.prototype.update = function ()
         }
     }
     
-    //console.log(this.mStormSet);
-    
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
+    this.mWakeTest.update();
+    this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 2);
 };
