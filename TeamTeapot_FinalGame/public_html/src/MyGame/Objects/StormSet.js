@@ -1,6 +1,7 @@
 /*
  * File:        StormSet.js
  * Programmers: Emily           March 2, 2019
+ *              Kyla            March 10, 2019
  *
  */
 
@@ -13,8 +14,7 @@
 
 function StormSet()
 {
-    this.mSet = [];
-    this.mStormSize = 0;
+    GameObjectSet.call(this);
 }
 
 gEngine.Core.inheritPrototype(StormSet, GameObjectSet);
@@ -48,9 +48,4 @@ StormSet.prototype.update = function()
             i--;
         }
     }
-};
-
-StormSet.prototype.getStormSize = function()
-{
-    return this.mStormSize;
 };

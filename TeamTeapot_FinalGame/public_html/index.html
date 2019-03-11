@@ -110,8 +110,13 @@
         <script type="text/javascript" src="src/Engine/UI/UIDropDown.js"></script>
         <script type="text/javascript" src="src/Engine/UI/UIDDButton.js"></script>
         <!-- Client game code -->
-        <script type="text/javascript" src="src/MyGame/MyGame.js"></script>
-        <script type="text/javascript" src="src/MyGame/MyGame_Lights.js"></script>
+       
+        <script type="text/javascript" src="src/Engine/UI/UIDamageBar.js"></script>
+        <script type="text/javascript" src="src/Engine/UI/UIItemSlot.js"></script>
+        <script type="text/javascript" src="src/Engine/UI/UIItemSlotSet.js"></script>
+        
+        <!-- Game Objects -->
+        <script type="text/javascript" src="src/MyGame/Objects/Ship.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/PirateShip.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/Storm.js"></script>
@@ -121,15 +126,21 @@
         <script type="text/javascript" src="src/MyGame/Objects/RockSet.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/SunkenTreasureSet.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/GameState.js"></script>
-        <script type="text/javascript" src="src/MyGame/GameOver.js"></script>
-        <script type="text/javascript" src="src/MyGame/WinScreen.js"></script>
+        
+        <!-- Game Scenes -->
+        <script type="text/javascript" src="src/MyGame/Levels/StartMenu.js"></script>
+        <script type="text/javascript" src="src/MyGame/Levels/MainGame.js"></script>
+        <script type="text/javascript" src="src/MyGame/Levels/MainGame_Lights.js"></script>
+        <script type="text/javascript" src="src/MyGame/Levels/GameOver.js"></script>
+        <script type="text/javascript" src="src/MyGame/Levels/WinScreen.js"></script>
+        
         
         <link rel="stylesheet" type="text/css" href="LoadingIcons.css">
         
     </head>
 
     <body onload="
-        var myGame = new MyGame();
+        var myGame = new MainGame();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
      ">
         <div id="LoadingIconParent" style="width: 800px; height:600px;">

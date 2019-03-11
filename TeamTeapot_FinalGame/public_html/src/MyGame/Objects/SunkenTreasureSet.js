@@ -1,6 +1,6 @@
 /*
  * File:        SunkenTreasureSet.js
- * Programmers: Kyla            March 3, 2019
+ * Programmers: Kyla            March 10, 2019
  *              
  *
  */
@@ -15,7 +15,7 @@
 
 function SunkenTreasureSet()
 {
-    this.mSet = [];
+    GameObjectSet.call(this);
 }
 gEngine.Core.inheritPrototype(SunkenTreasureSet, GameObjectSet);
 

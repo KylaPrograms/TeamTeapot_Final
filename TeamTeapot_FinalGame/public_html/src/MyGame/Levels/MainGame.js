@@ -1,6 +1,6 @@
 /*
- * File:        MyGame.js
- * Programmers: Kyla            March 1, 2019
+ * File:        MainGame.js
+ * Programmers: Kyla            March 10, 2019
  *              Emily           March 2, 2019
  *
  */
@@ -18,21 +18,21 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function MyGame() {
+function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kOceanPlaceHolder = "assets/OceanPlaceHolder.png";
+    this.kHealthBar = "assets/UI/healthbar.png";
     
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
+    this.kGemTex = "assets/Gems.png";
     
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
-    
-    this.mTreasureStatusTest = null;
     
     this.mTempBG = null;
     this.mHeroTest = null;
@@ -47,26 +47,34 @@ function MyGame() {
     this.mStormSet = null;
     this.mAutoSpawnTimer = null;
     
+    this.mDamageBar = null;
+    this.mTreasureSet = null;
+    this.mTreasureUITest = null;
+    
     this.mGameState = null;
 }
-gEngine.Core.inheritPrototype(MyGame, Scene);
+gEngine.Core.inheritPrototype(MainGame, Scene);
 
-MyGame.prototype.loadScene = function ()
+MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kHealthBar);
     
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
+    gEngine.Textures.loadTexture(this.kGemTex);
 };
 
-MyGame.prototype.unloadScene = function ()
+MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kHealthBar);
     
     gEngine.Textures.unloadTexture(this.kStormTex);
     gEngine.Textures.unloadTexture(this.kRocksTex);
+    gEngine.Textures.unloadTexture(this.kGemTex);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -79,8 +87,10 @@ MyGame.prototype.unloadScene = function ()
     gEngine.Core.startScene(nextLevel);
 };
 
-MyGame.prototype.initialize = function ()
+MainGame.prototype.initialize = function ()
 {
+    gEngine.DefaultResources.setGlobalAmbientIntensity(1.25);
+    
     this.mAmbientLight = gEngine.DefaultResources.getGlobalAmbientColor();
     this.mAmbientLight[0] = 0.8;
     this.mAmbientLight[1] = 0.8;
@@ -118,11 +128,6 @@ MyGame.prototype.initialize = function ()
     }
     this.mTempBG = new GameObject(mTempBGR);
     
-    this.mTreasureStatusTest = new FontRenderable("Treasure Collected");
-    this.mTreasureStatusTest.setColor([1, 1, 0, 1]);
-    this.mTreasureStatusTest.getXform().setPosition(-48, 35);
-    this.mTreasureStatusTest.setTextHeight(2.5);
-    
     this.mHeroTest = new Hero(this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kPlaceHolder);
     
@@ -146,11 +151,19 @@ MyGame.prototype.initialize = function ()
     }
     
     this.mGameState = new GameState(this.mHeroTest);
+    
+    this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
+    
+    this.mTreasureSet = new UIItemSlotSet([30, 540]);
+    for(var i = 0; i < 7; i++)
+    {
+        this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
+    }
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-MyGame.prototype.draw = function ()
+MainGame.prototype.draw = function ()
 {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
@@ -166,7 +179,8 @@ MyGame.prototype.draw = function ()
     
     this.mStormSet.draw(this.mCamera);
     
-    this.mTreasureStatusTest.draw(this.mCamera);
+    this.mDamageBar.draw(this.mCamera);
+    this.mTreasureSet.draw(this.mCamera);
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
@@ -180,7 +194,7 @@ MyGame.prototype.draw = function ()
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-MyGame.prototype.update = function ()
+MainGame.prototype.update = function ()
 {
     this.mHeroTest.update();
     this.updateHeroLight(this.mHeroTest);
@@ -198,19 +212,12 @@ MyGame.prototype.update = function ()
     {
         this.mHeroTest.addTreasure();
         this.mGameState.addTreasure();
+        this.mTreasureSet.fillSlot();
     }
     
     this.mSunkenTreasureSetTest.update();
     this.mCamera.update();
     this.mMiniMap.update();
-    
-    var currMsg = "Treasure Count: " + this.mHeroTest.getTreasureAmount();
-    this.mTreasureStatusTest.setText(currMsg);
-    
-    //Test GameState update text
-    this.mTreasureStatusTest.setText(this.mGameState.displayStatus());
-    var camPos = this.mCamera.getWCCenter();
-    this.mTreasureStatusTest.getXform().setPosition(camPos[0]-48, camPos[1]+35);
     
     this.mAutoSpawnTimer--;
     this.mStormSet.update();
@@ -228,7 +235,7 @@ MyGame.prototype.update = function ()
     {
         
         // cycle through all rocks
-        for (var i = 0; i < this.mRockSet.mRockSize; i++) 
+        for (var i = 0; i < this.mRockSet.size(); i++) 
         {
             var rock = this.mRockSet.mSet[i];
             var isHit = this.mHeroTest.checkHit(rock);
@@ -244,7 +251,12 @@ MyGame.prototype.update = function ()
                 var displacement = 2;           // move camera by 2 units
                 var frequency = 5;              // shake 5 times a second
                 var duration = 30;              // half a second
+				
                 this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
+				
+				// Update Damage barcode
+                this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
+                this.mDamageBar.update();
             }
         }
     }

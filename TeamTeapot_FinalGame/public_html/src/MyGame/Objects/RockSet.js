@@ -1,6 +1,7 @@
 /*
  * File:        RockSet.js
  * Programmers: Emily           March 2, 2019
+ *              Kyla            March 10, 2019
  *
  */
 
@@ -13,8 +14,7 @@
 
 function RockSet()
 {
-    this.mSet = [];
-    this.mRockSize = 0;
+    GameObjectSet.call(this);
 }
 
 gEngine.Core.inheritPrototype(RockSet, GameObjectSet);
@@ -40,9 +40,4 @@ RockSet.prototype.addToSet = function (obj)
 {
     this.mSet.push(obj);
 
-};
-
-RockSet.prototype.getRockSize = function()
-{
-    return this.mRockSize;
 };

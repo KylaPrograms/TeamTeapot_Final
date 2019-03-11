@@ -1,5 +1,5 @@
 /*
- * File:        MyGame_Lights.js
+ * File:        MainGame_Lights.js
  * Programmers: Emily           March 4, 2019
  *
  */
@@ -10,12 +10,12 @@
  */
 
 /*jslint node: true, vars: true */
-/*global gEngine, MyGame, Light, LightSet */
+/*global gEngine, MainGame, Light, LightSet */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-MyGame.prototype._createALight = function (pos, color, n, f, intensity) {
+MainGame.prototype._createALight = function (pos, color, n, f, intensity) {
     var light = new Light();
     light.setColor(color);
     light.setXPos(pos[0]);
@@ -28,7 +28,7 @@ MyGame.prototype._createALight = function (pos, color, n, f, intensity) {
     return light;
 };
 
-MyGame.prototype._initializeLights = function () {
+MainGame.prototype._initializeLights = function () {
     this.mGlobalLightSet = new LightSet();
 
     var l = this._createALight(
@@ -48,14 +48,14 @@ MyGame.prototype._initializeLights = function () {
     this.mGlobalLightSet.addToSet(l);
 };
 
-MyGame.prototype.updateHeroLight = function(hero)
+MainGame.prototype.updateHeroLight = function(hero)
 {
     var heroPos = hero.getXform().getPosition();
     this.mGlobalLightSet.getLightAt(0).setXPos(heroPos[0]);
     this.mGlobalLightSet.getLightAt(0).setYPos(heroPos[1]);
 };
 
-MyGame.prototype.updatePirateLight = function(pirate)
+MainGame.prototype.updatePirateLight = function(pirate)
 {
     var piratePos = pirate.getXform().getPosition();
     this.mGlobalLightSet.getLightAt(1).setXPos(piratePos[0]);
