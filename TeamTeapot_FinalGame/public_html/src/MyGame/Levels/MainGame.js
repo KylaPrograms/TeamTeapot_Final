@@ -117,7 +117,7 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
 //    this.mAmbientLight = [];
