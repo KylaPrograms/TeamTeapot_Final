@@ -20,6 +20,7 @@ function Hero(spriteTexture)
     this.mWCWorldBounds = 300;
     this.mInvincible = false;
     
+    
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
@@ -27,6 +28,8 @@ function Hero(spriteTexture)
     
     // FOR PLACEHOLDER
     this.mShip.setElementPixelPositions(107, 507, 0, 1024);
+    this.mOriginalColor = [1, 1, 1, 0];
+    this.mShip.setColor(this.mOriginalColor);
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -131,7 +134,7 @@ Hero.prototype.updateInvincibility = function()
             this.mHitTimer++;
         } 
     } else {
-        this.mShip.setColor([1, 1, 1, 0]);
+        this.mShip.setColor(this.mOriginalColor);
     }
 };
 
