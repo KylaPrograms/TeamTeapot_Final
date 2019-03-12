@@ -144,7 +144,7 @@ Ship.prototype.checkHit = function(otherObj)
 {
     var touchPos = [];
     var result = false;
-    var FREQUENCY = 9;         // how often to check collision. Must be odd number
+    var FREQUENCY = 19;         // how often to check collision. Must be odd number
     if (this.mHitCheckTimer === 0)   
     {
         result = this.pixelTouches(otherObj, touchPos);
