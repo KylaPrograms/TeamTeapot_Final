@@ -14,8 +14,10 @@ function GameOver()
     this.mCamera = null;
     this.mCursor = null;
     this.mOverMessage = null;
+    this.mDeathMessage = null;
     this.mMessage = null;
-    // The camera to view the scene
+    
+    this.kDeathMessage = "YOOOOOOOOOOOo";
 }
 gEngine.Core.inheritPrototype(GameOver, Scene);
 
@@ -40,7 +42,7 @@ GameOver.prototype.initialize = function () {
     //Define a cursor with a white background
     this.mCursor = new Renderable();
     this.mCursor.getXform().setSize(4, 4);
-    this.mCursor.getXform().setPosition(0, 0);
+    this.mCursor.getXform().setPosition(0, -10);
     this.mCursor.setColor([1, 0, 0, 1]);
     
     //Define the status message to Display
@@ -49,10 +51,16 @@ GameOver.prototype.initialize = function () {
     this.mOverMessage.getXform().setPosition(-12, 10);
     this.mOverMessage.setTextHeight(5);
     
+    this.mDeathMessage = new FontRenderable(this.kDeathMessage);
+    this.mDeathMessage.setColor([1, 1, 1, 1]);
+    this.mDeathMessage.getXform().setPosition(-46, 1);
+    this.mDeathMessage.setTextHeight(2.5);
+    
+    
     this.mMessage = new FontRenderable("Press SPACE to restart the game or " + 
                                 "press D to move the cursor");
     this.mMessage.setColor([1, 1, 1, 1]);
-    this.mMessage.getXform().setPosition(-46, 5);
+    this.mMessage.getXform().setPosition(-46, -4);
     this.mMessage.setTextHeight(2.5);
 };
 
@@ -64,6 +72,7 @@ GameOver.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     this.mCursor.draw(this.mCamera);
     this.mOverMessage.draw(this.mCamera);
+    //this.mDeathMessage.draw(this.mCamera);
     this.mMessage.draw(this.mCamera);
 };
 
