@@ -13,11 +13,46 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function SunkenTreasureSet()
+function SunkenTreasureSet(spriteTexture, spawnPosFile)
 {
     GameObjectSet.call(this);
+    
+    this.kTreasureTex = spriteTexture;
+    this.mSpawnPos = [];
+    
+    var jsonParser = new JSONParser(spawnPosFile);
+    jsonParser.parsePosition(this.mSpawnPos);
+    console.log(this.mSpawnPos);
+    
+    for(var i = 0; i < 3; i++)
+    {
+        this._createTreasure();
+    }
+    
 }
 gEngine.Core.inheritPrototype(SunkenTreasureSet, GameObjectSet);
+
+SunkenTreasureSet.prototype._createTreasure = function()
+{
+    var skip = true;
+    var index = 0;
+    while(skip)
+    {
+        var index = Math.floor(Math.random() * (this.mSpawnPos.length - 1));
+        console.log(index);
+        if(this.mSpawnPos[index][2] === false)
+        {
+            skip = false;
+        }
+    }
+    
+    this.mSpawnPos[index][2] = true;
+    var xPos = this.mSpawnPos[index][0];
+    var yPos = this.mSpawnPos[index][1];
+    var newTreasure = new SunkenTreasure(this.kTreasureTex, xPos, yPos);
+    this.addToSet(newTreasure);
+    
+};
 
 SunkenTreasureSet.prototype.update = function () {
     var i;

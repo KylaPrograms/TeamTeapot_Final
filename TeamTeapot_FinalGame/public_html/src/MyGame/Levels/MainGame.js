@@ -121,10 +121,6 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
-    var jsonParser = new JSONParser(this.kTreasureSpawnFile);
-    jsonParser.parsePosition(this.mTreasureSpawnPosSet);
-    console.log(this.mTreasureSpawnPosSet);
-    
     gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
@@ -180,21 +176,8 @@ MainGame.prototype.initialize = function ()
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     
-    this.mTreasureSetTest = new SunkenTreasureSet();
-    for(var i = 0; i < 3;)
-    {
-        var index = Math.floor(Math.random() * (this.mTreasureSpawnPosSet.length - 1));
-        console.log(index);
-        if(this.mTreasureSpawnPosSet[index][2] === false)
-        {
-            this.mTreasureSpawnPosSet[index][2] = true;
-            var xPos = this.mTreasureSpawnPosSet[index][0];
-            var yPos = this.mTreasureSpawnPosSet[index][1];
-            var newTreasure = new SunkenTreasure(this.kPlaceHolder, xPos, yPos);
-            this.mTreasureSetTest.addToSet(newTreasure);
-            i++;
-        }
-    }
+    this.mTreasureSetTest = new SunkenTreasureSet(this.kPlaceHolder, this.kTreasureSpawnFile);
+    
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
@@ -206,7 +189,7 @@ MainGame.prototype.initialize = function ()
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [100,580], [175,20], 0);
     
     this.mTreasureUI = new UIItemSlotSet([30, 540]);
-    for(var i = 0; i < 3; i++)
+    for(var i = 0; i < this.mTreasureSetTest.size(); i++)
     {
         this.mTreasureUI.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
