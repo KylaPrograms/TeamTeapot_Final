@@ -13,7 +13,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function Ship(spriteTexture, collisionTexture, wakeTexture,
-                position, size, maxDamage,
+                position, size, maxHealth,
                 currSpeed, minSpeed, maxSpeed,  turningDelta)
 {
     this.mShip = new SpriteRenderable(spriteTexture);
@@ -30,8 +30,8 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mMaxSpeed = (maxSpeed === null) ? 100 : maxSpeed;
     this.mTurningDelta = (turningDelta === null) ? 1 : turningDelta;
     
-    this.mDamage = 0;
-    this.mMaxDamage = (maxDamage === null) ? 100 : maxDamage;
+    this.mHealth = maxHealth;
+    this.mMaxHealth = maxHealth;
     
     this.kInvincibleTime = 120; // 120 frames aka 2 seconds
     
@@ -121,23 +121,23 @@ Ship.prototype.setMaxSpeed = function(value)
     }
 };
 
-Ship.prototype.getDamage = function() { return this.mDamage; };
-Ship.prototype.setDamage = function(value)
+Ship.prototype.getHealth = function() { return this.mHealth; };
+Ship.prototype.setHealth = function(value)
 {
-    var newDamage = value;
+    var newHealth = value;
     
-    if(newDamage < 0)
+    if(newHealth < 0)
     {
-        newDamage = 0;
+        newHealth = 0;
     }
-    if(newDamage > this.mMaxDamage)
+    if(newHealth > this.mMaxHealth)
     {
-        newDamage = this.mMaxDamage;
+        newHealth = this.mMaxHealth;
     }
     
-    this.mDamage = newDamage;
+    this.mHealth = newHealth;
 };
-Ship.prototype.incDamageBy = function (value) { this.setDamage(this.mDamage+value); };
+Ship.prototype.incHealthBy = function (value) { this.setHealth(this.mHealth+value); };
 
 Ship.prototype.getShipRenderable = function() { return this.mShip; };
 
@@ -173,7 +173,7 @@ Ship.prototype.hit = function(obj)
     
     if (this.mInvincible === false)
     {
-        this.incDamageBy(10);
+        this.incHealthBy(-10);
         
         this.mInvincible = true;
         this.mSpeed *= -.5;

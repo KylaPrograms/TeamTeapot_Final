@@ -159,10 +159,10 @@ PlayerShip.prototype.changeSpeed = function(speed)
     vec2.scaleAndAdd(pos,pos,dir, speed);
 };
 
-PlayerShip.prototype.regenDamage = function()
+PlayerShip.prototype.regenHealth = function()
 {
-    if(this.mDamage > 0) {
-        this.mDamage -=1 ;   
+    if(this.mHealth > 0) {
+        this.mHealth -=1 ;   
     }
 };
 

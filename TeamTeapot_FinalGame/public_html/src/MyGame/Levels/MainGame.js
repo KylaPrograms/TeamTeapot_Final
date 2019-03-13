@@ -54,15 +54,15 @@ function MainGame() {
     this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
-    this.mSunkenTreasureSetTest = null;
+    
+    this.mTreasureSpawnPosSet = [];
+    this.mTreasureSetTest = null;
     
     this.mRockSet = null;
     this.mStormSet = null;
     
-    this.mDamageBar = null;
-    this.mTreasureSet = null;
-    this.mTreasureSpawnPosSet = [];
-    this.mTreasureUITest = null;
+    this.mHealthBar = null;
+    this.mTreasureUI = null;
     
     this.mGameState = null;
 }
@@ -180,7 +180,7 @@ MainGame.prototype.initialize = function ()
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     
-    this.mSunkenTreasureSetTest = new SunkenTreasureSet();
+    this.mTreasureSetTest = new SunkenTreasureSet();
     for(var i = 0; i < 3;)
     {
         var index = Math.floor(Math.random() * (this.mTreasureSpawnPosSet.length - 1));
@@ -191,7 +191,7 @@ MainGame.prototype.initialize = function ()
             var xPos = this.mTreasureSpawnPosSet[index][0];
             var yPos = this.mTreasureSpawnPosSet[index][1];
             var newTreasure = new SunkenTreasure(this.kPlaceHolder, xPos, yPos);
-            this.mSunkenTreasureSetTest.addToSet(newTreasure);
+            this.mTreasureSetTest.addToSet(newTreasure);
             i++;
         }
     }
@@ -203,12 +203,12 @@ MainGame.prototype.initialize = function ()
     this.mRockSet = new RockSet(this.kRocksTex);
     this.mGameState = new GameState(this.mHeroTest);
     
-    this.mDamageBar = new UIDamageBar(this.kHealthBar,[100,580],[175,20],0);
+    this.mHealthBar = new UIHealthBar(this.kHealthBar, [100,580], [175,20], 0);
     
-    this.mTreasureSet = new UIItemSlotSet([30, 540]);
+    this.mTreasureUI = new UIItemSlotSet([30, 540]);
     for(var i = 0; i < 3; i++)
     {
-        this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
+        this.mTreasureUI.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
     
 };
@@ -225,22 +225,22 @@ MainGame.prototype.draw = function ()
     this.mSpaceBG.draw(this.mCamera);
     this.mTempBG.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
-    this.mSunkenTreasureSetTest.draw(this.mCamera);
+    this.mTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
     
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
     
-    this.mDamageBar.draw(this.mCamera);
-    this.mTreasureSet.draw(this.mCamera);
+    this.mHealthBar.draw(this.mCamera);
+    this.mTreasureUI.draw(this.mCamera);
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
     
     this.mMiniMapTranslucent.draw(this.mMiniMap);
     this.mPirateTest.drawForMap(this.mMiniMap);
-    this.mSunkenTreasureSetTest.drawForMap(this.mMiniMap);
+    this.mTreasureSetTest.drawForMap(this.mMiniMap);
     this.mHeroTest.drawForMap(this.mMiniMap);
     this.mStormSet.drawForMap(this.mMiniMap);
     this.mRockSet.drawForMap(this.mMiniMap);

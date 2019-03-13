@@ -32,14 +32,14 @@ MainGame.prototype.update = function ()
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
     this.mMiniMap.setWCCenter(heroPos[0], heroPos[1]);
     
-    if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
+    if(this.mTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
         this.mHeroTest.addTreasure();
         this.mGameState.addTreasure();
-        this.mTreasureSet.fillSlot();
+        this.mTreasureUI.fillSlot();
     }
     
-    this.mSunkenTreasureSetTest.update();
+    this.mTreasureSetTest.update();
     this.mCamera.update();
     this.mMiniMap.update();
     
@@ -71,9 +71,8 @@ MainGame.prototype.update = function ()
 
                         this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
 
-                                        // Update Damage barcode
-                        this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
-                        this.mDamageBar.update();
+                        this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
+                        this.mHealthBar.update();
                     }
             }
             // Hero previously collided
@@ -105,7 +104,7 @@ MainGame.prototype.update = function ()
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
     {
-        this.mHeroTest.incDamageBy(10);
+        this.mHeroTest.incHealthBy(10);
     }
     
     //Manually lose the game
