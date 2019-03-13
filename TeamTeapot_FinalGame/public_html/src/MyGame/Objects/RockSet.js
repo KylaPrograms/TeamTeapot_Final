@@ -18,6 +18,7 @@ function RockSet(kTexture)
     this.kRockTexture = kTexture;
     
     GameObjectSet.call(this);
+    
     for (var i = 0; i < 10; i++)
     {
         this.createRock();

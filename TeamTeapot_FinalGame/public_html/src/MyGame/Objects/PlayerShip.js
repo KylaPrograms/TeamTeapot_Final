@@ -14,12 +14,9 @@
 
 function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
 {
-    this.mWithinWorldBounds = true;
     this.kSpeedDelta = 0.1; 
     this.kInvincibleTime = 120;
-    this.mWCWorldBounds = 300;
     this.mInvincible = false;
-    
     
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
@@ -30,8 +27,6 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
 
-    // FOR PLACEHOLDER
-    // For smaller ship image
     this.mShip.setElementPixelPositions(53, 256, 0, 512);
     this.mCollisionTex.setElementPixelPositions(64, 115, 0, 128);
     
@@ -47,20 +42,13 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([1, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
-    this.mMapRenderable.getXform().setPosition(0, 0);
+    this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
+                                                        this.getXform().getYPos());
 }
 gEngine.Core.inheritPrototype(PlayerShip, Ship);
 
 PlayerShip.prototype.update = function()
 {
-    if (this.getXform().getPosition()[1] >= this.mWCWorldBounds/2 ||
-            this.getXform().getPosition()[1] <= -this.mWCWorldBounds/2 ||
-            this.getXform().getPosition()[0] <= -this.mWCWorldBounds/2 ||
-            this.getXform().getPosition()[0] >= this.mWCWorldBounds/2)
-    {
-        this.mWithinWorldBounds = false;
-    }
-    
     Ship.prototype.update.call(this);
     
     var currXform = this.mShip.getXform();
@@ -121,8 +109,8 @@ PlayerShip.prototype.update = function()
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
     
     //Update the renderable's position on the map
-    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
-                                                currXform.getYPos());
+    this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
+                                                        this.getXform().getYPos());
 };
 
 PlayerShip.prototype.drawForMap = function (aCamera)
@@ -178,4 +166,16 @@ PlayerShip.prototype.regenDamage = function()
     }
 };
 
-PlayerShip.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };
+// bounds = [left, right, bottom, top]
+PlayerShip.prototype.getWithinBounds = function(bounds)
+{
+    var pos = this.getXform().getPosition();
+    if(pos[0] < bounds[0] ||
+            pos[0] > bounds[1] ||
+            pos[1] < bounds[2] ||
+            pos[1] > bounds[3])
+    {
+        return false;
+    }
+    return true;
+};

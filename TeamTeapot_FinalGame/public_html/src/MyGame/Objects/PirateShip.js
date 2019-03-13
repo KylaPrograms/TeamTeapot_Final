@@ -49,6 +49,9 @@ PirateShip.prototype.update = function(heroPos)
     {
         this.chase(heroPos);
     }
+    
+    this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
+                                                        this.getXform().getYPos());
 };
 
 PirateShip.prototype.chase = function(heroPos)

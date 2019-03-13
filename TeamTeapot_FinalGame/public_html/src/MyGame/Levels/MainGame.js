@@ -37,6 +37,8 @@ function MainGame() {
     this.kGemTex = "assets/Gems.png";
     this.kMiniMap = "assets/miniMap.png";
     
+    this.kTreasureSpawnFile = "assets/JSON/TreasureSpawnPos.json";
+    
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
@@ -44,16 +46,14 @@ function MainGame() {
     this.mMiniMapXOffset = 74.375;
     this.mMiniMapYOffset = 55.625;
     
-    this.mWorldWCxRange = 300;
-    this.mWorldWCyRange = 300;
+    this.mWorldBounds = [-150, 150, -150, 150];
+    this.mWorldWCxRange = this.mWorldBounds[1]-this.mWorldBounds[0];
+    this.mWorldWCyRange = this.mWorldBounds[3]-this.mWorldBounds[2];
     
     this.mTempBG = null;
     this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
-    this.mSunkenTreasureTest = null;
-    this.mSunkenTreasureTest1 = null;
-    this.mSunkenTreasureTest2 = null;
     this.mSunkenTreasureSetTest = null;
     
     this.mRockSet = null;
@@ -61,6 +61,7 @@ function MainGame() {
     
     this.mDamageBar = null;
     this.mTreasureSet = null;
+    this.mTreasureSpawnPosSet = [];
     this.mTreasureUITest = null;
     
     this.mGameState = null;
@@ -83,6 +84,8 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kMiniMap);
     
     gEngine.AudioClips.loadAudio(this.kBGMusic);
+    
+    gEngine.TextFileLoader.loadTextFile(this.kTreasureSpawnFile, gEngine.TextFileLoader.eTextFileType.eJSONFile);
 };
 
 MainGame.prototype.unloadScene = function ()
@@ -102,6 +105,8 @@ MainGame.prototype.unloadScene = function ()
     
     gEngine.AudioClips.stopBackgroundAudio();
     gEngine.AudioClips.unloadAudio(this.kBGMusic);
+    
+    gEngine.ResourceMap.unloadAsset(this.kTreasureSpawnFile);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -116,6 +121,10 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
+    var jsonParser = new JSONParser(this.kTreasureSpawnFile);
+    jsonParser.parsePosition(this.mTreasureSpawnPosSet);
+    console.log(this.mTreasureSpawnPosSet);
+    
     gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
@@ -148,8 +157,6 @@ MainGame.prototype.initialize = function ()
     this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
     this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
     this.mMiniMapTranslucent.getXform().setSize(400, 400);
-    //this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMapXOffset, 
-    //                                                this.mMiniMapYOffset);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
         this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
@@ -173,13 +180,21 @@ MainGame.prototype.initialize = function ()
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     
-    this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
-    this.mSunkenTreasureTest1 = new SunkenTreasure(this.kPlaceHolder, -90, 50);
-    this.mSunkenTreasureTest2 = new SunkenTreasure(this.kPlaceHolder, 85, -40);
     this.mSunkenTreasureSetTest = new SunkenTreasureSet();
-    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest);
-    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest1);
-    this.mSunkenTreasureSetTest.addToSet(this.mSunkenTreasureTest2);
+    for(var i = 0; i < 3;)
+    {
+        var index = Math.floor(Math.random() * (this.mTreasureSpawnPosSet.length - 1));
+        console.log(index);
+        if(this.mTreasureSpawnPosSet[index][2] === false)
+        {
+            this.mTreasureSpawnPosSet[index][2] = true;
+            var xPos = this.mTreasureSpawnPosSet[index][0];
+            var yPos = this.mTreasureSpawnPosSet[index][1];
+            var newTreasure = new SunkenTreasure(this.kPlaceHolder, xPos, yPos);
+            this.mSunkenTreasureSetTest.addToSet(newTreasure);
+            i++;
+        }
+    }
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
@@ -223,7 +238,6 @@ MainGame.prototype.draw = function ()
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
     
-    //this.mTempBG.draw(this.mMiniMap);
     this.mMiniMapTranslucent.draw(this.mMiniMap);
     this.mPirateTest.drawForMap(this.mMiniMap);
     this.mSunkenTreasureSetTest.drawForMap(this.mMiniMap);
@@ -232,130 +246,3 @@ MainGame.prototype.draw = function ()
     this.mRockSet.drawForMap(this.mMiniMap);
 };
 
-// The Update function, updates the application state. Make sure to _NOT_ draw
-// anything from this function!
-MainGame.prototype.update = function ()
-{
-    this.mHeroTest.update();
-    if (!this.mHeroTest.getWithinWorldBounds())
-    {
-        this.mGameState.setGameOver(true);
-    }
-    this.updateHeroLight(this.mHeroTest);
-    
-    this.mPirateTest.update(this.mHeroTest.getPosition());
-    this.updatePirateLight(this.mPirateTest);
-    
-    this.mGameState.update();
-    
-    var heroPos = this.mHeroTest.getPosition();
-    this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
-    this.mMiniMap.setWCCenter(heroPos[0], heroPos[1]);
-    
-    if(this.mSunkenTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
-    {
-        this.mHeroTest.addTreasure();
-        this.mGameState.addTreasure();
-        this.mTreasureSet.fillSlot();
-    }
-    
-    this.mSunkenTreasureSetTest.update();
-    this.mCamera.update();
-    this.mMiniMap.update();
-    
-    this.mStormSet.update();
-    
-    // Spawn the storms
-    if(this.mAutoSpawnTimer <= 0)
-    {
-        this.mAutoSpawnTimer = Math.random() * 60 + 120;
-        this.mStormSet.createStorm(this.kStormTex);
-    }
-    
-        // cycle through all rocks
-        for (var i = 0; i < this.mRockSet.size(); i++) 
-        {
-            var rock = this.mRockSet.mSet[i];
-            
-            // Check Collision with all rocks in Rock set 
-            // if hero is invincible, don't bother checking 
-            //if (this.mHeroTest.mInvincible === false)
-            {
-                var isHit = this.mHeroTest.checkHit(rock);
-
-                    // if touching rock, then hit
-                    if (isHit)
-                    {
-                        // update herowddd
-                        //this.mHeroTest.hit(rock);
-                        //if (this.mHeroTest.mInvincible === false)
-                            
-
-                        // camera shake
-                        var displacement = 2;           // move camera by 2 units
-                        var frequency = 5;              // shake 5 times a second
-                        var duration = 30;              // half a second
-
-                        this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
-
-                                        // Update Damage barcode
-                        this.mDamageBar.setCurrentHP(this.mHeroTest.getDamage());
-                        this.mDamageBar.update();
-                    }
-            }
-            // Hero previously collided
-            // check whether or not to shake camera
-            if (this.mHeroTest.mInvincible === true) 
-            {
-                var camShake = this.mCamera.getCameraShake();
-                if (camShake !== null && !camShake.shakeDone())
-                    camShake.updateShakeState();
-            }
-            
-            if (this.mPirateTest.checkHit(rock))
-            {
-                //this.mPirateTest.hit(rock);
-            }
-        }
-        
-        var c = new CollisionInfo();
-        if (this.mHeroTest.getRigidBody().collisionTest(this.mPirateTest.getRigidBody(), c))
-        {
-            gEngine.Physics.resolveCollision(this.mHeroTest.getRigidBody(), this.mPirateTest.getRigidBody(), c);
-            this.mHeroTest.getRigidBody().setAngularVelocity(0);
-            this.mPirateTest.getRigidBody().setAngularVelocity(0);
-            
-        }
-
-    
-    
-    //Pressing 'x' deals damage to the ship.
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
-    {
-        this.mHeroTest.incDamageBy(10);
-    }
-    
-    //Manually lose the game
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.C))
-    {
-        this.mGameState.setGameOver(true);
-    }
-    
-    //Manually win the game
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.V))
-    {
-        this.mGameState.setGameWin(true);
-    }
-    
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.M))
-    {
-        if(gEngine.AudioClips.isBackgroundAudioPlaying())
-        {
-            gEngine.AudioClips.stopBackgroundAudio();
-        } else {
-            gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
-        }
-    }
-    
-    this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
-};
