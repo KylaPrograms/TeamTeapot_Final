@@ -1,6 +1,6 @@
 /*
  * File:        Ship.js
- * Programmers: Kyla            March 10, 2019
+ * Programmers: Kyla            March 13, 2019
  *
  */
 
@@ -12,12 +12,17 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Ship(spriteTexture, position, size, maxDamage,
-                currSpeed, minSpeed, maxSpeed,  turningDelta, wakeTexture)
+function Ship(spriteTexture, collisionTexture, wakeTexture,
+                position, size, maxDamage,
+                currSpeed, minSpeed, maxSpeed,  turningDelta)
 {
     this.mShip = new SpriteRenderable(spriteTexture);
     this.mShip.getXform().setPosition(position[0], position[1]);
     this.mShip.getXform().setSize(size[0], size[1]);
+    
+    this.mCollisionTex = new SpriteRenderable(collisionTexture);
+    this.mCollisionTex.getXform().setPosition(position[0], position[1]);
+    this.mCollisionTex.getXform().setSize(size[0], size[1]);
     
     this.mSpeed = (currSpeed === null) ? 0 : currSpeed;
     
@@ -40,7 +45,7 @@ function Ship(spriteTexture, position, size, maxDamage,
     this.mWakeTimer = 0;
     this.mWakeTexture = wakeTexture;
     
-    GameObject.call(this, this.mShip);
+    GameObject.call(this, this.mCollisionTex);
     
     var r = new RigidRectangle(this.getXform(), size[0], size[1]);
     r.setMass(.7);
@@ -57,12 +62,11 @@ Ship.prototype.update = function()
     
     GameObject.prototype.update.call(this);
     this.updateInvincibility();
-    //console.log(this.mSpeed);
     
     this.mWakeSet.update();
     if(this.mWakeTimer >= 20)
     {
-        this.mWakeSet.createWakeFromShip(this, this.mWakeTexture, [2, 1], 0.01);
+        this.mWakeSet.createWake(this, this.mWakeTexture, [2, 1], 0.01);
         this.mWakeTimer = 0;
     }
  
@@ -160,7 +164,7 @@ Ship.prototype.checkHit = function(otherObj)
     return result;
 };
 
-Ship.prototype.hit = function(obj, touchPos)
+Ship.prototype.hit = function(obj)
 {
     var otherPos = obj.getXform().getPosition();
     var pos = this.getXform().getPosition();
@@ -179,8 +183,6 @@ Ship.prototype.hit = function(obj, touchPos)
         
         // angle to send at
         var theta = Math.atan2(pos[1] - otherPos[1], pos[0] - otherPos[0]);
-        //this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
-        //this.getRigidBody().adjustPositionBy();
         
         console.log("ship hit rock" + theta);
     }

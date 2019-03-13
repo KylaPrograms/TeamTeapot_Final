@@ -1,6 +1,6 @@
 /*
  * File:        PirateShip.js
- * Programmers: Kyla            March 1, 2019
+ * Programmers: Kyla            March 13, 2019
  *              
  *
  */
@@ -13,19 +13,20 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PirateShip(spriteTexture, wakeTexture)
+function PirateShip(spriteTexture, collisionTexture, wakeTexture)
 {    
     //GameObject.call(this, this.mPirateShip);
     
     this.kSpeedDelta = 0.05;
     this.mOriginalColor = [0.75, 0, 0, 1];
     
-    Ship.call(this, spriteTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02, wakeTexture);
+    Ship.call(this, spriteTexture, collisionTexture, wakeTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02);
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
     
-    this.mShip.setElementPixelPositions(13, 64, 0, 128);
+    this.mShip.setElementPixelPositions(10, 142, 0, 512);
+    this.mCollisionTex.setElementPixelPositions(13, 64, 0, 128);
     
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([0, 0, 0, 1.0]);
@@ -40,9 +41,6 @@ gEngine.Core.inheritPrototype(PirateShip, Ship);
 PirateShip.prototype.update = function(heroPos)
 {
     Ship.prototype.update.call(this);
-    //console.log(this.getXform().getRotationInRad() + "\n" + this.getCurrentFrontDir());
-    
-    //this.getXform().setRotationInRad(Math.PI / 2)
     
     var direction = .1 * ((this.getRigidBody().getAngularVelocity() < 0) ? 1 : -1);
     this.getRigidBody().setAngularVelocityDelta(direction);
@@ -55,7 +53,6 @@ PirateShip.prototype.update = function(heroPos)
 
 PirateShip.prototype.chase = function(heroPos)
 {
-    //console.log("Chasing Hero Ship");
     this.incSpeedBy(this.kSpeedDelta);
     
     var currXform = this.getXform();
@@ -72,28 +69,18 @@ PirateShip.prototype.chase = function(heroPos)
     var curr = currXform.getRotationInRad() + Math.PI / 2;
     
     var facing = [Math.cos(curr), Math.sin(curr)];
-    //console.log(facing, [x,y]);
     
     // get cross product to see which direction to turn
     vec2.cross(facing, [Math.cos(curr), Math.sin(curr)], [x,y]);
     
-    //console.log(this.getTurningDelta());
-    
     var rotateBy = this.getTurningDelta();
     if (facing[2] > 0)  // if pirate is on left side, rotate left;
         rotateBy *= -1;
-  
-    
-    //this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
-    //var dir = this.getCurrentFrontDir();
-    //vec2.rotate(dir, dir, rotateBy);
-    
+
     var r = this.getXform().getRotationInRad() + Math.PI / 2;
     this.setVelocity(-this.mSpeed * Math.cos(r), -this.mSpeed * Math.sin(r));
-    //this.getRigidBody().incVelocity(-this.mSpeed * Math.cos(r) * .01, -this.mSpeed * Math.sin(r) * .01);
     
     this.getXform().setRotationInRad(curr + rotateBy - Math.PI / 2);
-    //this.getXform().incRotationByRad(rotateBy);
     
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());    
 };

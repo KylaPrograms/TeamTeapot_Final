@@ -1,6 +1,6 @@
 /*
  * File:        Storm.js
- * Programmers: Kyla            March 1, 2019
+ * Programmers: Kyla            March 13, 2019
  *              Emily           March 2, 2019
  *
  */
@@ -23,22 +23,14 @@ function Storm(spriteTexture, atX, atY)
     this.mTotalLifeSpan = Math.random() * 1500;
     this.mLifespan = 0;
     
-    this.mStorm1 = new SpriteRenderable(spriteTexture);
-    this.mStorm1.getXform().setPosition(atX, atY);
-    this.mStorm1.getXform().setSize(0.01, 0.01);
+    this.mStorm = new SpriteRenderable(spriteTexture);
+    this.mStorm.getXform().setPosition(atX, atY);
+    this.mStorm.getXform().setSize(0.01, 0.01);
     
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([0, 0, 1.0, 1.0]);
     this.mMapRenderable.getXform().setSize(0.01, 0.01);
     
-//    this.mStorm2 = new SpriteRenderable(spriteTexture);
-//    this.mStorm2.getXform().setPosition(atX + 5, atY + 5);
-//    this.mStorm2.getXform().setSize(8, 8);
-//    
-//    this.mStorm3 = new SpriteRenderable(spriteTexture);
-//    this.mStorm3.getXform().setPosition(atX + 5, atY);
-//    this.mStorm3.getXform().setSize(8, 8);
-//    
     this.mXdir = Math.random() - 0.5;
     this.mYdir = Math.random() - 0.5;
     
@@ -58,12 +50,6 @@ function Storm(spriteTexture, atX, atY)
     
     GameObject.call(this, this.mStorm);
     
-//    var r = new RigidRectangle(this.getXform(), 4, 8);
-//    r.setMass(1);
-//    r.setVelocity(0, 0);
-//    this.setRigidBody(r);
-//    this.toggleDrawRigidShape();
-    
     this.mSpeed = 0;
 }
 
@@ -76,24 +62,24 @@ Storm.prototype.update = function ()
         this.growStorm();
     }
     this.mLifespan++;
-    var StormX1 = this.mStorm1.getXform();
-    var stormXSpeed = this.mXdir * (this.mXdelta) / 60;
-    var stormYSpeed = this.mYdir * (this.mYdelta) / 60;
+    var xform = this.mStorm.getXform();
+    var xSpeed = this.mXdir * (this.mXdelta) / 60;
+    var ySpeed = this.mYdir * (this.mYdelta) / 60;
     
     //Move the Storm object
-    StormX1.incXPosBy(stormXSpeed);
-    StormX1.incYPosBy(stormYSpeed);
-    StormX1.incRotationByDegree(this.kRot1);
+    xform.incXPosBy(xSpeed);
+    xform.incYPosBy(ySpeed);
+    xform.incRotationByDegree(this.kRot1);
     
-    this.mMapRenderable.getXform().setPosition(StormX1.getXPos(), StormX1.getYPos());
+    this.mMapRenderable.getXform().setPosition(xform.getXPos(), xform.getYPos());
 };
 
 Storm.prototype.growStorm = function ()
 {
-    var size = this.mStorm1.getXform().getSize();
+    var size = this.mStorm.getXform().getSize();
     var deltaSize = 5 / 60;
     if(size[0] <= this.kSize) {
-        this.mStorm1.getXform().setSize(size[0] + deltaSize, size[0] + deltaSize);
+        this.mStorm.getXform().setSize(size[0] + deltaSize, size[0] + deltaSize);
         this.mMapRenderable.getXform().setSize(size[0] + deltaSize, size[0] + deltaSize);
     } else {
         this.mGrowStorm = false;
@@ -102,24 +88,15 @@ Storm.prototype.growStorm = function ()
 
 Storm.prototype.draw = function (aCamera)
 {
-    this.mStorm1.draw(aCamera);
-//    this.mStorm2.draw(aCamera);
-//    this.mStorm3.draw(aCamera);
+    this.mStorm.draw(aCamera);
 };
 
 Storm.prototype.drawForMap = function (aCamera)
 {
     this.mMapRenderable.draw(aCamera);
-//    this.mStorm2.draw(aCamera);
-//    this.mStorm3.draw(aCamera);
 };
 
 Storm.prototype.isDead = function() 
 {
     return (this.mLifespan >= this.mTotalLifeSpan);    
-};
-
-Storm.prototype.isOutOfBnds = function() {
-    //If the entire object is out of bounds, then yeah it needs to die
-    return (this.mPatrolHead.getXform().getXPos() >= 103.75);
 };

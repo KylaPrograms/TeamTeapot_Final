@@ -1,6 +1,6 @@
 /*
  * File:        MainGame.js
- * Programmers: Kyla            March 10, 2019
+ * Programmers: Kyla            March 13, 2019
  *              Emily           March 2, 2019
  *
  */
@@ -25,7 +25,8 @@ function MainGame() {
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
-    this.kShipTex = "assets/Ships128.png";
+    this.kShipTex = "assets/Ships512.png";
+    this.kShipCollisionTex = "assets/Ships128.png";
     this.kOceanNormal = "assets/OceanNormal.png";
     this.kOceanPlaceHolder = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";
@@ -62,9 +63,6 @@ function MainGame() {
     this.mTreasureSet = null;
     this.mTreasureUITest = null;
     
-    this.mWakeTest = null;
-    this.mWakeTestTimer = 0;
-    
     this.mGameState = null;
 }
 gEngine.Core.inheritPrototype(MainGame, Scene);
@@ -73,6 +71,7 @@ MainGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kShipTex);
+    gEngine.Textures.loadTexture(this.kShipCollisionTex);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanNormal);
     gEngine.Textures.loadTexture(this.kSpaceTex);
@@ -90,6 +89,7 @@ MainGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kShipTex);
+    gEngine.Textures.unloadTexture(this.kShipCollisionTex);
     gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
     gEngine.Textures.unloadTexture(this.kOceanNormal);
     gEngine.Textures.unloadTexture(this.kSpaceTex);
@@ -170,8 +170,8 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mHeroTest = new Hero(this.kShipTex, this.kPlaceHolder);
-    this.mPirateTest = new PirateShip(this.kShipTex, this.kPlaceHolder);
+    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
+    this.mPirateTest = new PirateShip(this.kShipTex, this.kShipCollisionTex, this.kPlaceHolder);
     
     this.mSunkenTreasureTest = new SunkenTreasure(this.kPlaceHolder, -5, 5);
     this.mSunkenTreasureTest1 = new SunkenTreasure(this.kPlaceHolder, -90, 50);
@@ -196,7 +196,6 @@ MainGame.prototype.initialize = function ()
         this.mTreasureSet.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
     
-    this.mWakeTest = new WakeSet();
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -217,8 +216,6 @@ MainGame.prototype.draw = function ()
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
-    
-    //this.mWakeTest.draw(this.mCamera);
     
     this.mDamageBar.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
@@ -327,8 +324,6 @@ MainGame.prototype.update = function ()
             gEngine.Physics.resolveCollision(this.mHeroTest.getRigidBody(), this.mPirateTest.getRigidBody(), c);
             this.mHeroTest.getRigidBody().setAngularVelocity(0);
             this.mPirateTest.getRigidBody().setAngularVelocity(0);
-            //this.mHeroTest.hit(this.mPirateTest);
-            //this.mPirateTest.hit(this.mHeroTest);
             
         }
 
@@ -362,21 +357,5 @@ MainGame.prototype.update = function ()
         }
     }
     
-//    this.mWakeTest.update();
-//    if(this.mWakeTestTimer >= 20)
-//    {
-//        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
-//        this.mWakeTestTimer = 0;
-//    }
-// 
-//    this.mWakeTestTimer++;
-    
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
-//    this.mWakeTest.update();
-//    if(this.mWakeTestTimer >= 20)
-//    {
-//        this.mWakeTest.createWakeFromShip(this.mHeroTest, this.kPlaceHolder, [2, 1], 0.01);
-//        this.mWakeTestTimer = 0;
-//    }
-//    this.mWakeTestTimer++;
 };

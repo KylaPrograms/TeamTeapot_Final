@@ -143,7 +143,7 @@
         
         <!-- Game Objects -->
         <script type="text/javascript" src="src/MyGame/Objects/Ship.js"></script>
-        <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
+        <script type="text/javascript" src="src/MyGame/Objects/PlayerShip.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/PirateShip.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/Storm.js"></script>
         <script type="text/javascript" src="src/MyGame/Objects/StormSet.js"></script>
@@ -168,7 +168,7 @@
     </head>
 
     <body onload="
-        var myGame = new StartMenu();
+        var myGame = new MainGame();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
      ">
         <table id="display">

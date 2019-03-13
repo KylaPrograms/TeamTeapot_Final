@@ -1,6 +1,6 @@
 /*
  * File:        WakeSet.js
- * Programmers: Kyla            March 10, 2019
+ * Programmers: Kyla            March 13, 2019
  *
  */
 
@@ -24,12 +24,11 @@ WakeSet.prototype.update = function()
         if(this.mSet[i].isDead())
         {
             this.mSet.splice(i, 1);
-            console.log("wake died");
         }
     }
 };
 
-WakeSet.prototype.createWakeFromShip = function(ship, sprite, size, speed)
+WakeSet.prototype.createWake = function(ship, sprite, size, speed)
 {
     var xform = ship.getXform();
     

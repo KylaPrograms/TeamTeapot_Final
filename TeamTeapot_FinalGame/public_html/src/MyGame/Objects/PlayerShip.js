@@ -1,6 +1,6 @@
 /*
- * File:        Hero.js
- * Programmers: Kyla            March 1, 2019
+ * File:        PlayerShip.js
+ * Programmers: Kyla            March 13, 2019
  *              Emily           March 5, 2019
  *
  */
@@ -12,7 +12,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Hero(spriteTexture, wakeTexture)
+function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
 {
     this.mWithinWorldBounds = true;
     this.kSpeedDelta = 0.1; 
@@ -23,8 +23,7 @@ function Hero(spriteTexture, wakeTexture)
     
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
-    //Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, 0, 25, 0.02);
-    Ship.call(this, spriteTexture, [0, 0], [5, 12], 100, 0, -25, 25, 0.02, wakeTexture);
+    Ship.call(this, spriteTexture,collisionTexture, wakeTexture, [0, 0], [5, 12], 100, 0, -25, 25, 0.02);
 
     console.log(this);
     
@@ -33,8 +32,8 @@ function Hero(spriteTexture, wakeTexture)
 
     // FOR PLACEHOLDER
     // For smaller ship image
-    //this.mShip.setElementPixelPositions(53, 256, 0, 512);
-    this.mShip.setElementPixelPositions(64, 115, 0, 128);
+    this.mShip.setElementPixelPositions(53, 256, 0, 512);
+    this.mCollisionTex.setElementPixelPositions(64, 115, 0, 128);
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);
@@ -50,9 +49,9 @@ function Hero(spriteTexture, wakeTexture)
     this.mMapRenderable.getXform().setSize(8, 8);
     this.mMapRenderable.getXform().setPosition(0, 0);
 }
-gEngine.Core.inheritPrototype(Hero, Ship);
+gEngine.Core.inheritPrototype(PlayerShip, Ship);
 
-Hero.prototype.update = function()
+PlayerShip.prototype.update = function()
 {
     if (this.getXform().getPosition()[1] >= this.mWCWorldBounds/2 ||
             this.getXform().getPosition()[1] <= -this.mWCWorldBounds/2 ||
@@ -120,19 +119,18 @@ Hero.prototype.update = function()
     // set ship velocity in new direction
     var theta = Math.atan2(dir[1], dir[0]);
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
-    //this.getRigidBody().incVelocity(.1 * Math.cos(theta), .1 * Math.sin(theta));
     
     //Update the renderable's position on the map
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), 
                                                 currXform.getYPos());
 };
 
-Hero.prototype.drawForMap = function (aCamera)
+PlayerShip.prototype.drawForMap = function (aCamera)
 {
     this.mMapRenderable.draw(aCamera);
 };
 
-Hero.prototype.updateInvincibility = function()
+PlayerShip.prototype.updateInvincibility = function()
 {
     // check if invincible
     if (this.mInvincible === true)
@@ -155,18 +153,17 @@ Hero.prototype.updateInvincibility = function()
     }
 };
 
-Hero.prototype.addTreasure = function()
+PlayerShip.prototype.addTreasure = function()
 {
     this.mTreasureCollected++;
-    //console.log(this.mTreasureCollected);
 };
 
-Hero.prototype.getTreasureAmount = function()
+PlayerShip.prototype.getTreasureAmount = function()
 {
     return this.mTreasureCollected;
 };
 
-Hero.prototype.changeSpeed = function(speed)
+PlayerShip.prototype.changeSpeed = function(speed)
 {
     var pos = this.getXform().getPosition();
     var dir = this.getCurrentFrontDir();
@@ -174,11 +171,11 @@ Hero.prototype.changeSpeed = function(speed)
     vec2.scaleAndAdd(pos,pos,dir, speed);
 };
 
-Hero.prototype.regenDamage = function()
+PlayerShip.prototype.regenDamage = function()
 {
     if(this.mDamage > 0) {
         this.mDamage -=1 ;   
     }
 };
 
-Hero.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };
+PlayerShip.prototype.getWithinWorldBounds = function() { return this.mWithinWorldBounds; };
