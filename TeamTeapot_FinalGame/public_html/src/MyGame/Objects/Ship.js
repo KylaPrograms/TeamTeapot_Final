@@ -1,6 +1,6 @@
 /*
  * File:        Ship.js
- * Programmers: Kyla            March 13, 2019
+ * Programmers: Kyla            March 15, 2019
  *
  */
 
@@ -16,7 +16,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
                 position, size, maxHealth,
                 currSpeed, minSpeed, maxSpeed,  turningDelta)
 {
-    this.mShip = new SpriteRenderable(spriteTexture);
+    this.mShip = new LightRenderable(spriteTexture);
     this.mShip.getXform().setPosition(position[0], position[1]);
     this.mShip.getXform().setSize(size[0], size[1]);
     

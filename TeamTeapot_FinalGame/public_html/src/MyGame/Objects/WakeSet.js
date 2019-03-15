@@ -1,6 +1,6 @@
 /*
  * File:        WakeSet.js
- * Programmers: Kyla            March 13, 2019
+ * Programmers: Kyla            March 15, 2019
  *
  */
 
@@ -9,6 +9,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+"use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function WakeSet()
 {

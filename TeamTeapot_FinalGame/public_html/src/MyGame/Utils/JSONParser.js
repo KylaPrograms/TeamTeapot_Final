@@ -1,9 +1,9 @@
 /*
- * Kyla NeSmith
- * MP3
- * Last edited: Jan 28, 2019
- * Copied the SceneFileParser and just adapted for JSON
+ * File:        JSONParser.js
+ * Programmers: Kyla            March 14, 2019
+ * 
  * Refereces:
+ *      MP3
  *      https://www.w3schools.com/js/js_json_parse.asp
  *      https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
  *      https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
@@ -15,6 +15,7 @@
  * and open the template in the editor.
  */
 
+"use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function JSONParser(sceneFilePath) {
     this.mSceneJSON = gEngine.ResourceMap.retrieveAsset(sceneFilePath);

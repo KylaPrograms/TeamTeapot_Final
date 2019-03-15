@@ -13,7 +13,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PirateShip(spriteTexture, collisionTexture, wakeTexture)
+function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballTexture)
 {    
     //GameObject.call(this, this.mPirateShip);
     
@@ -21,6 +21,9 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture)
     this.mOriginalColor = [0.75, 0, 0, 1];
     
     Ship.call(this, spriteTexture, collisionTexture, wakeTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02);
+    
+    this.mCannonballTex = cannonballTexture;
+    this.mCannonballSet = new CannonballSet();
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
