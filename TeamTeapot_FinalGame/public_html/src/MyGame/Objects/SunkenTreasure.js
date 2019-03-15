@@ -13,8 +13,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function SunkenTreasure(texture, xPos, yPos)
+function SunkenTreasure(texture, position)
 {
+    var xPos = position[0];
+    var yPos = position[1];
+    
     ParticleSystem.call(this,
         texture,
         xPos,

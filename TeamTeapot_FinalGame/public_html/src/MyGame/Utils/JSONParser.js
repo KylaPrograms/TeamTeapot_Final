@@ -24,10 +24,9 @@ JSONParser.prototype.parsePosition = function (posSet) {
     var elem = this.mSceneJSON.SpawnPos;
     for(var i = 0; i < elem.length; i++)
     {
-        var pos = [];
-        pos[0] = elem[i].Position[0];
-        pos[1] = elem[i].Position[1];
-        pos[2] = false; // has the position been used
-        posSet.push(pos);
+        var xPos = elem[i].Position[0];
+        var yPos = elem[i].Position[1];
+        var sp = new SpawnPoint([xPos, yPos]);
+        posSet.push(sp);
     }
 };

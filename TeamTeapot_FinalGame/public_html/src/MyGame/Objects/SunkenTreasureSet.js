@@ -18,11 +18,11 @@ function SunkenTreasureSet(spriteTexture, spawnPosFile)
     GameObjectSet.call(this);
     
     this.kTreasureTex = spriteTexture;
-    this.mSpawnPos = [];
+    this.mSpawnPosSet = [];
     
     var jsonParser = new JSONParser(spawnPosFile);
-    jsonParser.parsePosition(this.mSpawnPos);
-    console.log(this.mSpawnPos);
+    jsonParser.parsePosition(this.mSpawnPosSet);
+    console.log(this.mSpawnPosSet);
     
     for(var i = 0; i < 3; i++)
     {
@@ -38,18 +38,16 @@ SunkenTreasureSet.prototype._createTreasure = function()
     var index = 0;
     while(skip)
     {
-        var index = Math.floor(Math.random() * (this.mSpawnPos.length - 1));
+        var index = Math.floor(Math.random() * (this.mSpawnPosSet.length - 1));
         console.log(index);
-        if(this.mSpawnPos[index][2] === false)
+        if(!this.mSpawnPosSet[index].inUse())
         {
             skip = false;
         }
     }
     
-    this.mSpawnPos[index][2] = true;
-    var xPos = this.mSpawnPos[index][0];
-    var yPos = this.mSpawnPos[index][1];
-    var newTreasure = new SunkenTreasure(this.kTreasureTex, xPos, yPos);
+    this.mSpawnPosSet[index].markInUse();
+    var newTreasure = new SunkenTreasure(this.kTreasureTex, this.mSpawnPosSet[index].getPosition());
     this.addToSet(newTreasure);
     
 };
