@@ -39,9 +39,9 @@ function SunkenTreasure(texture, position)
     this.setSizeBase(0.1);
     
     // So can spawn less than 1 particle per update:
-    // mSpawnElapse is how many updates between particle creation
+    // mSpawnRate is how many updates between particle creation
     // (e.g. mSpawnElapse of 10 is 1 particle per 10 updates)
-    this.mSpawnElapse = 10;
+    this.mSpawnRate = 10;
     this.mUpdatesElapsed = 0;
     this.mCollectedStatus = false;
     
@@ -53,7 +53,7 @@ function SunkenTreasure(texture, position)
 gEngine.Core.inheritPrototype(SunkenTreasure, ParticleSystem);
 
 SunkenTreasure.prototype.update = function(){
-    if(this.mUpdatesElapsed > this.mSpawnElapse){
+    if(this.mUpdatesElapsed > this.mSpawnRate){
     var p = this.createParticle(this.xPos, this.yPos);
     this.mAllParticles.addToSet(p);
     this.mUpdatesElapsed = 0;
