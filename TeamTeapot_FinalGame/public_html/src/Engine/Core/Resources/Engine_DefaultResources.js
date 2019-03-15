@@ -84,7 +84,14 @@ gEngine.DefaultResources = (function () {
     
     var kParticleFS = "src/GLSLShaders/ParticleFS.glsl";
     var mParticleShader = null;
-
+    
+    // UI shaders
+    var kUISimpleFS = "src/GLSLShaders/UISimpleFS.glsl";  // Path to the UI Simple FragmentShader
+    var mUISimpleShader = null;
+    var kUITextureFS = "src/GLSLShaders/UITextureFS.glsl";  // Path to the UI Texture FragmentShader
+    var mUITextureShader = null;
+    var mUISpriteShader = null;
+    
     // Default font
     var kDefaultFont = "assets/fonts/system-default-font";
     // Particles
@@ -112,6 +119,9 @@ gEngine.DefaultResources = (function () {
         mLineShader =  new LineShader(kSimpleVS, kLineFS);
         mLightShader = new LightShader(kTextureVS, kLightFS);
         mIllumShader = new IllumShader(kTextureVS, kIllumFS);
+        mUISimpleShader = new UISimpleShader(kSimpleVS, kUISimpleFS);
+        mUITextureShader = new UITextureShader(kTextureVS, kUITextureFS);
+        mUISpriteShader = new UISpriteShader(kTextureVS, kUITextureFS);
         mShadowReceiverShader = new SpriteShader(kTextureVS, kShadowReceiverFS);
         mShadowCasterShader = new ShadowCasterShader(kTextureVS, kShadowCasterFS);
         mParticleShader = new TextureShader(kTextureVS, kParticleFS);
@@ -180,6 +190,27 @@ gEngine.DefaultResources = (function () {
      * @returns {TextureShader} Particle Shader
      */
     var getParticleShader = function () { return mParticleShader; };
+    
+    /**
+     * Return the Particle Shader
+     * @memberOf gEngine.DefaultResources
+     * @returns {TextureShader} Particle Shader
+     */
+    var getUISimpleShader = function () { return mUISimpleShader; };
+    
+    /**
+     * Return the Particle Shader
+     * @memberOf gEngine.DefaultResources
+     * @returns {TextureShader} Particle Shader
+     */
+    var getUITextureShader = function () { return mUITextureShader; };
+    
+    /**
+     * Return the Particle Shader
+     * @memberOf gEngine.DefaultResources
+     * @returns {TextureShader} Particle Shader
+     */
+    var getUISpriteShader = function () { return mUISpriteShader; };
 
     /**
      * Initilize Default Resources.<p>
@@ -213,6 +244,10 @@ gEngine.DefaultResources = (function () {
         // particle shader
         gEngine.TextFileLoader.loadTextFile(kParticleFS, gEngine.TextFileLoader.eTextFileType.eTextFile);
         
+        // UI shader
+        gEngine.TextFileLoader.loadTextFile(kUISimpleFS, gEngine.TextFileLoader.eTextFileType.eTextFile);
+        gEngine.TextFileLoader.loadTextFile(kUITextureFS, gEngine.TextFileLoader.eTextFileType.eTextFile);
+        
         // load default font
         gEngine.Fonts.loadFont(kDefaultFont);
         // load particles
@@ -242,6 +277,9 @@ gEngine.DefaultResources = (function () {
         mShadowReceiverShader.cleanUp();
         mShadowCasterShader.cleanUp();
         mParticleShader.cleanUp();
+        mUISimpleShader.cleanUp();
+        mUITextureShader.cleanUp();
+        mUISpriteShader.cleanUp();
 
         gEngine.TextFileLoader.unloadTextFile(kSimpleVS);
         gEngine.TextFileLoader.unloadTextFile(kSimpleFS);
@@ -266,6 +304,10 @@ gEngine.DefaultResources = (function () {
 
         // particle shader
         gEngine.TextFileLoader.unloadTextFile(kParticleFS);
+        
+        // UI shader
+        gEngine.TextFileLoader.unloadTextFile(kUISimpleFS);
+        gEngine.TextFileLoader.unloadTextFile(kUITextureFS);
 
         // default font
         gEngine.Fonts.unloadFont(kDefaultFont);
@@ -293,6 +335,9 @@ gEngine.DefaultResources = (function () {
         getShadowReceiverShader: getShadowReceiverShader,
         getShadowCasterShader: getShadowCasterShader,
         getParticleShader: getParticleShader,
+        getUISimpleShader: getUISimpleShader,
+        getUITextureShader: getUITextureShader,
+        getUISpriteShader: getUISpriteShader,
         getDefaultFont: getDefaultFont,
         getGlobalAmbientColor: getGlobalAmbientColor,
         setGlobalAmbientColor: setGlobalAmbientColor,

@@ -1,0 +1,22 @@
+/*
+ * File: SpriteAnimateRenderable.js
+ */
+
+/*jslint node: true, vars: true */
+/*global gEngine: false, Renderable: false, TextureRenderable: false, SpriteRenderable: false */
+/* find out more about jslint: http://www.jslint.com/help.html */
+
+// Constructor and object definition
+"use strict";  // Operate in Strict mode such that variables must be declared before used!
+
+/**
+ * Constructor of SpriteAnimateRenderable object.
+ * @param {Texture} myTexture Texture to be associated by object.
+ * @returns {UIRenderable} Instance of this SpriteAnimateRenderable object
+ * @class SpriteAnimateRenderable
+ */
+function UIRenderable(myTexture) {
+    SpriteRenderable.call(this, myTexture);
+    Renderable.prototype._setShader.call(this, gEngine.DefaultResources.getUISpriteShader());
+}
+gEngine.Core.inheritPrototype(UIRenderable, SpriteRenderable);
