@@ -66,7 +66,7 @@ Ship.prototype.update = function()
     this.mWakeSet.update();
     if(this.mWakeTimer >= 20)
     {
-        this.mWakeSet.createWake(this, this.mWakeTexture, [2, 1], 0.01);
+        this.mWakeSet.createWake(this, this.mWakeTexture);
         this.mWakeTimer = 0;
     }
  

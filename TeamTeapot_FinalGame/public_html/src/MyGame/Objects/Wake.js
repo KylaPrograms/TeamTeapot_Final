@@ -12,13 +12,13 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Wake(spriteTexture, position, size, forwardDir, speed)
+function Wake(spriteTexture, position, forwardDir)
 {
     this.mWake = new LightRenderable(spriteTexture);
     this.mWake.getXform().setPosition(position[0], position[1]);
-    this.mWake.getXform().setSize(size[0], size[1]);
+    this.mWake.getXform().setSize(2, 1);
     
-    this.mSpeed = speed;
+    this.mSpeed = 0.01;
     
     this.mLifeSpan = 60;
     this.mLifeTimer = 0;
