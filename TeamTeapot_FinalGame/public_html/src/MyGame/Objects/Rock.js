@@ -20,7 +20,7 @@ function Rock(spriteTexture, atX, atY)
     this.mRock.getXform().setSize(7, 8);
     this.mRock.setElementPixelPositions(15, 500, 60, 560);
     
-    this.mMapRenderable = new Renderable();
+    this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([1, 1, 1, 1.0]);
     this.mMapRenderable.getXform().setSize(7, 8);
     this.mMapRenderable.getXform().setPosition(atX, atY);

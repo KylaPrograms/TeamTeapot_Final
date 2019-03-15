@@ -45,7 +45,7 @@ function SunkenTreasure(texture, position)
     this.mUpdatesElapsed = 0;
     this.mCollectedStatus = false;
     
-    this.mMapRenderable = new Renderable();
+    this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([1, 1, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(10, 10);
     this.mMapRenderable.getXform().setPosition(xPos, yPos);

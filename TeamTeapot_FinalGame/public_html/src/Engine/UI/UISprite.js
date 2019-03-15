@@ -12,7 +12,7 @@
  * @returns {UISprite}
  */
 function UISprite(sprite, position, size, uvPos) {
-    this.mSprite = new UIRenderable(sprite);
+    this.mSprite = new UISpriteRenderable(sprite);
     if(uvPos !== null)
         this.mSprite.setElementUVCoordinate(uvPos[0], uvPos[1], uvPos[2], uvPos[3]);
     UIElement.call(this, this.mSprite, position, size);

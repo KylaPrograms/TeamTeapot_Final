@@ -1,22 +1,24 @@
 /*
- * File: SpriteAnimateRenderable.js
+ * File: TextureRenderable.js
+ *  
+ * Renderable objects with textures
  */
-
 /*jslint node: true, vars: true */
-/*global gEngine: false, Renderable: false, TextureRenderable: false, SpriteRenderable: false */
+/*global gEngine: false, Renderable: false */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 // Constructor and object definition
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 /**
- * Constructor of SpriteAnimateRenderable object.
- * @param {Texture} myTexture Texture to be associated by object.
- * @returns {UIRenderable} Instance of this SpriteAnimateRenderable object
- * @class SpriteAnimateRenderable
+ * Constructor of TextureRenderable object.
+ * @class TextureRenderable
+ * @param {Texture} myTexture - Texture to be associated by object.
+ * @returns {UIRenderable} - Instance of TextureRenderable object.
  */
 function UIRenderable(myTexture) {
-    SpriteRenderable.call(this, myTexture);
-    Renderable.prototype._setShader.call(this, gEngine.DefaultResources.getUISpriteShader());
+    Renderable.call(this);
+    Renderable.prototype._setShader.call(this, gEngine.DefaultResources.getUISimpleShader());
+
 }
-gEngine.Core.inheritPrototype(UIRenderable, SpriteRenderable);
+gEngine.Core.inheritPrototype(UIRenderable, Renderable);

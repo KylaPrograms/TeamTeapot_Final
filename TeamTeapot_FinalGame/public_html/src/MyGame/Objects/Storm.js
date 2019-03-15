@@ -27,7 +27,7 @@ function Storm(spriteTexture, atX, atY)
     this.mStorm.getXform().setPosition(atX, atY);
     this.mStorm.getXform().setSize(0.01, 0.01);
     
-    this.mMapRenderable = new Renderable();
+    this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([0, 0, 1.0, 1.0]);
     this.mMapRenderable.getXform().setSize(0.01, 0.01);
     

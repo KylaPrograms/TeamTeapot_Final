@@ -150,13 +150,13 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.configInterpolation(0, 1);
     this.mMiniMap.setBGDraw(false);
     
-    this.mMiniMapTranslucent = new LightRenderable(this.kMiniMap);
+    this.mMiniMapTranslucent = new UISpriteRenderable(this.kMiniMap);
     this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
     this.mMiniMapTranslucent.getXform().setSize(400, 400);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
-    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
-        this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
-    }
+//    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
+//        this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+//    }
     
     // Create the ocean background
     this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);

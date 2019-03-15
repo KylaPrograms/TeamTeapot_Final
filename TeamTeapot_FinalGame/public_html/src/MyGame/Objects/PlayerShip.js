@@ -39,7 +39,7 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
     this.mTreasureCollected = 0;
         
     //The renderable for the minimap    
-    this.mMapRenderable = new Renderable();
+    this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([1, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
