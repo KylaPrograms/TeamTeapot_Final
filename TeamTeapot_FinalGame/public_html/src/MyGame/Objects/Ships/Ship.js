@@ -48,8 +48,8 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     GameObject.call(this, this.mCollisionTex);
     
     var r = new RigidRectangle(this.getXform(), size[0], size[1]);
-    r.setMass(1);
-    r.setRestitution(1.2);
+    r.setMass(0.7);
+    r.setRestitution(1.05);
     r.setFriction(0);
     r.setVelocity(0, 0);
     this.setRigidBody(r);
