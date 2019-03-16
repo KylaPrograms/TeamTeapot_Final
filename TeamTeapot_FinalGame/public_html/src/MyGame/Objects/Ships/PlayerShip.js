@@ -30,12 +30,6 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
     this.mShip.setElementPixelPositions(106, 512, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(64, 115, 0, 128);
     
-    var r = new RigidRectangle(this.getXform(), 4, 8);
-    r.setMass(1);
-    r.setVelocity(0, 0);
-    this.setRigidBody(r);
-    this.toggleDrawRigidShape();
-
     this.mTreasureCollected = 0;
         
     //The renderable for the minimap    

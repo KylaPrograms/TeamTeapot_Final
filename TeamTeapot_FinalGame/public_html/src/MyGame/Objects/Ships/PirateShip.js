@@ -38,8 +38,7 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     this.mMapRenderable.getXform().setSize(8, 8);
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
-                                                        
-    this.toggleDrawRigidShape();
+                                 
 }
 gEngine.Core.inheritPrototype(PirateShip, Ship);
 
