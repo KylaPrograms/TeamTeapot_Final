@@ -60,13 +60,15 @@ PlayerShip.prototype.update = function()
     var noPress = true;
     
     // Move forward
-    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.W))
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.W) ||
+            gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
     {
         noPress = false;
         this.incSpeedBy(this.kSpeedDelta);
     }
     // slow down
-    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.S))
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.S) ||
+            gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
     {
         // only slow down if moving forward
         if (this.mSpeed > 0)
@@ -76,12 +78,14 @@ PlayerShip.prototype.update = function()
         }
     }
     // Turn left
-    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A))
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A) ||
+            gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
     {
         vec2.rotate(dir, dir, this.getTurningDelta());
     }
     // turn right
-    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D))
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D) ||
+            gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
     {
         vec2.rotate(dir, dir, -this.getTurningDelta());
     }
