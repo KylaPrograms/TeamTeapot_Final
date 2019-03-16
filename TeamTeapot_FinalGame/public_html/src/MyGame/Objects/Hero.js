@@ -34,7 +34,13 @@ function Hero(spriteTexture, wakeTexture)
     // FOR PLACEHOLDER
     // For smaller ship image
     //this.mShip.setElementPixelPositions(53, 256, 0, 512);
-    this.mShip.setElementPixelPositions(64, 115, 0, 128);
+    var left = 64 * 8;
+    var right = 115  * 8;
+    var top = 0;
+    var bot = 128 * 8;
+    
+    this.mShip.setElementPixelPositions(left, right, top, bot);
+    this.mShipLowRes.setElementPixelPositions(left / 8, right / 8, top / 8, bot / 8);
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
     r.setMass(1);

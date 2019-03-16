@@ -25,7 +25,7 @@ function PirateShip(spriteTexture, wakeTexture)
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
     
-    this.mShip.setElementPixelPositions(13, 64, 0, 128);
+    this.mShip.setElementPixelPositions(13 * 8, 64 * 8, 0, 128 * 8);
     
     this.mMapRenderable = new Renderable();
     this.mMapRenderable.setColor([0, 0, 0, 1.0]);
