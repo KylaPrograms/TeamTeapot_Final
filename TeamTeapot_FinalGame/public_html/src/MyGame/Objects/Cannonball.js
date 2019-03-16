@@ -13,9 +13,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Cannonball(spriteTexture, position, forwardDir)
+function Cannonball(spriteTexture, position, target)
 {
-    Projectile.call(this, spriteTexture, position, [2, 2], forwardDir, 2, 30);
+    var x = target[0] - position[0];
+    var y = target[1] - position[1];
+    Projectile.call(this, spriteTexture, position, [2, 2], [x,y], 1, 60);
 }
 gEngine.Core.inheritPrototype(Cannonball, Projectile);
 

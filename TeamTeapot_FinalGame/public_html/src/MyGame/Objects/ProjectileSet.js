@@ -1,7 +1,6 @@
 /*
- * File:        Cannonball.js
- * Programmers: Kyla            March 14, 2019
- *              
+ * File:        ProjectileSet.js
+ * Programmers: Kyla            March 15, 2019
  *
  */
 
@@ -13,13 +12,13 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function CannonballSet()
+function ProjectileSet()
 {
     GameObjectSet.call(this);
 }
-gEngine.Core.inheritPrototype(CannonballSet, GameObjectSet);
+gEngine.Core.inheritPrototype(ProjectileSet, GameObjectSet);
 
-CannonballSet.prototype.update = function()
+ProjectileSet.prototype.update = function()
 {
     for(var i = 0; i < this.size(); i++)
     {
@@ -31,7 +30,3 @@ CannonballSet.prototype.update = function()
     }
 };
 
-CannonballSet.prototype.createCannonball = function(ship, sprite)
-{
-    
-};

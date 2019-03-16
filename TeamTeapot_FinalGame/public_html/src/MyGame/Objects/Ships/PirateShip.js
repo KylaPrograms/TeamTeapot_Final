@@ -23,7 +23,9 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     Ship.call(this, spriteTexture, collisionTexture, wakeTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02);
     
     this.mCannonballTex = cannonballTexture;
-    this.mCannonballSet = new CannonballSet();
+    this.mCannonballSet = new ProjectileSet();
+    this.mCbSpawnRate = 150;
+    this.mCbTimer = 0;
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
@@ -44,20 +46,33 @@ gEngine.Core.inheritPrototype(PirateShip, Ship);
 PirateShip.prototype.update = function(heroPos)
 {
     Ship.prototype.update.call(this);
+    this.mCannonballSet.update();
     
     var direction = .1 * ((this.getRigidBody().getAngularVelocity() < 0) ? 1 : -1);
     this.getRigidBody().setAngularVelocityDelta(direction);
     
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
-        this.chase(heroPos);
+        this._chase(heroPos);
+        
+        if(this.mCbTimer >= this.mCbSpawnRate)
+        {
+            this._shoot(heroPos);
+            this.mCbTimer = 0;
+        }
+        
+        this.mCbTimer++;
+    }
+    else
+    {
+        this.mCbTimer = this.mCbSpawnRate;
     }
     
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
 };
 
-PirateShip.prototype.chase = function(heroPos)
+PirateShip.prototype._chase = function(target)
 {
     this.incSpeedBy(this.kSpeedDelta);
     
@@ -66,10 +81,8 @@ PirateShip.prototype.chase = function(heroPos)
     var pos = currXform.getPosition();
     
     // get vector between hero and pirateship
-    var x = heroPos[0] - pos[0];
-    var y = heroPos[1] - pos[1];
-    
-
+    var x = target[0] - pos[0];
+    var y = target[1] - pos[1];
     
     // get direction pirateship is facing
     var curr = currXform.getRotationInRad() + Math.PI / 2;
@@ -90,6 +103,18 @@ PirateShip.prototype.chase = function(heroPos)
     
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());    
 };
+
+PirateShip.prototype._shoot = function(target)
+{
+    var newCb = new Cannonball(this.mCannonballTex, this.getXform().getPosition(), target);
+    this.mCannonballSet.addToSet(newCb);
+};
+
+PirateShip.prototype.draw = function(camera)
+{
+    Ship.prototype.draw.call(this, camera);
+    this.mCannonballSet.draw(camera);
+}
 
 PirateShip.prototype.drawForMap = function(aCamera)
 {

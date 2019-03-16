@@ -41,7 +41,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mOriginalColor = [0.75, 0, 0, 1];
     this.mShip.setColor(this.mOriginalColor);
     
-    this.mWakeSet = new WakeSet();
+    this.mWakeSet = new ProjectileSet();
     this.mWakeTimer = 0;
     this.mWakeTexture = wakeTexture;
     
@@ -57,27 +57,11 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
 }
 gEngine.Core.inheritPrototype(Ship, GameObject);
 
-Ship.prototype.update = function()
-{
-    
-    GameObject.prototype.update.call(this);
-    this.updateInvincibility();
-    
-    this.mWakeSet.update();
-    if(this.mWakeTimer >= 20)
-    {
-        this.mWakeSet.createWake(this, this.mWakeTexture);
-        this.mWakeTimer = 0;
-    }
- 
-    this.mWakeTimer++;
-}
-
 Ship.prototype.draw = function(camera)
 {
     GameObject.prototype.draw.call(this, camera);
     this.mWakeSet.draw(camera);
-}
+};
 
 Ship.prototype.getSpeed = function() { return this.mSpeed; };
 Ship.prototype.setSpeed = function(value)
@@ -191,37 +175,62 @@ Ship.prototype.hit = function(obj)
 Ship.prototype.setVelocity = function(x,y)
 {
     this.getRigidBody().setVelocity(x,y);
-}
-
-Ship.prototype.updateInvincibility = function()
-{
-    // check if invincible
-    if (this.mInvincible === true)
-    {
-        // disable invincibility if duration is over
-        if (this.mHitTimer > this.kInvincibleTime)
-        {
-            
-            this.mShip.setColor(this.mOriginalColor);
-            this.mInvincible = false;
-            this.mHitTimer = 0;
-        }
-        // increment timer
-        else
-        {
-            var freq = 16;
-            var color = [this.mOriginalColor[0], this.mOriginalColor[1], this.mOriginalColor[2], this.mOriginalColor[3]];
-            for (var i = 0; i < 4; i++)
-            {
-                if (this.mHitTimer % freq / freq > .5)
-                    color[i] = this.mOriginalColor[i];
-                else
-                    color[i] = 1;
-            }
-            //console.log(color);
-            this.mShip.setColor(color);
-            this.mHitTimer++;
-        } 
-    }
 };
 
+
+
+Ship.prototype._createWake = function(sprite)
+{
+    var xform = this.getXform();
+    
+    ///////////////
+    // LEFT WAKE //
+    ///////////////
+    
+    var xPos = xform.getPosition()[0]-(xform.getSize()[0]/2);
+    var yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    
+    // Get vector
+    var newPos = [xPos - xform.getPosition()[0], yPos - xform.getPosition()[1]];
+    
+    // Get current rotation of ship
+    var theta = xform.getRotationInRad() - Math.PI;
+    
+    // Rotate to correct spot
+    vec2.rotateWRT(newPos, newPos, theta , [0,0]);
+
+    // move vector to behind ship
+    vec2.add(newPos, newPos, xform.getPosition());
+    theta += Math.PI / 4;
+    var forward = [-Math.cos(theta), -Math.sin(theta)];
+    
+    var leftWake = new Wake(sprite, newPos, forward);
+    leftWake.getXform().setRotationInRad(theta);
+    
+    this.mWakeSet.addToSet(leftWake);
+    
+    ////////////////
+    // RIGHT WAKE //
+    ////////////////
+    
+    xPos = xform.getPosition()[0]+(xform.getSize()[0]/2);
+    yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    
+    // Get vector
+    newPos = [xPos - xform.getPosition()[0], yPos - xform.getPosition()[1]];
+    theta = xform.getRotationInRad() - Math.PI;
+    
+    // Rotate to current spot
+    vec2.rotateWRT(newPos, newPos, theta, [0,0]);
+    
+    // move vector to behind ship
+    vec2.add(newPos, newPos, xform.getPosition());
+    
+    theta -= Math.PI / 4;
+    forward = [-Math.cos(theta), -Math.sin(theta)];
+    
+    var rightWake = new Wake(sprite, newPos, forward);
+    rightWake.getXform().setRotationInRad(theta);
+    
+    this.mWakeSet.addToSet(rightWake);
+};

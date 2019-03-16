@@ -27,6 +27,7 @@ function Projectile(spriteTexture, position, size, forwardDir, speed, lifeSpan)
     GameObject.call(this, this.mRenderable);
     
     this.mCurrentFrontDir = vec2.fromValues(forwardDir[0], forwardDir[1]);
+    vec2.normalize(this.mCurrentFrontDir, this.mCurrentFrontDir);
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
