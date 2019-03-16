@@ -13,7 +13,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PirateShip(spriteTexture, wakeTexture)
+function PirateShip(spriteTexture, wakeTexture, mAngryAnim)
 {    
     //GameObject.call(this, this.mPirateShip);
     
@@ -21,6 +21,9 @@ function PirateShip(spriteTexture, wakeTexture)
     this.mOriginalColor = [0.75, 0, 0, 1];
     
     Ship.call(this, spriteTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02, wakeTexture);
+
+    this.mSpot = false;
+    this.mAngryAnim = new PopUp(mAngryAnim, 128,0, 100, 100, 61, 0, 180)
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
@@ -49,14 +52,34 @@ PirateShip.prototype.update = function(heroPos)
     
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
+        this.mSpot = true;
         this.chase(heroPos);
     }
+    // went out of range, can no longer see player
+    else
+        this.mSpot = false;
 };
+
+PirateShip.prototype.draw = function(camera)
+{
+    Ship.prototype.draw.call(this, camera);
+    
+    // if spot player and animation isn't done, draw animation
+    if (this.mSpot === true && !this.mAngryAnim.isPopUpDone())
+    {
+        var pos = this.getXform().getPosition();
+        this.mAngryAnim.getXform().setPosition(pos[0], pos[1] + 7.5);
+        this.mAngryAnim.draw(camera);
+        this.mAngryAnim.updatePopUp();
+    }
+}
 
 PirateShip.prototype.chase = function(heroPos)
 {
     //console.log("Chasing Hero Ship");
+
     this.incSpeedBy(this.kSpeedDelta);
+
     
     var currXform = this.getXform();
     // get current pos of ship
