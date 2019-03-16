@@ -18,15 +18,16 @@ function PirateShip(spriteTexture)
     this.mPirateShip = new SpriteRenderable(spriteTexture);
     this.mPirateShip.getXform().setPosition(50, 0);
     this.mPirateShip.getXform().setSize(8, 4);
-    
+    this.mSpot = false;
     // FOR PLACEHOLDER
     this.mPirateShip.setColor([0.75, 0, 0, 1]);
     
     this.kAngryAnim = "assets/AngrySkullSpriteSheet.png"
     
-    gEngine.Textures.loadTexture(this.kAngryAnim);
-    this.mAngryAnim = new SpriteAnimateRenderable(this.kAngryAnim);
-    this.mAngryAnim.setSpriteSequence(128,0, 100, 100, 61, 0);
+    //gEngine.Textures.loadTexture(this.kAngryAnim);
+    this.mAngryAnim = new PopUp(this.kAngryAnim, 128, 0, 100, 100, 61, 0, 120);
+    //this.mAngryAnim = new SpriteAnimateRenderable(this.kAngryAnim);
+    //this.mAngryAnim.setSpriteSequence(128,0, 100, 100, 61, 0);
     //this.mAngryAnim.setAnimationSpeed(2);
     
     GameObject.call(this, this.mPirateShip);
@@ -50,15 +51,27 @@ PirateShip.prototype.update = function(heroPos)
 {
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
-        //this.mAngryAnim.draw();
+        this.mSpot = true;
         this.chase(heroPos);
     }
 };
 
+PirateShip.prototype.draw = function(camera)
+{
+    GameObject.prototype.draw.call(this, camera);
+    if (this.mSpot === true && !this.mAngryAnim.isPopUpDone())
+    {
+        var pos = this.getXform().getPosition();
+        this.mAngryAnim.getXform().setPosition(pos[0], pos[1] + 5);
+        this.mAngryAnim.draw(camera);
+        this.mAngryAnim.updatePopUp();
+    }
+}
+
 PirateShip.prototype.chase = function(heroPos)
 {
     //console.log("Chasing Hero Ship");
-    this.mAngryAnim.updateAnimation();
+    //this.mAngryAnim.updateAnimation();
     
     // get current pos of ship
     var pos = this.getXform().getPosition();

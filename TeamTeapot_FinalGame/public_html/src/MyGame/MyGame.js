@@ -28,6 +28,8 @@ function MyGame() {
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
     
+    this.kAngryAnim = "assets/AngrySkullSpriteSheet.png"
+    
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
@@ -55,6 +57,7 @@ MyGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kAngryAnim);
     
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
