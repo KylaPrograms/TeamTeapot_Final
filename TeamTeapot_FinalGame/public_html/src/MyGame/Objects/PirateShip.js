@@ -68,7 +68,7 @@ PirateShip.prototype.draw = function(camera)
     if (this.mSpot === true && !this.mAngryAnim.isPopUpDone())
     {
         var pos = this.getXform().getPosition();
-        this.mAngryAnim.getXform().setPosition(pos[0], pos[1] + 7.5);
+        this.mAngryAnim.getXform().setPosition(pos[0], pos[1] + 6);
         this.mAngryAnim.draw(camera);
         this.mAngryAnim.updatePopUp();
     }
