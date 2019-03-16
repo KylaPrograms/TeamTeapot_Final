@@ -27,7 +27,7 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
 
-    this.mShip.setElementPixelPositions(53, 256, 0, 512);
+    this.mShip.setElementPixelPositions(106, 512, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(64, 115, 0, 128);
     
     var r = new RigidRectangle(this.getXform(), 4, 8);
