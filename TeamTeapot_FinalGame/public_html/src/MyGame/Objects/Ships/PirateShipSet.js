@@ -77,42 +77,41 @@ PirateShipSet.prototype.drawForMap = function(aCamera)
 
 PirateShipSet.prototype._createShip = function(left, right, bottom, top)
 {
-    var lrCoinFlip = Math.round(Math.random(1));
-    var btCoinFlip = Math.round(Math.random(1));
+    var tryAgain = true;
     var xSpawn = 0;
     var ySpawn = 0;
-    if(lrCoinFlip === 0)
-    {
-        xSpawn = left - 5 - Math.random(10);
-    }
-    else
-    {
-        xSpawn = right + 5 + Math.random(10);
-    }
-    if(btCoinFlip === 0)
-    {
-        ySpawn = left - 5 - Math.random(10);
-    }
-    else
-    {
-        ySpawn = right + 5 + Math.random(10);
-    }
     
-    if(xSpawn < this.mWorldBounds[0])
+    while(tryAgain)
     {
-        xSpawn = this.mWorldBounds[0];
-    }
-    if(xSpawn > this.mWorldBounds[1])
-    {
-        xSpawn = this.mWorldBounds[1];
-    }
-    if(ySpawn < this.mWorldBounds[2])
-    {
-        ySpawn = this.mWorldBounds[2];
-    }
-    if(ySpawn > this.mWorldBounds[3])
-    {
-        ySpawn = this.mWorldBounds[3];
+        var lrCoinFlip = Math.round(Math.random(1));
+        var btCoinFlip = Math.round(Math.random(1));
+
+        if(lrCoinFlip === 0)
+        {
+            xSpawn = left - 5 - Math.random(10);
+        }
+        else
+        {
+            xSpawn = right + 5 + Math.random(10);
+        }
+        if(btCoinFlip === 0)
+        {
+            ySpawn = left - 5 - Math.random(10);
+        }
+        else
+        {
+            ySpawn = right + 5 + Math.random(10);
+        }
+
+        if(xSpawn < this.mWorldBounds[0] || xSpawn > this.mWorldBounds[1] ||
+                ySpawn < this.mWorldBounds[2] || ySpawn > this.mWorldBounds[3])
+        {
+            continue;
+        }
+        else
+        {
+            tryAgain = false;
+        }
     }
     
     var pirate = new PirateShip(this.mPirateInfo[0], this.mPirateInfo[1], this.mPirateInfo[2],
