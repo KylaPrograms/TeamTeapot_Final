@@ -26,6 +26,7 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture, popupAnim)
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
+    this.mShip.getXform().setRotationInRad(Math.PI);
 
     this.mShip.setElementPixelPositions(106, 512, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(64, 115, 0, 128);
@@ -75,6 +76,7 @@ PlayerShip.prototype.update = function()
     if(gEngine.Input.isKeyPressed(gEngine.Input.keys.A) ||
             gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
     {
+        noPress = false;
         vec2.rotate(dir, dir, this.getTurningDelta());
     }
     // turn right
@@ -82,6 +84,7 @@ PlayerShip.prototype.update = function()
             gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
     {
         vec2.rotate(dir, dir, -this.getTurningDelta());
+        noPress = false;
     }
     // slow down if no input
     if (noPress)
@@ -92,6 +95,11 @@ PlayerShip.prototype.update = function()
             
         this.incSpeedBy(decay);
     }
+    else
+    {
+        // rotate ship sprite
+        this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+    }
     
     // temp code
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
@@ -99,12 +107,13 @@ PlayerShip.prototype.update = function()
         this.hit();
     }
     
-    // rotate ship sprite
-    this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
+    
     
     // set ship velocity in new direction
     var theta = Math.atan2(dir[1], dir[0]);
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
+    
+    //console.log(theta + ' ' + dir);
     
     //Update the renderable's position on the map
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
