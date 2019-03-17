@@ -30,7 +30,7 @@ function SunkenTreasure(texture, position)
         1,                  // flicker (how quickly particles shrink)
         0,                  // OVERRIDDEN
         0,                  // xAcceleration
-        2,                  // size
+        4,                  // size
         2.25,               // yOffset (maximum vertical offset)
         [1, 1, 0, 1],       // startColor
         [1, 0, 0, 1],       // finalColor
@@ -66,8 +66,7 @@ SunkenTreasure.prototype.update = function(){
 
 SunkenTreasure.prototype.getBBox = function()
 {
-    // MAYBE CHANGE THE 10, 10 VALUES LATER?
-    var b = new BoundingBox(this.getPos(), 9, 9);
+    var b = new BoundingBox(this.getPos(), 10, 10);
     return b;
 };
 
