@@ -19,7 +19,7 @@ function RockSet(spriteTexture, spawnPosSet)
     
     GameObjectSet.call(this);
     
-    for (var i = 0; i < 10; i++)
+    for (var i = 0; i < 20; i++)
     {
         this._createRock();
     }

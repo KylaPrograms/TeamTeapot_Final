@@ -131,14 +131,16 @@ PirateShipSet.prototype._checkShipOffMinimap = function(ship, left, right, botto
     }
 };
 
-PirateShipSet.prototype.incSpawnRateBy = function(value)
+PirateShipSet.prototype.setSpawnRate = function(value)
 {
-    this.mSpawnRate += value;
+    this.mSpawnRate = value;
     if(this.mSpawnRate < 0)
     {
         this.mSpawnRate = 0;
     }
 };
+
+PirateShipSet.prototype.incSpawnRateBy = function(value) { this.setSpawnRate(this.mSpawnRate + value); };
 
 PirateShipSet.prototype.getShipsOnCamera = function(camera)
 {

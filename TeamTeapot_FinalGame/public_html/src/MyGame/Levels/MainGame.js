@@ -129,6 +129,9 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
+    var jsonParser = new JSONParser(this.kSpawnPosFile);
+    jsonParser.parsePosition(this.mSpawnPosSet);
+    
     //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
@@ -185,16 +188,15 @@ MainGame.prototype.initialize = function ()
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim, 60);
     this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim]);
     
-    var jsonParser = new JSONParser(this.kSpawnPosFile);
-    jsonParser.parsePosition(this.mSpawnPosSet);
-    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
-    
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
                                                     
-        // Spawn the rocks
+    // Spawn the rocks
     this.mRockSet = new RockSet(this.kRocksTex, this.mSpawnPosSet);
     this.mGameState = new GameState(this.mHeroTest);
+    
+    // Spawn the treasure
+    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
     console.log(this.mSpawnPosSet);
     
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [100,580], [175,20], 0);
