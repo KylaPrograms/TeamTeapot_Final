@@ -33,7 +33,7 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
     
-    this.mShip.setElementPixelPositions(20, 284, 0, 1024);
+    this.mShip.setElementPixelPositions(518, 916, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(13, 64, 0, 128);
     
     this.mMapRenderable = new UIRenderable();
