@@ -37,6 +37,7 @@ function MainGame() {
     this.kRocksTex = "assets/Rocks.png";
     this.kGemTex = "assets/Gems.png";
     this.kMiniMap = "assets/Minimap_Bg.png";
+    this.kTreasureTex = "assets/Diamond.png";
     
     this.kTreasureSpawnFile = "assets/JSON/TreasureSpawnPos.json";
     
@@ -84,6 +85,7 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kRocksTex);
     gEngine.Textures.loadTexture(this.kGemTex);
     gEngine.Textures.loadTexture(this.kMiniMap);
+    gEngine.Textures.loadTexture(this.kTreasureTex);
     
     gEngine.AudioClips.loadAudio(this.kBGMusic);
     
@@ -105,6 +107,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kRocksTex);
     gEngine.Textures.unloadTexture(this.kGemTex);
     gEngine.Textures.unloadTexture(this.kMiniMap);
+    gEngine.Textures.unloadTexture(this.kTreasureTex);
     
     gEngine.AudioClips.stopBackgroundAudio();
     gEngine.AudioClips.unloadAudio(this.kBGMusic);
@@ -179,7 +182,7 @@ MainGame.prototype.initialize = function ()
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim);
     
-    this.mTreasureSetTest = new SunkenTreasureSet(this.kPlaceHolder, this.kTreasureSpawnFile);
+    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.kTreasureSpawnFile);
     
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
