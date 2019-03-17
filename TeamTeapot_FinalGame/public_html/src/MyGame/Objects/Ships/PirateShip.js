@@ -27,6 +27,8 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     this.mCbSpawnRate = 150;
     this.mCbTimer = 0;
     
+    this.mSpot = false;
+    
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
     
@@ -52,6 +54,7 @@ PirateShip.prototype.update = function(heroPos)
     
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
+        this.mSpot = true;
         this._chase(heroPos);
         
         if(this.mCbTimer >= this.mCbSpawnRate)
@@ -64,6 +67,7 @@ PirateShip.prototype.update = function(heroPos)
     }
     else
     {
+        this.mSpot = false;
         this.mCbTimer = this.mCbSpawnRate;
     }
     
@@ -119,3 +123,14 @@ PirateShip.prototype.drawForMap = function(aCamera)
 {
     this.mMapRenderable.draw(aCamera);
 };
+
+PirateShip.prototype.isChasingPlayer = function()
+{
+    return this.mSpot;
+}
+
+PirateShip.prototype.getCannonballSet = function()
+{
+    return this.mCannonballSet;
+}
+    

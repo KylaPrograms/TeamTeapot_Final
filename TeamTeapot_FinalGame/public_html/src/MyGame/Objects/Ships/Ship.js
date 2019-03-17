@@ -45,7 +45,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mWakeTimer = 0;
     this.mWakeTexture = wakeTexture;
     
-    GameObject.call(this, this.mCollisionTex);
+    GameObject.call(this, this.mShip);
     
     var r = new RigidRectangle(this.getXform(), size[0], size[1]);
     r.setMass(0.7);
@@ -139,7 +139,7 @@ Ship.prototype.checkHit = function(otherObj)
         if (result)
         {
             console.log("Hit rock");
-            this.hit(otherObj, touchPos);
+            this.collide(otherObj, touchPos);
         }
             
     }
@@ -148,29 +148,26 @@ Ship.prototype.checkHit = function(otherObj)
     return result;
 };
 
-Ship.prototype.hit = function(obj)
+Ship.prototype.collide = function(obj)
 {
     var otherPos = obj.getXform().getPosition();
     var pos = this.getXform().getPosition();
     
+    // stop from clipping into other object
     this.getRigidBody().adjustPositionBy([pos[0] - otherPos[0], pos[1] - otherPos[1]], .1);
     
+    this.mSpeed *= -.5;
+    this.hit();
+};
+
+Ship.prototype.hit = function()
+{
     if (this.mInvincible === false)
     {
-        this.incHealthBy(-10);
-        
+        this.incHealthBy(-10);  
         this.mInvincible = true;
-        this.mSpeed *= -.5;
-        
-        var otherPos = obj.getXform().getPosition();
-        var pos = this.getXform().getPosition();
-        
-        // angle to send at
-        var theta = Math.atan2(pos[1] - otherPos[1], pos[0] - otherPos[0]);
-        
-        console.log("ship hit rock" + theta);
     }
-};
+}
 
 Ship.prototype.setVelocity = function(x,y)
 {
