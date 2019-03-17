@@ -48,7 +48,7 @@ function MainGame() {
     this.mMiniMapXOffset = 74.375;
     this.mMiniMapYOffset = 55.625;
     
-    this.mWorldBounds = [-150, 150, -150, 150];
+    this.mWorldBounds = [-300, 300, -300, 300];
     this.mWorldWCxRange = this.mWorldBounds[1]-this.mWorldBounds[0];
     this.mWorldWCyRange = this.mWorldBounds[3]-this.mWorldBounds[2];
     
