@@ -105,23 +105,6 @@ MainGame.prototype.update = function ()
         }
     }
     
-    var maxDistance = this.mStormTest.getXform().getHeight() * 2;
-    var distance = vec2.distance(this.mHeroTest.getPosition(), this.mStormTest.getXform().getPosition());
-    var distanceRatio = (maxDistance - distance) / maxDistance;    
-    
-    if (distanceRatio > 0)
-    {   
-        var speedRatio = this.mStormTest.getRotSpeed() / 10;
-        var sizeRatio = this.mStormTest.getSize() / 15;
-        
-        console.log("suck " + distance);
-        console.log("ratio " + distanceRatio);
-        
-        this.mHeroTest.moveTowards(this.mStormTest.getXform().getPosition(), this.mHeroTest.getTurningDelta() * distanceRatio * speedRatio * sizeRatio);
-        this.mHeroTest.incSpeedBy(this.mHeroTest.getSpeedDelta() + this.mHeroTest.getSpeedDelta() * distanceRatio * speedRatio * sizeRatio);
-    }    
-    
-    
     // Hero previously collided
     // check whether or not to shake camera
     if (this.mHeroTest.mInvincible === true) 
@@ -130,6 +113,8 @@ MainGame.prototype.update = function ()
         if (camShake !== null && !camShake.shakeDone())
             camShake.updateShakeState();
     }
+    
+    this.checkStormShipCollision();
 
     var c = new CollisionInfo();
     if (this.mHeroTest.getRigidBody().collisionTest(this.mPirateTest.getRigidBody(), c))
@@ -169,8 +154,32 @@ MainGame.prototype.update = function ()
         }
     }
     
-    this.mStormTest.update();
     this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMap.getWCCenter()[0], this.mMiniMap.getWCCenter()[1]);
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 
+MainGame.prototype.checkStormShipCollision = function()
+{
+    for (var i = 0; i < this.mStormSet.size(); i++)
+    {
+        var storm = this.mStormSet.getObjectAt(i);
+        
+        var maxDistance = storm.getXform().getHeight() * 2;
+        var distance = vec2.distance(this.mHeroTest.getPosition(), storm.getXform().getPosition());
+        var distanceRatio = (maxDistance - distance) / maxDistance; 
+        
+        if (distanceRatio > 0)
+        {   
+            var speedRatio = storm.getRotSpeed() / 10;
+            var sizeRatio = storm.getSize() / 15;
+
+            console.log("suck " + distance);
+            console.log("ratio " + distanceRatio);
+
+            this.mHeroTest.moveTowards(storm.getXform().getPosition(), this.mHeroTest.getTurningDelta() * distanceRatio * speedRatio * sizeRatio);
+            this.mHeroTest.incSpeedBy(this.mHeroTest.getSpeedDelta() + this.mHeroTest.getSpeedDelta() * distanceRatio * speedRatio * sizeRatio);
+        }    
+    }
+    
+
+}

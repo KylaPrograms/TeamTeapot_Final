@@ -64,8 +64,6 @@ function MainGame() {
     this.mRockSet = null;
     this.mStormSet = null;
     
-    this.mStormTest = null;
-    
     this.mHealthBar = null;
     this.mTreasureUI = null;
     
@@ -191,12 +189,6 @@ MainGame.prototype.initialize = function ()
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
                                                     
-    this.mStormTest = new Storm(this.kStormTex, 0, 20);
-    this.mStormTest.mYdelta = 0;
-    this.mStormTest.mXdelta = 0;
-    this.mStormTest.kRot1 = 15;
-    this.mStormTest.kSize = 20;
-    
         // Spawn the rocks
     this.mRockSet = new RockSet(this.kRocksTex);
     this.mGameState = new GameState(this.mHeroTest);
@@ -225,8 +217,6 @@ MainGame.prototype.draw = function ()
     this.mPirateTest.draw(this.mCamera);
     this.mTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
-    
-    this.mStormTest.draw(this.mCamera);
     
     this.mRockSet.draw(this.mCamera);
     
