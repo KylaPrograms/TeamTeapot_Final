@@ -13,7 +13,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballTexture)
+function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballTexture, mAngryAnim)
 {    
     //GameObject.call(this, this.mPirateShip);
     
@@ -26,6 +26,9 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     this.mCannonballSet = new ProjectileSet();
     this.mCbSpawnRate = 150;
     this.mCbTimer = 0;
+
+    this.mSpot = false;
+    this.mAngryAnim = new PopUp(mAngryAnim, 128,0, 100, 100, 61, 0, 180)
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
@@ -52,6 +55,7 @@ PirateShip.prototype.update = function(heroPos)
     
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
+        this.mSpot = true;
         this._chase(heroPos);
         
         if(this.mCbTimer >= this.mCbSpawnRate)
@@ -62,9 +66,11 @@ PirateShip.prototype.update = function(heroPos)
         
         this.mCbTimer++;
     }
+    // went out of range, can no longer see player
     else
     {
         this.mCbTimer = this.mCbSpawnRate;
+        this.mSpot = false;
     }
     
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
@@ -74,6 +80,7 @@ PirateShip.prototype.update = function(heroPos)
 PirateShip.prototype._chase = function(target)
 {
     this.incSpeedBy(this.kSpeedDelta);
+
     
     var currXform = this.getXform();
     // get current pos of ship
@@ -113,6 +120,14 @@ PirateShip.prototype.draw = function(camera)
 {
     Ship.prototype.draw.call(this, camera);
     this.mCannonballSet.draw(camera);
+    // if spot player and animation isn't done, draw animation
+    if (this.mSpot === true && !this.mAngryAnim.isPopUpDone())
+    {
+        var pos = this.getXform().getPosition();
+        this.mAngryAnim.getXform().setPosition(pos[0], pos[1] + 6);
+        this.mAngryAnim.draw(camera);
+        this.mAngryAnim.updatePopUp();
+    }
 }
 
 PirateShip.prototype.drawForMap = function(aCamera)

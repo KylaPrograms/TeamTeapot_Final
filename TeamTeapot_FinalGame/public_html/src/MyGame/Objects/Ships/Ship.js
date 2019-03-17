@@ -45,7 +45,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mWakeTimer = 0;
     this.mWakeTexture = wakeTexture;
     
-    GameObject.call(this, this.mCollisionTex);
+    GameObject.call(this, this.mShip);
     
     var r = new RigidRectangle(this.getXform(), size[0], size[1]);
     r.setMass(0.7);
@@ -60,6 +60,7 @@ gEngine.Core.inheritPrototype(Ship, GameObject);
 Ship.prototype.draw = function(camera)
 {
     GameObject.prototype.draw.call(this, camera);
+    //this.mShipLowRes.draw(camera);
     this.mWakeSet.draw(camera);
 };
 
@@ -132,15 +133,43 @@ Ship.prototype.checkHit = function(otherObj)
 {
     var touchPos = [];
     var result = false;
-    var FREQUENCY = 19;         // how often to check collision. Must be odd number
+    var FREQUENCY = 9;         // how often to check collision. Must be odd number
     if (this.mHitCheckTimer === 0)   
     {
-        result = this.pixelTouches(otherObj, touchPos);
-        if (result)
+        // check if other object is a renderable
+        var otherRen = otherObj.getRenderable();
+        if (typeof otherRen.pixelTouches === "function") 
         {
-            console.log("Hit rock");
-            this.hit(otherObj, touchPos);
+            // get distance between two game objects
+            var mySize = this.mCollisionTex.getXform().getSize();
+            var otherSize = otherRen.getXform().getSize();
+            var myR = Math.sqrt(0.5*mySize[0]*0.5*mySize[0] + 0.5*mySize[1]*0.5*mySize[1]);
+            var otherR = Math.sqrt(0.5*otherSize[0]*0.5*otherSize[0] + 0.5*otherSize[1]*0.5*otherSize[1]);
+            var d = [];
+            var pos = this.mShip.getXform().getPosition();
+            vec2.sub(d, pos, otherRen.getXform().getPosition());
+            
+            // check if distance between two renderables are closer than radius
+            if (vec2.length(d) < (myR + otherR)) {
+                
+                // update lowres texture
+                var theta = this.mShip.getXform().getRotationInRad();
+                this.mCollisionTex.getXform().setRotationInRad(theta);
+                this.mCollisionTex.getXform().setPosition(pos[0], pos[1]);
+                this.mCollisionTex.setColorArray();
+                otherRen.setColorArray();
+                // check
+                result = this.mCollisionTex.pixelTouches(otherRen, []);
+            }
+            
+            if (result)
+            {
+                console.log("Hit rock");
+                this.hit(otherObj, touchPos);
+            }
         }
+        
+
             
     }
     this.mHitCheckTimer = (this.mHitCheckTimer + 1) % FREQUENCY;

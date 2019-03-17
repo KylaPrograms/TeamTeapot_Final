@@ -12,7 +12,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PlayerShip(spriteTexture, collisionTexture, wakeTexture)
+function PlayerShip(spriteTexture, collisionTexture, wakeTexture, popupAnim)
 {
     this.kSpeedDelta = 0.1; 
     this.kInvincibleTime = 120;
