@@ -155,7 +155,7 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap = new Camera(
         vec2.fromValues(0, 0), // position of the camera
         200,                     // width of camera
-        [595, 445, 200, 150]         // viewport (orgX, orgY, width, height)
+        [605, 452.5, 180, 135]         // viewport (orgX, orgY, width, height)
     );
     this.mMiniMap.setBackgroundColor([0.8, 0.8, 0.8, 1.0]);
     this.mMiniMap.configInterpolation(0, 1);
@@ -163,11 +163,8 @@ MainGame.prototype.initialize = function ()
     
     this.mMiniMapTranslucent = new UISpriteRenderable(this.kMiniMap);
     this.mMiniMapTranslucent.setElementPixelPositions(207, 1855, 0, 1024);
-    this.mMiniMapTranslucent.getXform().setSize(200, 150);
+    this.mMiniMapTranslucent.getXform().setSize(26, 19.5);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
-//    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
-//        this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
-//    }
     
     // Create the ocean background
     this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
@@ -231,11 +228,11 @@ MainGame.prototype.draw = function ()
     
     this.mHealthBar.draw(this.mCamera);
     this.mTreasureUI.draw(this.mCamera);
+    this.mMiniMapTranslucent.draw(this.mCamera);
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
     
-    this.mMiniMapTranslucent.draw(this.mMiniMap);
     this.mPirateTest.drawForMap(this.mMiniMap);
     this.mPirateSetTest.drawForMap(this.mMiniMap);
     this.mTreasureSetTest.drawForMap(this.mMiniMap);
