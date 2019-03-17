@@ -56,6 +56,7 @@ function MainGame() {
     this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
+    this.mPirateSetTest = null;
     
     
     this.mTreasureSpawnPosSet = [];
@@ -181,7 +182,8 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setSize(100, 100);
     
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
-    this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim);
+    this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim, 60);
+    this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim]);
     
     this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.kTreasureSpawnFile);
     
@@ -215,6 +217,7 @@ MainGame.prototype.draw = function ()
     this.mSpaceBG.draw(this.mCamera);
     this.mTempBG.draw(this.mCamera);
     this.mPirateTest.draw(this.mCamera);
+    this.mPirateSetTest.draw(this.mCamera);
     this.mTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
     
@@ -230,11 +233,11 @@ MainGame.prototype.draw = function ()
     
     this.mMiniMapTranslucent.draw(this.mMiniMap);
     this.mPirateTest.drawForMap(this.mMiniMap);
+    this.mPirateSetTest.drawForMap(this.mMiniMap);
     this.mTreasureSetTest.drawForMap(this.mMiniMap);
     this.mHeroTest.drawForMap(this.mMiniMap);
     this.mStormSet.drawForMap(this.mMiniMap);
     this.mRockSet.drawForMap(this.mMiniMap);
-    
     
 };
 

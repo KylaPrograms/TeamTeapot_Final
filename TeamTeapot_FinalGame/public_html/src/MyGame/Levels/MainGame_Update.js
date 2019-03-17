@@ -25,6 +25,9 @@ MainGame.prototype.update = function ()
     
     this.mPirateTest.update(this.mHeroTest.getPosition());
     this.updatePirateLight(this.mPirateTest);
+    this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
+    var shipsOnMainCam = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    console.log(shipsOnMainCam);
     
     this.mGameState.update();
     
@@ -170,8 +173,8 @@ MainGame.prototype.checkStormShipCollision = function()
         
         if (distanceRatio > 0)
         {   
-            var speedRatio = storm.getRotSpeed() / 10;
-            var sizeRatio = storm.getSize() / 15;
+            var speedRatio = storm.getRotSpeed() / 10 + 0.25;
+            var sizeRatio = storm.getSize() / 15 + 0.25;
 
             console.log("suck " + distance);
             console.log("ratio " + distanceRatio);
