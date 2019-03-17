@@ -116,29 +116,6 @@ PlayerShip.prototype.drawForMap = function (aCamera)
     this.mMapRenderable.draw(aCamera);
 };
 
-PlayerShip.prototype.updateInvincibility = function()
-{
-    // check if invincible
-    if (this.mInvincible === true)
-    {
-        // disable invincibility if duration is over
-        if (this.mHitTimer > this.kInvincibleTime)
-        {
-            this.mShip.setColor([0.42, 0.2, 0, 1]);
-            this.mInvincible = false;
-            this.mHitTimer = 0;
-        }
-        // increment timer
-        else
-        {
-            this.mShip.setColor([0.42, 0.2, 0, 1 * this.mHitTimer % 4]);
-            this.mHitTimer++;
-        } 
-    } else {
-        this.mShip.setColor(this.mOriginalColor);
-    }
-};
-
 PlayerShip.prototype.addTreasure = function()
 {
     this.mTreasureCollected++;

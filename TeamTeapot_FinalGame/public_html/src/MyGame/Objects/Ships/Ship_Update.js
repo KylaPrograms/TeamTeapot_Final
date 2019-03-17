@@ -53,7 +53,7 @@ Ship.prototype.updateInvincibility = function()
                 else
                     color[i] = 1;
             }
-            //console.log(color);
+            
             this.mShip.setColor(color);
             this.mHitTimer++;
         } 

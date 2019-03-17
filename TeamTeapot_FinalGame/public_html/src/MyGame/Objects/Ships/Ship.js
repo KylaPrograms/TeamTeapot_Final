@@ -165,7 +165,7 @@ Ship.prototype.checkHit = function(otherObj)
             if (result)
             {
                 console.log("Hit rock");
-                this.hit(otherObj, touchPos);
+                this.collide(otherObj, touchPos);
             }
         }
         
