@@ -58,7 +58,6 @@ MainGame.prototype.update = function ()
         var rock = this.mRockSet.mSet[i];
 
         // Check Collision with all rocks in Rock set 
-
         var isHit = this.mHeroTest.checkHit(rock);
 
         // if touching rock, then hit
@@ -75,19 +74,45 @@ MainGame.prototype.update = function ()
             this.mHealthBar.update();
         }
 
-        // Hero previously collided
-        // check whether or not to shake camera
-        if (this.mHeroTest.mInvincible === true) 
-        {
-            var camShake = this.mCamera.getCameraShake();
-            if (camShake !== null && !camShake.shakeDone())
-                camShake.updateShakeState();
-        }
-
         if (this.mPirateTest.checkHit(rock))
         {
             //this.mPirateTest.hit(rock);
         }
+    }
+    
+    // check cannonball collision
+    if (this.mPirateTest.isChasingPlayer())
+    {
+        var cannonballs = this.mPirateTest.getCannonballSet();
+        if (cannonballs.size() > 0)
+        {
+            var cannonball = cannonballs.getObjectAt(0);
+            if (cannonball.getBBox().intersectsBound(this.mHeroTest.getBBox()))
+            {
+                this.mHeroTest.hit(cannonball);
+                cannonball.kill();
+                
+                                // camera shake
+                var displacement = 2;           // move camera by 2 units
+                var frequency = 5;              // shake 5 times a second
+                var duration = 30;              // half a second
+
+                this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
+
+                this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
+                this.mHealthBar.update();
+            }
+                //this.mHeroTest
+        }
+    }
+    
+    // Hero previously collided
+    // check whether or not to shake camera
+    if (this.mHeroTest.mInvincible === true) 
+    {
+        var camShake = this.mCamera.getCameraShake();
+        if (camShake !== null && !camShake.shakeDone())
+            camShake.updateShakeState();
     }
 
     var c = new CollisionInfo();
@@ -99,12 +124,11 @@ MainGame.prototype.update = function ()
 
     }
 
-    
-    
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
     {
-        this.mHeroTest.incHealthBy(10);
+        this.mHeroTest.hit();
+        //this.mHeroTest.incHealthBy(10);
     }
     
     //Manually lose the game

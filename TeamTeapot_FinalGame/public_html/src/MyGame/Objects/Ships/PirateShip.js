@@ -1,3 +1,4 @@
+//<<<<<<< HEAD
 /*
  * File:        PirateShip.js
  * Programmers: Kyla            March 13, 2019
@@ -134,3 +135,13 @@ PirateShip.prototype.drawForMap = function(aCamera)
 {
     this.mMapRenderable.draw(aCamera);
 };
+
+PirateShip.prototype.isChasingPlayer = function()
+{
+    return this.mSpot;
+}
+
+PirateShip.prototype.getCannonballSet = function()
+{
+    return this.mCannonballSet;
+}

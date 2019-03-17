@@ -45,3 +45,8 @@ Projectile.prototype.isDead = function()
 {
     return this.mLifeTimer > this.mLifeSpan;
 };
+
+Projectile.prototype.kill = function()
+{
+    this.mLifeTimer = this.mLifeSpan;
+}
