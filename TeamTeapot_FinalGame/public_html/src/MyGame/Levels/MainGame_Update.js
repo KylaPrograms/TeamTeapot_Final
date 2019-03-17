@@ -129,6 +129,7 @@ MainGame.prototype.update = function ()
         }
     }
     
+    this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMap.getWCCenter()[0], this.mMiniMap.getWCCenter()[1]);
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 

@@ -35,7 +35,7 @@ function MainGame() {
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
     this.kGemTex = "assets/Gems.png";
-    this.kMiniMap = "assets/miniMap.png";
+    this.kMiniMap = "assets/Minimap_Bg.png";
     
     this.kTreasureSpawnFile = "assets/JSON/TreasureSpawnPos.json";
     
@@ -151,8 +151,8 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.setBGDraw(false);
     
     this.mMiniMapTranslucent = new UISpriteRenderable(this.kMiniMap);
-    this.mMiniMapTranslucent.setElementPixelPositions(0, 256, 0, 192);
-    this.mMiniMapTranslucent.getXform().setSize(400, 400);
+    this.mMiniMapTranslucent.setElementPixelPositions(207, 1855, 0, 1024);
+    this.mMiniMapTranslucent.getXform().setSize(200, 150);
     this.mMiniMapTranslucent.getXform().setPosition(0, 0);
 //    for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
 //        this.mMiniMapTranslucent.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
