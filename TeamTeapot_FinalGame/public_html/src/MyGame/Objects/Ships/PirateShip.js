@@ -57,11 +57,11 @@ PirateShip.prototype.update = function(heroPos)
     if(vec2.distance(this.getXform().getPosition(), heroPos) < 50)
     {
         this.mSpot = true;
-        //this._chase(heroPos);
+        this._chase(heroPos);
         
         if(this.mCbTimer >= this.mCbSpawnRate)
         {
-            //this._shoot(heroPos);
+            this._shoot(heroPos);
             this.mCbTimer = 0;
         }
         
