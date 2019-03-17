@@ -39,7 +39,7 @@ function MainGame() {
     this.kMiniMap = "assets/Minimap_Bg.png";
     this.kTreasureTex = "assets/Diamond.png";
     
-    this.kTreasureSpawnFile = "assets/JSON/TreasureSpawnPos.json";
+    this.kSpawnPosFile = "assets/JSON/SpawnPositions.json";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -59,7 +59,7 @@ function MainGame() {
     this.mPirateSetTest = null;
     
     
-    this.mTreasureSpawnPosSet = [];
+    this.mSpawnPosSet = [];
     this.mTreasureSetTest = null;
     
     this.mRockSet = null;
@@ -91,7 +91,7 @@ MainGame.prototype.loadScene = function ()
     
     gEngine.AudioClips.loadAudio(this.kBGMusic);
     
-    gEngine.TextFileLoader.loadTextFile(this.kTreasureSpawnFile, gEngine.TextFileLoader.eTextFileType.eJSONFile);
+    gEngine.TextFileLoader.loadTextFile(this.kSpawnPosFile, gEngine.TextFileLoader.eTextFileType.eJSONFile);
 };
 
 MainGame.prototype.unloadScene = function ()
@@ -114,7 +114,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.AudioClips.stopBackgroundAudio();
     gEngine.AudioClips.unloadAudio(this.kBGMusic);
     
-    gEngine.ResourceMap.unloadAsset(this.kTreasureSpawnFile);
+    gEngine.ResourceMap.unloadAsset(this.kSpawnPosFile);
 
     //Check whether the player won or lost the game
     var nextLevel = null;
@@ -185,15 +185,17 @@ MainGame.prototype.initialize = function ()
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim, 60);
     this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim]);
     
-    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.kTreasureSpawnFile);
-    
+    var jsonParser = new JSONParser(this.kSpawnPosFile);
+    jsonParser.parsePosition(this.mSpawnPosSet);
+    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
                                                     
         // Spawn the rocks
-    this.mRockSet = new RockSet(this.kRocksTex);
+    this.mRockSet = new RockSet(this.kRocksTex, this.mSpawnPosSet);
     this.mGameState = new GameState(this.mHeroTest);
+    console.log(this.mSpawnPosSet);
     
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [100,580], [175,20], 0);
     
