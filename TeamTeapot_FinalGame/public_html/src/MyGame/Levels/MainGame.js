@@ -33,6 +33,7 @@ function MainGame() {
     this.kShipLowResTex = "assets/Ships128.png";
     this.kWakeTex = "assets/Wake.png";
     this.kChickenTex = "assets/ChickenFromAbove.png";
+    this.kCharybdisTex = "assets/Charybdis.png";
     this.kAngryAnim = "assets/AngrySkullSpriteSheet.png";
     this.kOceanNormal = "assets/OceanNormal.png";
     this.kOcean = "assets/Ocean.png";
@@ -67,6 +68,7 @@ function MainGame() {
     this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
+    this.mCharybdis = null
     
     this.mSpawnPosSet = [];
     this.mTreasureSetTest = null;
@@ -91,6 +93,7 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kShipLowResTex);
     gEngine.Textures.loadTexture(this.kWakeTex);
     gEngine.Textures.loadTexture(this.kChickenTex);
+    gEngine.Textures.loadTexture(this.kCharybdisTex);
     gEngine.Textures.loadTexture(this.kAngryAnim);
     gEngine.Textures.loadTexture(this.kOcean);
     gEngine.Textures.loadTexture(this.kWaterfallTex);
@@ -118,6 +121,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kShipLowResTex);
     gEngine.Textures.unloadTexture(this.kWakeTex);
     gEngine.Textures.unloadTexture(this.kChickenTex);
+    gEngine.Textures.unloadTexture(this.kCharybdisTex);
     gEngine.Textures.unloadTexture(this.kAngryAnim);
     gEngine.Textures.unloadTexture(this.kOcean);
     gEngine.Textures.unloadTexture(this.kWaterfallTex);
@@ -216,7 +220,10 @@ MainGame.prototype.initialize = function ()
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
-                                                    
+
+    this.mCharybdis = new Charybdis(this.kCharybdisTex, 0, 75);
+    this.mStormSet.addToSet(this.mCharybdis);
+
     // Spawn the rocks
     this.mRockSet = new RockSet(this.kRocksTex, this.mSpawnPosSet);
     this.mGameState = new GameState(this.mHeroTest);
@@ -254,6 +261,7 @@ MainGame.prototype.draw = function ()
     this.mRockSet.draw(this.mCamera);
     
     this.mStormSet.draw(this.mCamera);
+    this.mCharybdis.draw(this.mCamera);
     
     this.mUIBG.draw(this.mCamera);
     this.mHealthBarBorder.draw(this.mCamera);

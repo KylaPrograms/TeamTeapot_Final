@@ -29,7 +29,12 @@ MainGame.prototype.update = function ()
     
     this.updatePirateLight(this.mPirateTest);
     this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
-    var shipsOnMainCam = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    this.mCharybdis.update(this.mHeroTest);
+    if (this.mCharybdis.checkIfCanSpawn())
+    {
+        this.mCharybdis.spawn(this.mHeroTest);
+        this.mStormSet.addToSet(this.mCharybdis);
+    }
     
     this.mGameState.update();
     
