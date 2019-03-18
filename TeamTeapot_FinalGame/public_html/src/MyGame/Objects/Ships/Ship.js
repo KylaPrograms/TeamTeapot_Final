@@ -40,6 +40,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     this.mOriginalColor = [0.75, 0, 0, 1];
+    this.mHitColor = [1, 1, 1, 1];
     this.mShip.setColor(this.mOriginalColor);
     
     this.mWakeSet = new ProjectileSet();
