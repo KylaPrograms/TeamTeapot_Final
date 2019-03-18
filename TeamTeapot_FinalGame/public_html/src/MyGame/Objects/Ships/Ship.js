@@ -49,6 +49,16 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     
     GameObject.call(this, this.mShip);
     
+    this.mLight = new Light();
+    
+    this.mLight.setXPos(0);
+    this.mLight.setYPos(1);
+    this.mLight.setZPos(5);
+    this.mLight.setColor([0.2, 0.2, 0.2, 0.5]);
+    this.mLight.setNear(0);
+    this.mLight.setFar(20);
+    this.mLight.setIntensity(3.5);
+    
     var r = new RigidRectangle(this.getXform(), size[0], size[1]);
     r.setMass(0.7);
     r.setRestitution(1.05);
