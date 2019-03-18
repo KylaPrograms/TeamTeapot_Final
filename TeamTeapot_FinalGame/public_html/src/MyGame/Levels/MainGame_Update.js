@@ -114,7 +114,8 @@ MainGame.prototype.update = function ()
             camShake.updateShakeState();
     }
     
-    this.checkStormShipCollision();
+    this.checkStormShipCollision(this.mHeroTest);
+    this.checkStormShipCollision(this.mPirateTest);
 
     var c = new CollisionInfo();
     if (this.mHeroTest.getRigidBody().collisionTest(this.mPirateTest.getRigidBody(), c))
@@ -158,14 +159,14 @@ MainGame.prototype.update = function ()
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 
-MainGame.prototype.checkStormShipCollision = function()
+MainGame.prototype.checkStormShipCollision = function(ship)
 {
     for (var i = 0; i < this.mStormSet.size(); i++)
     {
         var storm = this.mStormSet.getObjectAt(i);
         
         var maxDistance = storm.getXform().getHeight() * 2;
-        var distance = vec2.distance(this.mHeroTest.getPosition(), storm.getXform().getPosition());
+        var distance = vec2.distance(ship.getPosition(), storm.getXform().getPosition());
         var distanceRatio = (maxDistance - distance) / maxDistance; 
         
         if (distanceRatio > 0)
@@ -173,8 +174,8 @@ MainGame.prototype.checkStormShipCollision = function()
             var speedRatio = storm.getRotSpeed() / 10 + .25;
             var sizeRatio = storm.getSize() / 15 + .25;
 
-            this.mHeroTest.moveTowards(storm.getXform().getPosition(), this.mHeroTest.getTurningDelta() * distanceRatio * speedRatio * sizeRatio);
-            this.mHeroTest.incSpeedBy(this.mHeroTest.getSpeedDelta() + this.mHeroTest.getSpeedDelta() * distanceRatio * speedRatio * sizeRatio);
+            ship.moveTowards(storm.getXform().getPosition(), ship.getTurningDelta() * distanceRatio * speedRatio * sizeRatio);
+            ship.incSpeedBy(ship.getSpeedDelta() + ship.getSpeedDelta() * distanceRatio * speedRatio * sizeRatio);
         }    
     }
     
