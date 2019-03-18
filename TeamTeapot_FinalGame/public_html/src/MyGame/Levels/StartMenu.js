@@ -88,8 +88,8 @@ StartMenu.prototype.initialize = function () {
     this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
     
     this.mPlayButton = new UIButton(this.kPlay,this.playSelect,this,[400,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
-    this.mControlsButton = new UIButton(this.kControls,this.playSelect,this,[400,200],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
-    this.mCreditsButton =  new UIButton(this.kCredits,this.playSelect,this,[400,75],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mControlsButton = new UIButton(this.kControls,this.controlsSelect,this,[400,200],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mCreditsButton =  new UIButton(this.kCredits,this.creditsSelect,this,[400,75],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
