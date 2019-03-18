@@ -50,6 +50,9 @@ function MainGame(mode) {
         this.kCharybdisSpawnChance = 50000;
     
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
+    if (mode === "hard")
+        this.kBGMusic = "assets/Sounds/HardMode.mp3"
+    
     this.kCharybdisMusic = "assets/Sounds/Charybdis.mp3";
     this.kTreasureSFX = "assets/Sounds/TreasurePickUp.mp3";
     
@@ -184,6 +187,8 @@ MainGame.prototype.unloadScene = function ()
 
 MainGame.prototype.initialize = function ()
 {
+    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    
     var jsonParser = new JSONParser(this.kSpawnPosFile);
     jsonParser.parsePosition(this.mSpawnPosSet);
     
