@@ -15,7 +15,7 @@ function Waterfall(spriteTexture, x, y, rot)
 {   
     this.mRenderable = new SpriteAnimateRenderable(spriteTexture);
     this.mRenderable.getXform().setPosition(x, y);
-    this.mRenderable.getXform().setSize(100, 25);
+    this.mRenderable.getXform().setSize(125, 30);
     this.mRenderable.getXform().setRotationInDegree(rot);
     this.mRenderable.setSpriteSequence(
         512,   // offset from top-left

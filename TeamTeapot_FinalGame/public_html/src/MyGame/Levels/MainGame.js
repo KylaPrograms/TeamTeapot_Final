@@ -24,10 +24,11 @@ function MainGame() {
     
     this.kMaxBrightness = 3;
     this.kMinBrightness = 1.25;
-    this.kDarkestTime =  120 * 60; // 2 minutes 
+    this.kDarkestTime =  5000 * 60; // 2 minutes 
     
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     this.kCharybdisMusic = "assets/Sounds/Charybdis.mp3";
+    this.kTreasureSFX = "assets/Sounds/TreasurePickUp.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kShipTex = "assets/Ships.png";
@@ -112,6 +113,7 @@ MainGame.prototype.loadScene = function ()
     
     gEngine.AudioClips.loadAudio(this.kBGMusic);
     gEngine.AudioClips.loadAudio(this.kCharybdisMusic);
+    gEngine.AudioClips.loadAudio(this.kTreasureSFX);
     
     gEngine.TextFileLoader.loadTextFile(this.kSpawnPosFile, gEngine.TextFileLoader.eTextFileType.eJSONFile);
 };
@@ -142,6 +144,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.AudioClips.stopBackgroundAudio();
     gEngine.AudioClips.unloadAudio(this.kBGMusic);
     gEngine.AudioClips.unloadAudio(this.kCharybdisMusic);
+    gEngine.AudioClips.unloadAudio(this.kTreasureSFX);
     
     gEngine.ResourceMap.unloadAsset(this.kSpawnPosFile);
 
