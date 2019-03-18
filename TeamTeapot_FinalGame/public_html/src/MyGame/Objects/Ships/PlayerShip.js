@@ -145,7 +145,6 @@ PlayerShip.prototype.changeSpeed = function(speed)
 
 PlayerShip.prototype.regenHealth = function(incHealth)
 {
-    console.log("Inside Hero's update health");
     if(this.mHealth < this.mMaxHealth) {
         this.mHealth += incHealth ;   
     }
