@@ -34,7 +34,7 @@ SunkenTreasureSet.prototype._createTreasure = function()
     var index = 0;
     while(skip)
     {
-        var index = Math.floor(Math.random() * (this.mSpawnPosSet.length - 1));
+        var index = Math.round(Math.random() * (this.mSpawnPosSet.length - 1));
         console.log(index);
         if(!this.mSpawnPosSet[index].inUse())
         {
