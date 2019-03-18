@@ -23,45 +23,13 @@ WaterfallSet.prototype.createWaterfalls = function()
 {
     for (var side = 0; side < 4; side++)
     {
-        this._createSingularWaterfall(-300, -150, 90);
+        this._createSingularWaterfall(-300, 255, 90);
+        this._createSingularWaterfall(-300, 165, 90);
+        this._createSingularWaterfall(-300, 85, 90);
         this._createSingularWaterfall(-300, 0, 90);
-        this._createSingularWaterfall(-300, 150, 90);
-        
-        var x = 0, y = 0, rot;
-        if (side === 0)
-        {
-            x = -300;
-            rot = 90;
-            
-            
-        }
-        else if (side === 1)
-        {
-            y = 300;
-            rot = 0;
-            
-//            this._createSingularWaterfall(-50, y, rot);
-//            this._createSingularWaterfall(0, y, rot);
-//            this._createSingularWaterfall(50, y, rot);
-        }
-        else if (side === 2)
-        {
-            x = 300;
-            rot = 90;
-            
-//            this._createSingularWaterfall(x, -50, rot);
-//            this._createSingularWaterfall(x, 0, rot);
-//            this._createSingularWaterfall(x, 50, rot);
-        }
-        else if (side === 3)
-        {
-            y = -300;
-            rot = 180;
-            
-//            this._createSingularWaterfall(-50, y, rot);
-//            this._createSingularWaterfall(0, y, rot);
-//            this._createSingularWaterfall(50, y, rot);
-        }
+        this._createSingularWaterfall(-300, -85, 90);
+        this._createSingularWaterfall(-300, -165, 90);
+        this._createSingularWaterfall(-300, -255, 90);
     }
 };
 
