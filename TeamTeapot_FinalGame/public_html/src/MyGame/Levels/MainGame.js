@@ -22,6 +22,10 @@ function MainGame() {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
     
+    this.kMaxBrightness = 3;
+    this.kMinBrightness = 1.25;
+    this.kDarkestTime =  120 * 60; // 2 minutes 
+    
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
@@ -68,6 +72,8 @@ function MainGame() {
     this.mTreasureUI = null;
     
     this.mGameState = null;
+    
+    this.mElapsedTime = 0;
 }
 gEngine.Core.inheritPrototype(MainGame, Scene);
 
@@ -129,7 +135,7 @@ MainGame.prototype.unloadScene = function ()
 MainGame.prototype.initialize = function ()
 {
     //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
-    gEngine.DefaultResources.setGlobalAmbientIntensity(3);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
     
 //    this.mAmbientLight = [];
 //    this.mAmbientLight[0] = 0.8;

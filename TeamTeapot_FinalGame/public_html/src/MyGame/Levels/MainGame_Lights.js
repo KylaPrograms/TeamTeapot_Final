@@ -61,3 +61,16 @@ MainGame.prototype.updatePirateLight = function(pirate)
     this.mGlobalLightSet.getLightAt(1).setXPos(piratePos[0]);
     this.mGlobalLightSet.getLightAt(1).setYPos(piratePos[1]);
 };
+
+MainGame.prototype.updateAmbientLighting = function()
+{
+    var newLight = this.kMaxBrightness - (this.kMaxBrightness - this.kMinBrightness) * this.mElapsedTime / this.kDarkestTime;
+    
+    console.log(this.mElapsedTime);
+    
+    newLight = Math.max(newLight, this.kMinBrightness)
+    
+    
+    
+    gEngine.DefaultResources.setGlobalAmbientIntensity(newLight);
+};
