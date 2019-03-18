@@ -17,7 +17,7 @@ function StartMenu() {
     this.kUIButton = "assets/UI/button.png";
     this.kGameTitle = "assets/StormySeas_Title.png";
     this.kPlay = "assets/Play.png";
-    this.kControls = "assets/Controls.png";
+    this.kControls = "assets/ControlsButton.png";
     this.kCredits = "assets/CreditsButton.png";
     
     this.kBG = "assets/NightOcean2.png";

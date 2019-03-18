@@ -146,10 +146,10 @@ PlayerShip.prototype.changeSpeed = function(speed)
 PlayerShip.prototype.regenHealth = function(incHealth)
 {
     if(this.mHealth < this.mMaxHealth) {
-        this.mHealth += incHealth ;   
+        this.mHealth += incHealth;   
     }
-    if (this.mHealth > this.mMaxHealth) {
-        this.mHealth = this.mMaxHealth;
+    if(this.mHealth > this.mMaxHealth) {
+        this.mHealth = this.mMaxHealth;   
     }
 };
 
