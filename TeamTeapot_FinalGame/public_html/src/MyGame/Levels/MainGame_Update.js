@@ -48,7 +48,7 @@ MainGame.prototype.update = function ()
     this.mCamera.update();
     this.mMiniMap.update();
     
-    this.mStormSet.update();
+    this.mStormSet.update(this.mMiniMap);
     
     // Spawn the storms
     if(this.mAutoSpawnTimer <= 0)
