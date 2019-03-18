@@ -158,7 +158,7 @@ MainGame.prototype.initialize = function ()
     var jsonParser = new JSONParser(this.kSpawnPosFile);
     jsonParser.parsePosition(this.mSpawnPosSet);
     
-    //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
     
 //    this.mAmbientLight = [];
@@ -227,7 +227,6 @@ MainGame.prototype.initialize = function ()
     
     // Spawn the treasure
     this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
-    console.log(this.mSpawnPosSet);
     
     this.mHealthBarBorder = new UISprite(this.kHealthBarBorder, [125, 575], [205, 25], [0, 1, 0, 1]);
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [125, 575], [200, 20], 0);

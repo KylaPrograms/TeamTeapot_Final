@@ -41,7 +41,7 @@ MainGame.prototype.update = function ()
     {
         this.mHeroTest.addTreasure();
         gEngine.AudioClips.playACue(this.kTreasureSFX);
-        this.mHeroTest.regenHealth(20);
+        this.mHeroTest.regenHealth(15);
         this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
         this.mHealthBar.update();
         this.mGameState.addTreasure();
