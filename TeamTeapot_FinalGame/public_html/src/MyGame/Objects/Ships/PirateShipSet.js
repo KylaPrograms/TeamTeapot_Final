@@ -115,7 +115,7 @@ PirateShipSet.prototype._createShip = function(left, right, bottom, top)
     }
     
     var pirate = new PirateShip(this.mPirateInfo[0], this.mPirateInfo[1], this.mPirateInfo[2],
-                                this.mPirateInfo[3], this.mPirateInfo[4]);
+                                this.mPirateInfo[3], this.mPirateInfo[4], this.mPirateInfo[5]);
     pirate.getXform().setPosition(xSpawn, ySpawn);
     this.addToSet(pirate);
 };

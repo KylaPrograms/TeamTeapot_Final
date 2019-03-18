@@ -7,7 +7,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function GameOver() 
+function GameOver(deathMessage) 
 {    
     //Camera to view the scene
     this.mCamera = null;
@@ -16,7 +16,7 @@ function GameOver()
     this.mDeathMessage = null;
     this.mMessage = null;
     
-    this.kDeathMessage = "YOOOOOOOOOOOo";
+    this.kDeathMessage = deathMessage;
 }
 gEngine.Core.inheritPrototype(GameOver, Scene);
 
@@ -71,7 +71,7 @@ GameOver.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     this.mCursor.draw(this.mCamera);
     this.mOverMessage.draw(this.mCamera);
-    //this.mDeathMessage.draw(this.mCamera);
+    this.mDeathMessage.draw(this.mCamera);
     this.mMessage.draw(this.mCamera);
 };
 
