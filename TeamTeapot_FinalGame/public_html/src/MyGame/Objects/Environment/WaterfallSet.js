@@ -23,35 +23,37 @@ WaterfallSet.prototype.createWaterfalls = function()
 {
     for (var side = 0; side < 4; side++)
     {
-        this._createSingularWaterfall(-300, 265, 90);
-        this._createSingularWaterfall(-300, 175, 90);
-        this._createSingularWaterfall(-300, 75, 90);
+        this._createSingularWaterfall(-300, 255, 90);
+        this._createSingularWaterfall(-300, 165, 90);
+        this._createSingularWaterfall(-300, 85, 90);
         this._createSingularWaterfall(-300, 0, 90);
-        this._createSingularWaterfall(-300, -75, 90);
-        this._createSingularWaterfall(-300, -175, 90);
-        this._createSingularWaterfall(-300, -265, 90);
+        this._createSingularWaterfall(-300, -85, 90);
+        this._createSingularWaterfall(-300, -165, 90);
+        this._createSingularWaterfall(-300, -255, 90);
         
-        this._createSingularWaterfall(-150, 300, 0);
+        this._createSingularWaterfall(255, 300, 0);
+        this._createSingularWaterfall(165, 300, 0);
+        this._createSingularWaterfall(85, 300, 0);
         this._createSingularWaterfall(0, 300, 0);
-        this._createSingularWaterfall(150, 300, 0);
-        this._createSingularWaterfall(-150, 300, 0);
-        this._createSingularWaterfall(0, 300, 0);
-        this._createSingularWaterfall(150, 300, 0);
+        this._createSingularWaterfall(-85, 300, 0);
+        this._createSingularWaterfall(-165, 300, 0);
+        this._createSingularWaterfall(-255, 300, 0);
         
-        this._createSingularWaterfall(300, -150, 270);
+        this._createSingularWaterfall(300, 255, 270);
+        this._createSingularWaterfall(300, 165, 270);
+        this._createSingularWaterfall(300, 85, 270);
         this._createSingularWaterfall(300, 0, 270);
-        this._createSingularWaterfall(300, 150, 270);
-        this._createSingularWaterfall(300, -150, 270);
-        this._createSingularWaterfall(300, 0, 270);
-        this._createSingularWaterfall(300, 150, 270);
+        this._createSingularWaterfall(300, -85, 270);
+        this._createSingularWaterfall(300, -165, 270);
+        this._createSingularWaterfall(300, -255, 270);
         
-        this._createSingularWaterfall(-150, -300, 180);
+        this._createSingularWaterfall(255, -300, 180);
+        this._createSingularWaterfall(165, -300, 180);
+        this._createSingularWaterfall(85, -300, 180);
         this._createSingularWaterfall(0, -300, 180);
-        this._createSingularWaterfall(150, -300, 180);
-        this._createSingularWaterfall(-150, -300, 180);
-        this._createSingularWaterfall(0, -300, 180);
-        this._createSingularWaterfall(150, -300, 180);
-
+        this._createSingularWaterfall(-85, -300, 180);
+        this._createSingularWaterfall(-165, -300, 180);
+        this._createSingularWaterfall(-255, -300, 180);
     }
 };
 
