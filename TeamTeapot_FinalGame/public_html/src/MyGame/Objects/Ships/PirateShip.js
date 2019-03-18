@@ -19,7 +19,6 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     //GameObject.call(this, this.mPirateShip);
     
     this.kSpeedDelta = 0.05;
-    this.mOriginalColor = [0.75, 0, 0, 1];
     
     Ship.call(this, spriteTexture, collisionTexture, wakeTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02);
     
@@ -36,6 +35,8 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     
     this.mShip.setElementPixelPositions(518, 916, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(13, 64, 0, 128);
+    this.kInvincibleTime = 60;
+    this.mHitColor = [1.0, 0, 0, 1];
     
     this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([1, 0, 0, 1.0]);
@@ -121,5 +122,5 @@ PirateShip.prototype.getCannonballSet = function()
 
 PirateShip.prototype.isDead = function()
 {
-    return this.getHealth() <= 0;
+    return (!this.mInvincible && this.getHealth() <= 0);
 };
