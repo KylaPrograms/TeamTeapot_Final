@@ -27,6 +27,7 @@ function MainGame() {
     this.kDarkestTime =  120 * 60; // 2 minutes 
     
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
+    this.kCharybdisMusic = "assets/Sounds/Charybdis.mp3";
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kShipTex = "assets/Ships.png";
@@ -110,6 +111,7 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kTreasureTex);
     
     gEngine.AudioClips.loadAudio(this.kBGMusic);
+    gEngine.AudioClips.loadAudio(this.kCharybdisMusic);
     
     gEngine.TextFileLoader.loadTextFile(this.kSpawnPosFile, gEngine.TextFileLoader.eTextFileType.eJSONFile);
 };
@@ -139,6 +141,7 @@ MainGame.prototype.unloadScene = function ()
     
     gEngine.AudioClips.stopBackgroundAudio();
     gEngine.AudioClips.unloadAudio(this.kBGMusic);
+    gEngine.AudioClips.unloadAudio(this.kCharybdisMusic);
     
     gEngine.ResourceMap.unloadAsset(this.kSpawnPosFile);
 
@@ -158,7 +161,7 @@ MainGame.prototype.initialize = function ()
     var jsonParser = new JSONParser(this.kSpawnPosFile);
     jsonParser.parsePosition(this.mSpawnPosSet);
     
-    //gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
     gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
     
 //    this.mAmbientLight = [];

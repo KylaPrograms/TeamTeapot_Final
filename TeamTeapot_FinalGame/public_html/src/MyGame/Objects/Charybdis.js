@@ -14,8 +14,9 @@
 
 function Charybdis(spriteTexture, atX, atY)
 {       
-    this.mIsActive = true;
+    this.mIsActive = false;
     this.mIsShrinking = false;
+    this.mJustFinished = false;
     
     Storm.call(this, spriteTexture, atX, atY);
     
@@ -24,17 +25,22 @@ function Charybdis(spriteTexture, atX, atY)
     this.mYdelta = 0;
     this.kRot1 = 2.5;
     this.kSize = 50;
-    this.mTotalLifeSpan = 10 * 60;
+    this.mTotalLifeSpan = 20 * 60;
 }
 
 gEngine.Core.inheritPrototype(Charybdis, Storm);
 
 Charybdis.prototype.update = function () 
 {
+    
     if (this.mIsActive)
     {
-        if (this.mLifespan < this.mTotalLifeSpan)
+        if (this.mLifespan <= this.mTotalLifeSpan)
+        {
+            this.kRot1 += 2.5;
             Storm.prototype.update.call(this);
+            this.kRot1 -= 2.5;
+        }
         else
         {
             this.mIsActive = false;
@@ -54,7 +60,7 @@ Charybdis.prototype.draw = function(camera)
 
 Charybdis.prototype.shrink = function()
 {
-    console.log(this.mLifespan);
+    
     
     // reset lifespan
     if (this.mLifespan > 0)
@@ -65,6 +71,7 @@ Charybdis.prototype.shrink = function()
     {
         this.mLifespan = 0;
         this.mIsShrinking = false;
+        this.mJustFinished = true;
     }
         
     
@@ -73,28 +80,31 @@ Charybdis.prototype.shrink = function()
     this.mStorm.getXform().setSize(newSize, newSize);
     this.mMapRenderable.getXform().setSize(newSize, newSize);
     
-    this.mStorm.getXform().incRotationByDegree(this.kRot1 * ratio);
+    this.mStorm.getXform().incRotationByDegree((this.kRot1 + 2.5) * ratio);
     
-}
+};
 
 Charybdis.prototype.checkIfCanSpawn = function()
 {
-    return !this.mIsActive && !this.mIsShrinking && (Math.random() * 1 <= 1);
-}
+    var rand = Math.random() * 100;
+    
+//    if (!this.mIsActive)
+//        console.log(rand);
+    return !this.mIsActive && !this.mIsShrinking && (rand <= 1);
+};
 
 Charybdis.prototype.spawn = function(player)
-{
-    var pXform = player.getXform();
-    var pPos = pXform.getPosition();
-    var pDir = player.getCurrentFrontDir(); 
-    
+{    
     var distanceVec = [0, 30];
     var otherPos = player.getCurrentFrontDir();
     vec2.add(distanceVec, distanceVec, player.getXform().getPosition());
     var theta = Math.atan2(otherPos[1], otherPos[0]) - Math.PI * Math.random();
     
-    vec2.rotateWRT(distanceVec, distanceVec, theta, player.getXform().getPosition())
+    vec2.rotateWRT(distanceVec, distanceVec, theta, player.getXform().getPosition());
     this.getXform().setPosition(distanceVec[0], distanceVec[1]);
+    this.getXform().setSize(0,0);
+    this.mGrowStorm = true;
     
+    this.mJustFinished = false;
     this.mIsActive = true;
-}
+};

@@ -32,9 +32,17 @@ MainGame.prototype.update = function ()
     this.mCharybdis.update(this.mHeroTest);
     if (this.mCharybdis.checkIfCanSpawn())
     {
+        gEngine.AudioClips.playBackgroundAudio(this.kCharybdisMusic);
+        console.log(this.mStormSet.size());
         this.mCharybdis.spawn(this.mHeroTest);
-        this.mStormSet.addToSet(this.mCharybdis);
+        //this.mStormSet.addToSet(this.mCharybdis);
     }
+    else if (this.mCharybdis.mJustFinished)
+    {
+        gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+        this.mCharybdis.mJustFinished = false;
+    }
+         
     
     this.mGameState.update();
     
@@ -78,6 +86,7 @@ MainGame.prototype.update = function ()
             camShake.updateShakeState();
     }
     
+    this.checkCharybdisCollision();
     this.checkAllStormShipCollisions();
     this.checkPirateCollisionsWithPlayer();
     this.checkPirateCollisionsWithPirate();
@@ -114,6 +123,27 @@ MainGame.prototype.update = function ()
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 
+MainGame.prototype.checkCharybdisCollision = function()
+{
+    var result = false;
+    
+    var maxDistance = this.mCharybdis.getXform().getHeight();
+    var distance = vec2.distance(this.mHeroTest.getPosition(), this.mCharybdis.getPosition());
+    
+    var distanceRatio = (maxDistance - distance) / maxDistance;
+    
+    console.log(distanceRatio);
+    
+    // kill player if too close
+    if (distanceRatio > .75 && distanceRatio < 1)
+    {
+        this.mHeroTest.setHealth(0);
+        result = false;
+    }
+    
+    return result;
+}
+
 MainGame.prototype.checkAllStormShipCollisions = function()
 {
     this.checkStormShipCollision(this.mHeroTest);
@@ -136,7 +166,7 @@ MainGame.prototype.checkStormShipCollision = function(ship)
         var distance = vec2.distance(ship.getPosition(), storm.getXform().getPosition());
         var distanceRatio = (maxDistance - distance) / maxDistance; 
         
-        if (distanceRatio > 0)
+        if (distanceRatio > 0 && distanceRatio <= 1)
         {   
             var speedRatio = storm.getRotSpeed() / 10 + .25;
             var sizeRatio = storm.getSize() / 15 + .25;
