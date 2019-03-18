@@ -196,7 +196,8 @@ MainGame.prototype.initialize = function ()
 
     this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kChickenTex, this.kAngryAnim, 60);
     this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim]);
-        this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.kTreasureSpawnFile);
+    
+    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
     
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHeroTest);
