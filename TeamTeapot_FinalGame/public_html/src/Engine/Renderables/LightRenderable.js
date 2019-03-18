@@ -61,6 +61,19 @@ LightRenderable.prototype.getLightAt = function (index) {
     return this.mLights[index];
 };
 
+LightRenderable.prototype.hasLight = function (l) {
+    var index = -1;
+    for (var i = 0; i < this.mLights.length; i++)
+    {
+        if (this.mLights[i] === l)
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
 /**
  * Add light to LightRenderable
  * @param {type} l Light to add
@@ -70,6 +83,27 @@ LightRenderable.prototype.getLightAt = function (index) {
 LightRenderable.prototype.addLight = function (l) {
     this.mLights.push(l);
 };
+
+LightRenderable.prototype.removeLight = function(l) {
+    for (var i = 0; i < this.mSet.length; i++)
+    {
+        if (this.mLights[i] === l)
+        {
+            this.mLights.splice(i, 1);
+            break;
+        }
+            
+    }
+}
+
+LightRenderable.prototype.removeLightAt = function(index) {
+    this.mLights.splice(index,1);
+}
+
+LightRenderable.prototype.removeAllLights = function()
+{
+    this.mLights = [];
+}
 //--- end of Public Methods
 
 //</editor-fold>

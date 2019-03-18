@@ -18,6 +18,8 @@ Ship.prototype.update = function()
     GameObject.prototype.update.call(this);
     this.updateInvincibility();
     
+    this.mLight.set2DPosition(this.getPosition());
+    
     this.mWakeSet.update();
     if(this.mWakeTimer >= 20)
     {

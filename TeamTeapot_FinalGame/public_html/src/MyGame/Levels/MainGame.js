@@ -155,6 +155,12 @@ MainGame.prototype.initialize = function ()
 //    this.mAmbientLight[1] = 0.8;
 //    this.mAmbientLight[2] = 0.8;
     
+
+    
+    
+    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
+    this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kChickenTex, this.kAngryAnim]);
+    
     this._initializeLights();
     
     // Set up the main camera
@@ -196,9 +202,7 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
-
-    this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kChickenTex, this.kAngryAnim]);
+    
     
     this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
     

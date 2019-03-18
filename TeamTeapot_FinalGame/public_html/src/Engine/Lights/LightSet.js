@@ -44,3 +44,16 @@ LightSet.prototype.getLightAt = function (index) {
 LightSet.prototype.addToSet = function (light) {
     this.mSet.push(light);
 };
+
+LightSet.prototype.removeFromSet = function (light) 
+{
+    for (var i = 0; i < this.mSet.length; i++)
+    {
+        if (this.mSet[i] === light)
+        {
+            this.mSet.splice(i, 1);
+            break;
+        }
+            
+    }
+}
