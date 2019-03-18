@@ -29,7 +29,20 @@ MainGame.prototype.update = function ()
     
     this.updatePirateLight(this.mPirateTest);
     this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
-    var shipsOnMainCam = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    this.mCharybdis.update();
+    if (this.mCharybdis.checkIfCanSpawn())
+    {
+        gEngine.AudioClips.playBackgroundAudio(this.kCharybdisMusic);
+        console.log(this.mStormSet.size());
+        this.mCharybdis.spawn(this.mHeroTest);
+        //this.mStormSet.addToSet(this.mCharybdis);
+    }
+    else if (this.mCharybdis.mJustFinished)
+    {
+        gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+        this.mCharybdis.mJustFinished = false;
+    }
+         
     
     this.mGameState.update();
     
@@ -74,6 +87,7 @@ MainGame.prototype.update = function ()
             camShake.updateShakeState();
     }
     
+    this.checkCharybdisCollision();
     this.checkAllStormShipCollisions();
     this.checkPirateCollisionsWithPlayer();
 
@@ -109,6 +123,33 @@ MainGame.prototype.update = function ()
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 
+
+
+MainGame.prototype.checkCharybdisCollision = function()
+{
+    var OnScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    OnScreenShips.unshift(this.mHeroTest);
+    
+   for (var i = 0; i < OnScreenShips.length; i++)
+   {
+       var ship = OnScreenShips[i];
+       
+    var maxDistance = this.mCharybdis.getXform().getHeight();
+    var distance = vec2.distance(ship.getPosition(), this.mCharybdis.getPosition());
+    
+    var distanceRatio = (maxDistance - distance) / maxDistance;
+    
+    console.log(distanceRatio);
+    
+    // kill player if too close
+    if (distanceRatio > .75 && distanceRatio < 1)
+    {
+        ship.setHealth(0);
+        result = false;
+    }
+   }
+}
+
 MainGame.prototype.checkAllStormShipCollisions = function()
 {
     this.checkStormShipCollision(this.mHeroTest);
@@ -132,7 +173,7 @@ MainGame.prototype.checkStormShipCollision = function(ship)
         var distance = vec2.distance(ship.getPosition(), storm.getXform().getPosition());
         var distanceRatio = (maxDistance - distance) / maxDistance; 
         
-        if (distanceRatio > 0)
+        if (distanceRatio > 0 && distanceRatio <= 1)
         {   
             var speedRatio = storm.getRotSpeed() / 10 + .25;
             var sizeRatio = storm.getSize() / 15 + .25;
