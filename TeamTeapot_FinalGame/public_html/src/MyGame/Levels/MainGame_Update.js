@@ -29,7 +29,7 @@ MainGame.prototype.update = function ()
     
     this.updatePirateLight(this.mPirateTest);
     this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
-    this.mCharybdis.update(this.mHeroTest);
+    this.mCharybdis.update();
     if (this.mCharybdis.checkIfCanSpawn())
     {
         gEngine.AudioClips.playBackgroundAudio(this.kCharybdisMusic);
@@ -123,12 +123,19 @@ MainGame.prototype.update = function ()
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 
+
+
 MainGame.prototype.checkCharybdisCollision = function()
 {
-    var result = false;
+    var OnScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    OnScreenShips.unshift(this.mHeroTest);
     
+   for (var i = 0; i < OnScreenShips.length; i++)
+   {
+       var ship = OnScreenShips[i];
+       
     var maxDistance = this.mCharybdis.getXform().getHeight();
-    var distance = vec2.distance(this.mHeroTest.getPosition(), this.mCharybdis.getPosition());
+    var distance = vec2.distance(ship.getPosition(), this.mCharybdis.getPosition());
     
     var distanceRatio = (maxDistance - distance) / maxDistance;
     
@@ -137,11 +144,10 @@ MainGame.prototype.checkCharybdisCollision = function()
     // kill player if too close
     if (distanceRatio > .75 && distanceRatio < 1)
     {
-        this.mHeroTest.setHealth(0);
+        ship.setHealth(0);
         result = false;
     }
-    
-    return result;
+   }
 }
 
 MainGame.prototype.checkAllStormShipCollisions = function()
