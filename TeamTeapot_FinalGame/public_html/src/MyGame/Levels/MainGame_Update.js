@@ -19,6 +19,8 @@ MainGame.prototype.update = function ()
     this.mElapsedTime++;
     this.updateAmbientLighting();
     
+    this.mWaterfallSet.update();
+    
     this.mHeroTest.update();
     if (!this.mHeroTest.getWithinBounds(this.mWorldBounds))
     {
