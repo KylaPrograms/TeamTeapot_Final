@@ -65,7 +65,7 @@ function MainGame() {
     this.mWorldWCxRange = this.mWorldBounds[1]-this.mWorldBounds[0];
     this.mWorldWCyRange = this.mWorldBounds[3]-this.mWorldBounds[2];
     
-    this.mTempBG = null;
+    this.mBG = null;
     this.mWaterfallSet = null;
     this.mSpaceBG = null;
     this.mHero = null;
@@ -194,13 +194,13 @@ MainGame.prototype.initialize = function ()
     this.mUIBG = new UISprite(this.kUIBG, [130, 550], [250, 100], uvs);
     
     // Create the ocean background
-    this.mTempBG = new IllumRenderable(this.kOcean, this.kOceanNormal);
-    this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
-    this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
+    this.mBG = new IllumRenderable(this.kOcean, this.kOceanNormal);
+    this.mBG.setElementPixelPositions(0, 4096, 0, 4096);
+    this.mBG.getXform().setPosition(0, 0);
+    this.mBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
 
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
-        this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+        this.mBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
     
     this.mWaterfallSet = new WaterfallSet(this.kWaterfallTex);
@@ -245,7 +245,7 @@ MainGame.prototype.draw = function ()
     //Draw for the main camera
     this.mCamera.setupViewProjection();
     this.mSpaceBG.draw(this.mCamera);
-    this.mTempBG.draw(this.mCamera);
+    this.mBG.draw(this.mCamera);
     this.mWaterfallSet.draw(this.mCamera);
     this.mPirateSet.draw(this.mCamera);
     this.mTreasureSet.draw(this.mCamera);
