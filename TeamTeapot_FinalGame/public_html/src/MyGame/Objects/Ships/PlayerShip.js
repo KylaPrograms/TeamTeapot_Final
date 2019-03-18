@@ -101,14 +101,6 @@ PlayerShip.prototype.update = function()
         this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
     }
     
-    // temp code
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
-    {
-        this.hit();
-    }
-    
-    
-    
     // set ship velocity in new direction
     var theta = Math.atan2(dir[1], dir[0]);
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));

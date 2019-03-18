@@ -31,6 +31,7 @@ function StartMenu() {
     this.mGameTitle = null;
     
     this.mPlayButton = null;
+    
     this.mControlsButton = null;
     this.mCreditsButton = null;
     
@@ -57,7 +58,7 @@ StartMenu.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kCredits);
     
     if(this.LevelSelect==="Play"){
-        gEngine.Core.startScene(new MainGame());
+        gEngine.Core.startScene(new PlayMenu());
     }
     else if(this.LevelSelect==="Controls"){
         gEngine.Core.startScene(new Controls());

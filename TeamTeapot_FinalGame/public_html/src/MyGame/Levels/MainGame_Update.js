@@ -30,12 +30,11 @@ MainGame.prototype.update = function ()
     this.updatePirateLight();
     this.mPirateSet.update(this.mMiniMap, this.mHero.getPosition());
     this.mCharybdis.update();
-    if (this.mCharybdis.checkIfCanSpawn())
+    if (this.mCharybdis.checkIfCanSpawn(this.kCharybdisSpawnChance))
     {
         gEngine.AudioClips.playBackgroundAudio(this.kCharybdisMusic);
         console.log(this.mStormSet.size());
         this.mCharybdis.spawn(this.mHero);
-        //this.mStormSet.addToSet(this.mCharybdis);
     }
     else if (this.mCharybdis.mJustFinished)
     {
@@ -54,11 +53,13 @@ MainGame.prototype.update = function ()
     {
         this.mHero.addTreasure();
         gEngine.AudioClips.playACue(this.kTreasureSFX);
-        this.mHero.regenHealth(10);
+        this.mHero.regenHealth(this.kRegenRate);
         this.mHealthBar.setCurrentHP(this.mHero.getHealth());
         this.mHealthBar.update();
         this.mGameState.addTreasure();
         this.mTreasureUI.fillSlot();
+        this.mPirateSet.incSpawnRateBy(-this.kSpawnRate / 2 / 6);
+        console.log("Decrementing Spawn RAte: " + this.mPirateSet.mSpawnRate);
     }
     
     this.mTreasureSet.update();
@@ -120,7 +121,7 @@ MainGame.prototype.checkCharybdisCollision = function()
     
     var distanceRatio = (maxDistance - distance) / maxDistance;
     
-    console.log(distanceRatio);
+    //console.log(distanceRatio);
     
     // kill player if too close
     if (distanceRatio > .75 && distanceRatio < 1)

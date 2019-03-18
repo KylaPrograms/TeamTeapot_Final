@@ -39,12 +39,12 @@ MainGame.prototype.updatePirateLight = function()
 {
     var OnScreenPirates = this.mPirateSet.getShipsOnCamera(this.mCamera);
 
-    this.mTempBG.removeAllLights();
-    this.mTempBG.addLight(this.mHero.mLight);
+    this.mBG.removeAllLights();
+    this.mBG.addLight(this.mHero.mLight);
     for (var i = 0; i < this.mPirateSet.size(); i++)
     {
         var light = this.mPirateSet.getObjectAt(i).mLight
-        this.mTempBG.addLight(light);
+        this.mBG.addLight(light);
     }
 
 };
