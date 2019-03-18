@@ -15,9 +15,12 @@
 
 function Credits() {
     this.kUIButton = "assets/UI/button.png";
+    this.kCredits = "assets/Credits.png";
     
     // The camera to view the scene
     this.mCamera = null;
+    
+    this.mCredits = null;
     
     this.mBackButton = null;
     
@@ -28,10 +31,12 @@ gEngine.Core.inheritPrototype(Credits, Scene);
 
 Credits.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kUIButton);
+    gEngine.Textures.loadTexture(this.kCredits);
 };
 
 Credits.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kUIButton);
+    gEngine.Textures.unloadTexture(this.kCredits);
     
     gEngine.Core.startScene(new StartMenu());
 };
@@ -45,9 +50,10 @@ Credits.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1);
+            
+    this.mCredits = new UISprite(this.kCredits, [400, 300], [610, 610], [0, 1, 0, 1]);
     
-    this.mBackButton = new UIButton(this.kUIButton,this.backSelect,this,[400,300],[600,100],"Back",8,[1,1,1,1],[0,0,0,1]);
+    this.mBackButton = new UIButton(this.kUIButton,this.backSelect,this,[100,575],[200,50],"Back",4,[1,1,1,1],[0,0,0,1]);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -57,6 +63,8 @@ Credits.prototype.draw = function () {
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
     
     this.mCamera.setupViewProjection();
+    
+    this.mCredits.draw(this.mCamera);
     this.mBackButton.draw(this.mCamera);
 };
 

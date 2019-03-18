@@ -59,7 +59,6 @@ StartMenu.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1);
     
     var uvs = [(15/1024), (995/1024), (330/1024), (690/1024)];
     this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
