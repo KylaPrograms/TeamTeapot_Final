@@ -15,18 +15,25 @@
 
 function PlayMenu() {
     this.kUIButton = "assets/UI/button.png";
+    this.kCreditsBG = "assets/CreditsBG.png";
     this.kEasy = "assets/EasyMode.png";
     this.kNormal = "assets/NormalMode.png";
     this.kHard = "assets/HardMode.png";
     this.kEasyDesc = "assets/EasyDescription.png";
+    this.kNormalDesc = "assets/NormalDescription.png";
+    this.kHardDesc = "assets/HardDescription.png";
+    this.kGoalDesc = "assets/Goal.png";
     
     this.kBG = "assets/NightOcean2.png";
-    this.kBack = "assets/MenuButton.png";
+    this.kGem = "assets/Gems.png";
+    this.kBack = "assets/Back.png";
     
     // The camera to view the scene
     this.mCamera = null;
     
     this.mBG = null;
+    this.mGem = null;
+    this.mCreditsBG = null;
     
     this.mPlayButtonEasy = null;
     this.mPlayButtonNormal = null;
@@ -34,6 +41,9 @@ function PlayMenu() {
     this.mBackButton = null;
     
     this.mEasyDescription = null;
+    this.mNormalDescription = null;
+    this.mHardDescription = null;
+    this.mGoalDescription = null;
     
     this.LevelSelect = null;
 }
@@ -43,8 +53,13 @@ gEngine.Core.inheritPrototype(PlayMenu, Scene);
 PlayMenu.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kUIButton);
     gEngine.Textures.loadTexture(this.kBG);
+    gEngine.Textures.loadTexture(this.kGem);
+    gEngine.Textures.loadTexture(this.kCreditsBG);
     gEngine.Textures.loadTexture(this.kEasy);
     gEngine.Textures.loadTexture(this.kEasyDesc);
+    gEngine.Textures.loadTexture(this.kNormalDesc);
+    gEngine.Textures.loadTexture(this.kHardDesc);
+    gEngine.Textures.loadTexture(this.kGoalDesc);
     gEngine.Textures.loadTexture(this.kNormal);
     gEngine.Textures.loadTexture(this.kHard);
     gEngine.Textures.loadTexture(this.kBack);
@@ -53,8 +68,13 @@ PlayMenu.prototype.loadScene = function () {
 PlayMenu.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kUIButton);
     gEngine.Textures.unloadTexture(this.kBG);
+    gEngine.Textures.unloadTexture(this.kGem);
+    gEngine.Textures.unloadTexture(this.kCreditsBG);
     gEngine.Textures.unloadTexture(this.kEasy);
     gEngine.Textures.unloadTexture(this.kEasyDesc);
+    gEngine.Textures.unloadTexture(this.kNormalDesc);
+    gEngine.Textures.unloadTexture(this.kHardDesc);
+    gEngine.Textures.unloadTexture(this.kGoalDesc);
     gEngine.Textures.unloadTexture(this.kNormal);
     gEngine.Textures.unloadTexture(this.kHard);
     gEngine.Textures.unloadTexture(this.kBack);
@@ -83,26 +103,26 @@ PlayMenu.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
             
-    this.mBG = new SpriteRenderable(this.kBG);
-    this.mBG.setElementPixelPositions(0, 2048, 0, 2048);
-    this.mBG.getXform().setPosition(0, 0);
-    this.mBG.getXform().setSize(100, 75);
+    var uvs = [0, 2048, 0, 2048];
+    this.mBG = new UISprite(this.kBG, [400, 300], [802, 602], [0, 1, 0, 1]);
     
-    this.mEasyDescription = new SpriteRenderable(this.kEasyDesc);
-    this.mEasyDescription.setElementPixelPositions(84,971, 216, 343);
-    this.mEasyDescription.getXform().setPosition(-31, 8);
-    this.mEasyDescription.getXform().setSize(28,4);
+    this.mGem = new UISprite(this.kGem, [400, 275], [75, 75], [0.5, 1, 0, 1]);
     
-    gEngine.DefaultResources.setGlobalAmbientIntensity(3);
-    
-    var uvs = [(15/1024), (995/1024), (330/1024), (690/1024)];
-    //this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
+    this.mEasyDescription = new UISprite(this.kEasyDesc, [150, 350], [250, 125], [0, 1, 0, 1]);
+    this.mEasyDescription.getRenderable().setColor([1,1,1,1]);
+    this.mNormalDescription = new UISprite(this.kNormalDesc, [400, 350], [250, 125], [0, 1, 0, 1]);
+    this.mNormalDescription.getRenderable().setColor([1,1,1,1]);
+    this.mHardDescription = new UISprite(this.kHardDesc, [650, 350], [250, 125], [0, 1, 0, 1]);
+    this.mHardDescription.getRenderable().setColor([1,1,1,1]);
+    this.mGoalDescription = new UISprite(this.kGoalDesc, [400, 100], [600, 600], [0, 1, 0, 1]);
+    this.mGoalDescription.getRenderable().setColor([1,1,1,1]);
+    this.mCreditsBG = new UISprite(this.kCreditsBG, [400, 300], [805, 605], [0, 1, 0, 1]);
     
     this.mPlayButtonEasy = new UIButton(this.kEasy,this.playSelectEasy,this,[150,450],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     this.mPlayButtonNormal = new UIButton(this.kNormal,this.playSelectNormal,this,[400,450],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     this.mPlayButtonHard = new UIButton(this.kHard,this.playSelectHard,this,[650,450],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     
-    this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[100,50],[200,100],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[50,25],[100,50],"",0,[1,1,1,1],[0,0,0,1]);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -113,8 +133,12 @@ PlayMenu.prototype.draw = function () {
     
     this.mCamera.setupViewProjection();
     this.mBG.draw(this.mCamera);
+    this.mCreditsBG.draw(this.mCamera);
+    this.mGem.draw(this.mCamera);
     this.mEasyDescription.draw(this.mCamera);
-    //this.mGameTitle.draw(this.mCamera);
+    this.mNormalDescription.draw(this.mCamera);
+    this.mHardDescription.draw(this.mCamera);
+    this.mGoalDescription.draw(this.mCamera);
     
     this.mPlayButtonEasy.draw(this.mCamera);
     this.mPlayButtonNormal.draw(this.mCamera);

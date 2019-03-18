@@ -77,16 +77,12 @@ StartMenu.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
-            
-    this.mBG = new SpriteRenderable(this.kBG);
-    this.mBG.setElementPixelPositions(0, 2048, 0, 2048);
-    this.mBG.getXform().setPosition(0, 0);
-    this.mBG.getXform().setSize(100, 75);
-    
-    gEngine.DefaultResources.setGlobalAmbientIntensity(3);
+       
+    var uvs = [0, 2048, 0, 2048];
+    this.mBG = new UISprite(this.kBG, [400, 300], [802, 602], [0, 1, 0, 1]);
     
     var uvs = [(15/1024), (995/1024), (330/1024), (690/1024)];
-    this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
+    this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [525, 193], uvs);
     
     this.mPlayButton = new UIButton(this.kPlay,this.playSelect,this,[400,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     this.mControlsButton = new UIButton(this.kControls,this.controlsSelect,this,[400,200],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
