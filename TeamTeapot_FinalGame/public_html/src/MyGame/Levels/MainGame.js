@@ -32,11 +32,13 @@ function MainGame() {
     this.kOceanPlaceHolder = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";
     this.kHealthBar = "assets/UI/healthbar.png";
+    this.kHealthBarBorder = "assets/HealthBarBorder.png";
     
     this.kStormTex = "assets/Storm.png";
     this.kRocksTex = "assets/Rocks.png";
     this.kGemTex = "assets/Gems.png";
-    this.kMiniMap = "assets/Minimap_Bg.png";
+    this.kMiniMapBG = "assets/Minimap_Bg.png";
+    this.kUIBG = "assets/UI_BG.png";
     this.kTreasureTex = "assets/Diamond.png";
     
     this.kSpawnPosFile = "assets/JSON/SpawnPositions.json";
@@ -44,7 +46,8 @@ function MainGame() {
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
-    this.mMiniMapTranslucent = null;
+    this.mUIBG = null;
+    this.mMiniMapBG = null;
     this.mMiniMapXOffset = 74.375;
     this.mMiniMapYOffset = 55.625;
     
@@ -66,6 +69,7 @@ function MainGame() {
     this.mStormSet = null;
     
     this.mHealthBar = null;
+    this.mHealthBarBorder = null;
     this.mTreasureUI = null;
     
     this.mGameState = null;
@@ -82,11 +86,13 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kOceanNormal);
     gEngine.Textures.loadTexture(this.kSpaceTex);
     gEngine.Textures.loadTexture(this.kHealthBar);
+    gEngine.Textures.loadTexture(this.kHealthBarBorder);
     
     gEngine.Textures.loadTexture(this.kStormTex);
     gEngine.Textures.loadTexture(this.kRocksTex);
     gEngine.Textures.loadTexture(this.kGemTex);
-    gEngine.Textures.loadTexture(this.kMiniMap);
+    gEngine.Textures.loadTexture(this.kMiniMapBG);
+    gEngine.Textures.loadTexture(this.kUIBG);
     gEngine.Textures.loadTexture(this.kTreasureTex);
     
     gEngine.AudioClips.loadAudio(this.kBGMusic);
@@ -104,11 +110,13 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kOceanNormal);
     gEngine.Textures.unloadTexture(this.kSpaceTex);
     gEngine.Textures.unloadTexture(this.kHealthBar);
+    gEngine.Textures.unloadTexture(this.kHealthBarBorder);
     
     gEngine.Textures.unloadTexture(this.kStormTex);
     gEngine.Textures.unloadTexture(this.kRocksTex);
     gEngine.Textures.unloadTexture(this.kGemTex);
-    gEngine.Textures.unloadTexture(this.kMiniMap);
+    gEngine.Textures.unloadTexture(this.kMiniMapBG);
+    gEngine.Textures.unloadTexture(this.kUIBG);
     gEngine.Textures.unloadTexture(this.kTreasureTex);
     
     gEngine.AudioClips.stopBackgroundAudio();
@@ -161,10 +169,10 @@ MainGame.prototype.initialize = function ()
     this.mMiniMap.configInterpolation(0, 1);
     this.mMiniMap.setBGDraw(false);
     
-    this.mMiniMapTranslucent = new UISpriteRenderable(this.kMiniMap);
-    this.mMiniMapTranslucent.setElementPixelPositions(207, 1855, 0, 1024);
-    this.mMiniMapTranslucent.getXform().setSize(26, 19.5);
-    this.mMiniMapTranslucent.getXform().setPosition(0, 0);
+    var uvs = [(207/2048), (1855/2048), 0, 1];
+    this.mMiniMapBG = new UISprite(this.kMiniMapBG, [695, 520], [200, 150], uvs);
+    uvs = [(6/2048), (2026/2048), 0, 1];
+    this.mUIBG = new UISprite(this.kUIBG, [130, 550], [250, 100], uvs);
     
     // Create the ocean background
     this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
@@ -196,9 +204,10 @@ MainGame.prototype.initialize = function ()
     this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
     console.log(this.mSpawnPosSet);
     
-    this.mHealthBar = new UIHealthBar(this.kHealthBar, [100,580], [175,20], 0);
+    this.mHealthBarBorder = new UISprite(this.kHealthBarBorder, [125, 575], [205, 25], [0, 1, 0, 1]);
+    this.mHealthBar = new UIHealthBar(this.kHealthBar, [125, 575], [200, 20], 0);
     
-    this.mTreasureUI = new UIItemSlotSet([30, 540]);
+    this.mTreasureUI = new UIItemSlotSet([30, 535]);
     for(var i = 0; i < this.mTreasureSetTest.size(); i++)
     {
         this.mTreasureUI.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
@@ -226,9 +235,11 @@ MainGame.prototype.draw = function ()
     
     this.mStormSet.draw(this.mCamera);
     
+    this.mUIBG.draw(this.mCamera);
+    this.mHealthBarBorder.draw(this.mCamera);
     this.mHealthBar.draw(this.mCamera);
     this.mTreasureUI.draw(this.mCamera);
-    this.mMiniMapTranslucent.draw(this.mCamera);
+    this.mMiniMapBG.draw(this.mCamera);
     
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
