@@ -70,6 +70,7 @@ MainGame.prototype.update = function ()
     
     this.checkAllStormShipCollisions();
     this.checkPirateCollisionsWithPlayer();
+    this.checkPirateCollisionsWithPirate();
 
     //Pressing 'x' deals damage to the ship.
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
@@ -113,7 +114,6 @@ MainGame.prototype.checkAllStormShipCollisions = function()
         var pShip = OnScreenShips[i];
         this.checkStormShipCollision(pShip);
     }
-    
 }
 
 MainGame.prototype.checkStormShipCollision = function(ship)
@@ -220,6 +220,28 @@ MainGame.prototype.checkPirateCollisionsWithPlayer = function()
             this.mHeroTest.getRigidBody().setAngularVelocity(0);
             pShip.getRigidBody().setAngularVelocity(0);
 
+        }
+    }
+}
+
+MainGame.prototype.checkPirateCollisionsWithPirate = function()
+{
+    var onScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    
+    for (var i = 0; i < onScreenShips.length; i++)
+    {    
+        var pShip = onScreenShips[i];
+        
+        for (var j = i + 1; j < onScreenShips.length; j++) {
+            var pShip2 = onScreenShips[j];
+            var c = new CollisionInfo();
+            if (pShip.getRigidBody().collisionTest(pShip2.getRigidBody(), c))
+            {
+                gEngine.Physics.resolveCollision(pShip.getRigidBody(), pShip2.getRigidBody(), c);
+                pShip.getRigidBody().setAngularVelocity(0);
+                pShip2.getRigidBody().setAngularVelocity(0);
+                
+            }
         }
     }
 }
