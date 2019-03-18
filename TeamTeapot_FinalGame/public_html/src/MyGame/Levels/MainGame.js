@@ -25,7 +25,7 @@ function MainGame(mode) {
     this.kMaxBrightness = 3;
     this.kMinBrightness = 1.25;
 
-    this.kDarkestTime =  2 * 60 * 60; // 2 minutes 
+    this.kDarkestTime =  3 * 60 * 60; // 3 minutes 
     if (mode === "easy")
         this.kDarkestTime = 10 * 60 * 60; // 10 minutes
     else if (mode === "hard")
