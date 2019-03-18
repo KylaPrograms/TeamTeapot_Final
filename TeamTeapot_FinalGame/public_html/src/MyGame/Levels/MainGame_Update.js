@@ -82,17 +82,17 @@ MainGame.prototype.update = function ()
         //this.mHeroTest.incHealthBy(10);
     }
     
-    //Manually lose the game
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.C))
-    {
-        this.mGameState.setGameOver(true);
-    }
-    
-    //Manually win the game
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.V))
-    {
-        this.mGameState.setGameWin(true);
-    }
+//    //Manually lose the game
+//    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.C))
+//    {
+//        this.mGameState.setGameOver(true);
+//    }
+//    
+//    //Manually win the game
+//    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.V))
+//    {
+//        this.mGameState.setGameWin(true);
+//    }
     
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.M))
     {
