@@ -14,9 +14,17 @@
 
 function Wake(spriteTexture, position, forwardDir)
 {
-    this.mRenderable = new LightRenderable(spriteTexture);
+    this.mRenderable = new SpriteAnimateRenderable(spriteTexture);
     this.mRenderable.getXform().setPosition(position[0], position[1]);
-    this.mRenderable.getXform().setSize(2, 1);
+    this.mRenderable.getXform().setSize(4, 2);
+    this.mRenderable.setSpriteSequence(
+            256,   // offset from top-left
+            0, // offset from top-left
+            677,
+            256,
+            6,      // number of elements in sequence
+            0);
+    this.mRenderable.setAnimationSpeed(11);
     
     Projectile.call(this, this.mRenderable, forwardDir, 0.01, 60);
 }
@@ -24,5 +32,6 @@ gEngine.Core.inheritPrototype(Wake, Projectile);
 
 Wake.prototype.update = function()
 {
+    this.mRenderable.updateAnimation();
     Projectile.prototype.update.call(this);
 };
