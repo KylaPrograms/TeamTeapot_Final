@@ -51,6 +51,8 @@ function MainGame() {
     
     this.kSpawnPosFile = "assets/JSON/SpawnPositions.json";
     
+    this.kDeathMessage = "You died";
+    
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
@@ -148,7 +150,7 @@ MainGame.prototype.unloadScene = function ()
     {
         nextLevel = new WinScreen();
     } else {
-        nextLevel = new GameOver();
+        nextLevel = new GameOver(this.kDeathMessage);
     }
     gEngine.Core.startScene(nextLevel);
 };
@@ -165,9 +167,6 @@ MainGame.prototype.initialize = function ()
 //    this.mAmbientLight[0] = 0.8;
 //    this.mAmbientLight[1] = 0.8;
 //    this.mAmbientLight[2] = 0.8;
-    
-
-    
     
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
     this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
