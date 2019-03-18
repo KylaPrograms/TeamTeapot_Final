@@ -1,6 +1,7 @@
 /*
  * File:        Wake.js
  * Programmers: Kyla            March 15, 2019
+ *              Emily           March 17, 2019
  *
  */
 
@@ -16,7 +17,7 @@ function Wake(spriteTexture, position, forwardDir)
 {
     this.mRenderable = new SpriteAnimateRenderable(spriteTexture);
     this.mRenderable.getXform().setPosition(position[0], position[1]);
-    this.mRenderable.getXform().setSize(4, 2);
+    this.mRenderable.getXform().setSize(8, 4);
     this.mRenderable.setSpriteSequence(
             256,   // offset from top-left
             0, // offset from top-left
@@ -24,7 +25,7 @@ function Wake(spriteTexture, position, forwardDir)
             256,
             6,      // number of elements in sequence
             0);
-    this.mRenderable.setAnimationSpeed(11);
+    this.mRenderable.setAnimationSpeed(16);
     
     Projectile.call(this, this.mRenderable, forwardDir, 0.01, 90);
 }

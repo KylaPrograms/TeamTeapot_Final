@@ -60,9 +60,9 @@ gEngine.Core.inheritPrototype(Ship, GameObject);
 
 Ship.prototype.draw = function(camera)
 {
+    this.mWakeSet.draw(camera);
     GameObject.prototype.draw.call(this, camera);
     //this.mShipLowRes.draw(camera);
-    this.mWakeSet.draw(camera);
 };
 
 Ship.prototype.getSpeedDelta = function() { return this.kSpeedDelta; }
