@@ -51,6 +51,7 @@ WaterfallSet.prototype.createWaterfalls = function()
         this._createSingularWaterfall(-150, -300, 180);
         this._createSingularWaterfall(0, -300, 180);
         this._createSingularWaterfall(150, -300, 180);
+
     }
 };
 
