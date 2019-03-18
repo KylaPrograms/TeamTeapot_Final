@@ -36,6 +36,7 @@ function MainGame() {
     this.kAngryAnim = "assets/AngrySkullSpriteSheet.png";
     this.kOceanNormal = "assets/OceanNormal.png";
     this.kOcean = "assets/Ocean.png";
+    this.kWaterfallTex = "assets/Waterfall.png";
     this.kSpaceTex = "assets/Space.png";
     this.kHealthBar = "assets/UI/healthbar.png";
     this.kHealthBarBorder = "assets/HealthBarBorder.png";
@@ -62,6 +63,7 @@ function MainGame() {
     this.mWorldWCyRange = this.mWorldBounds[3]-this.mWorldBounds[2];
     
     this.mTempBG = null;
+    this.mWaterfallSet = null;
     this.mSpaceBG = null;
     this.mHeroTest = null;
     this.mPirateTest = null;
@@ -91,6 +93,7 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kChickenTex);
     gEngine.Textures.loadTexture(this.kAngryAnim);
     gEngine.Textures.loadTexture(this.kOcean);
+    gEngine.Textures.loadTexture(this.kWaterfallTex);
     gEngine.Textures.loadTexture(this.kOceanNormal);
     gEngine.Textures.loadTexture(this.kSpaceTex);
     gEngine.Textures.loadTexture(this.kHealthBar);
@@ -117,6 +120,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kChickenTex);
     gEngine.Textures.unloadTexture(this.kAngryAnim);
     gEngine.Textures.unloadTexture(this.kOcean);
+    gEngine.Textures.unloadTexture(this.kWaterfallTex);
     gEngine.Textures.unloadTexture(this.kOceanNormal);
     gEngine.Textures.unloadTexture(this.kSpaceTex);
     gEngine.Textures.unloadTexture(this.kHealthBar);
@@ -194,6 +198,9 @@ MainGame.prototype.initialize = function ()
         this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
     
+    this.mWaterfallSet = new WaterfallSet(this.kWaterfallTex);
+    this.mWaterfallSet.createWaterfalls();
+    
     this.mSpaceBG = new SpriteRenderable(this.kSpaceTex);
     this.mSpaceBG.setElementPixelPositions(0, 2048, 0, 2048);
     this.mSpaceBG.getXform().setPosition(0, 0);
@@ -214,7 +221,6 @@ MainGame.prototype.initialize = function ()
     
     // Spawn the treasure
     this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
-    console.log(this.mSpawnPosSet);
     
     this.mHealthBarBorder = new UISprite(this.kHealthBarBorder, [125, 575], [205, 25], [0, 1, 0, 1]);
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [125, 575], [200, 20], 0);
@@ -238,6 +244,7 @@ MainGame.prototype.draw = function ()
     this.mCamera.setupViewProjection();
     this.mSpaceBG.draw(this.mCamera);
     this.mTempBG.draw(this.mCamera);
+    this.mWaterfallSet.draw(this.mCamera);
     this.mPirateSetTest.draw(this.mCamera);
     this.mTreasureSetTest.draw(this.mCamera);
     this.mHeroTest.draw(this.mCamera);
