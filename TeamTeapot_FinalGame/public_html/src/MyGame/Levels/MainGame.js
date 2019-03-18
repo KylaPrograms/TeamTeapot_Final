@@ -79,7 +79,8 @@ function MainGame(mode) {
     
     this.kSpawnPosFile = "assets/JSON/SpawnPositions.json";
     
-    this.kDeathMessage = "You died";
+    this.kDeathMessage = "Your ship has exploded";
+    this.mDMX = -25;
     
     // The camera to view the scene
     this.mCamera = null;
@@ -182,7 +183,7 @@ MainGame.prototype.unloadScene = function ()
     {
         nextLevel = new WinScreen();
     } else {
-        nextLevel = new GameOver(this.kDeathMessage);
+        nextLevel = new GameOver(this.kDeathMessage, this.mDMX);
     }
     gEngine.Core.startScene(nextLevel);
 };

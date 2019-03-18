@@ -24,6 +24,8 @@ MainGame.prototype.update = function ()
     this.mHero.update();
     if (!this.mHero.getWithinBounds(this.mWorldBounds))
     {
+        this.kDeathMessage = "You fell off the edge of the world";
+        this.mDMX = -33;
         this.mGameState.setGameOver(true);
     }
     
