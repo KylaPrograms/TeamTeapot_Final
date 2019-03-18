@@ -25,6 +25,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mCollisionTex.getXform().setSize(size[0], size[1]);
     
     this.mSpeed = (currSpeed === null) ? 0 : currSpeed;
+    this.kSpeedDelta = 0.05;
     
     this.mMinSpeed = (minSpeed === null) ? 0 : minSpeed;
     this.mMaxSpeed = (maxSpeed === null) ? 100 : maxSpeed;
@@ -63,6 +64,8 @@ Ship.prototype.draw = function(camera)
     //this.mShipLowRes.draw(camera);
     this.mWakeSet.draw(camera);
 };
+
+Ship.prototype.getSpeedDelta = function() { return this.kSpeedDelta; }
 
 Ship.prototype.getSpeed = function() { return this.mSpeed; };
 Ship.prototype.setSpeed = function(value)
@@ -260,3 +263,39 @@ Ship.prototype._createWake = function(sprite)
     
     this.mWakeSet.addToSet(rightWake);
 };
+
+Ship.prototype.moveTowards = function (target, rot)
+{
+    this.incSpeedBy(this.kSpeedDelta);
+
+    var currXform = this.getXform();
+    // get current pos of ship
+    var pos = currXform.getPosition();
+    
+    // get vector between hero and pirateship
+    var x = target[0] - pos[0];
+    var y = target[1] - pos[1];
+    
+    // get direction pirateship is facing
+    var curr = currXform.getRotationInRad() + Math.PI / 2;
+    
+    var facing = [Math.cos(curr), Math.sin(curr)];
+    
+    // get cross product to see which direction to turn
+    vec2.cross(facing, [Math.cos(curr), Math.sin(curr)], [x,y]);
+    
+    var rotateBy = rot;
+    if (facing[2] > 0)  // if pirate is on left side, rotate left;
+        rotateBy *= -1;
+
+    var r = this.getXform().getRotationInRad() + Math.PI / 2;
+    this.setVelocity(-this.mSpeed * Math.cos(r), -this.mSpeed * Math.sin(r));
+    
+    //this.getXform().setRotationInRad(curr + rotateBy - Math.PI / 2);
+    this.getXform().incRotationByRad(rotateBy);
+    
+    var dir = this.getCurrentFrontDir();
+    vec2.rotate(dir,dir, rotateBy);
+    
+    this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());  
+}

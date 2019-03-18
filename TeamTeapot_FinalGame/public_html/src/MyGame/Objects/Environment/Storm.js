@@ -13,7 +13,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function Storm(spriteTexture, atX, atY)
-{
+{   
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
     this.kRot1 = Math.random() * 10 + 5;
     this.kSize = Math.random() * 15 + 5;
@@ -100,3 +100,22 @@ Storm.prototype.isDead = function()
 {
     return (this.mLifespan >= this.mTotalLifeSpan);    
 };
+
+Storm.prototype.getSuctionBBox = function()
+{
+    var xform = this.getXform();
+    var pos = xform.getPosition();
+    var width = xform.getWidth()* 2; 
+    var height = xform.getHeight()* 2;
+    return new BoundingBox(pos, width, height);
+}
+
+Storm.prototype.getSize = function()
+{
+    return this.kSize;
+}
+
+Storm.prototype.getRotSpeed = function()
+{
+    return this.kRot1;
+}
