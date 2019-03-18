@@ -17,7 +17,12 @@ function Cannonball(spriteTexture, position, target)
 {
     var x = target[0] - position[0];
     var y = target[1] - position[1];
-    Projectile.call(this, spriteTexture, position, [8, 8], [x,y], 1, 60);
+    
+    this.mRenderable = new LightRenderable(spriteTexture);
+    this.mRenderable.getXform().setPosition(position[0], position[1]);
+    this.mRenderable.getXform().setSize(8, 8);
+    
+    Projectile.call(this, this.mRenderable, [x,y], 1, 60);
     
     var angle = Math.atan2(y, x);
     angle = angle * (180/Math.PI) - 90;
