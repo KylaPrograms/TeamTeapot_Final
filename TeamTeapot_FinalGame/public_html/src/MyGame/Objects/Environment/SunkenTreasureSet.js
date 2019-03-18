@@ -73,7 +73,6 @@ SunkenTreasureSet.prototype.collectAt = function(atX, atY)
         var bBox = this.mSet[i].getBBox();
         if(bBox.containsPoint(atX, atY))
         {
-            //this.mSet[i].collect();
             this.removeFromSet(this.mSet[i]);
             treasureFound = true;
             console.log("treasure collected:", this.mSet);
