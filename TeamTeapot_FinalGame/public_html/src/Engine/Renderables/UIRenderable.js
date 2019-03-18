@@ -19,6 +19,6 @@
 function UIRenderable(myTexture) {
     Renderable.call(this);
     Renderable.prototype._setShader.call(this, gEngine.DefaultResources.getUISimpleShader());
-
+    this.getXform().setZPos(3);
 }
 gEngine.Core.inheritPrototype(UIRenderable, Renderable);

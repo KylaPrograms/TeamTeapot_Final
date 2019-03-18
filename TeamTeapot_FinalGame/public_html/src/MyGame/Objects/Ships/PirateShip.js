@@ -74,6 +74,7 @@ PirateShip.prototype.update = function(heroPos)
         this.mSpot = false;
     }
     
+    this.mLifeTime++;
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
 };
@@ -117,3 +118,8 @@ PirateShip.prototype.getCannonballSet = function()
 {
     return this.mCannonballSet;
 }
+
+PirateShip.prototype.isDead = function()
+{
+    return this.getHealth() <= 0;
+};

@@ -15,7 +15,6 @@
 function StormSet(spriteTexture, xRange, yRange, shipPosition)
 {
     this.kStormTex = spriteTexture;
-    this.mStormSize = 0;
     this.mTotalStorms = 50;
     this.mOffsetX = xRange / 2 + 5;
     this.mOffsetY = yRange / 2 + 5;
@@ -37,7 +36,6 @@ StormSet.prototype.createStorm = function (spriteTexture)
 
     var storm = new Storm(spriteTexture, xspawn, yspawn);
     this.addToSet(storm);
-    this.mStormSize++;
 };
 
 StormSet.prototype.update = function()
@@ -50,7 +48,7 @@ StormSet.prototype.update = function()
     if(this.mStormSpawnTimer <= 0)
     {
         this.mStormSpawnTimer = Math.random() * 60 + 120;
-        if(this.mStormSize < this.mTotalStorms) {
+        if(this.size() < this.mTotalStorms) {
             this.createStorm(this.kStormTex);
         } 
     }
@@ -64,7 +62,6 @@ StormSet.prototype.update = function()
         
         if (this.mSet[i].isDead())
         {
-            this.mStormSize--;
             this.mSet.splice(i, 1);
             i--;
         }
@@ -77,9 +74,4 @@ StormSet.prototype.drawForMap = function(aCamera)
     {
         this.mSet[i].drawForMap(aCamera);
     }
-};
-
-StormSet.prototype.getStormSize = function()
-{
-    return this.mStormSize;
 };

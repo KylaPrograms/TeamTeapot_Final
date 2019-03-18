@@ -25,6 +25,9 @@ MainGame.prototype.update = function ()
     
     this.mPirateTest.update(this.mHeroTest.getPosition());
     this.updatePirateLight(this.mPirateTest);
+    this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
+    var shipsOnMainCam = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    console.log(shipsOnMainCam);
     
     this.mGameState.update();
     
@@ -155,7 +158,6 @@ MainGame.prototype.update = function ()
         }
     }
     
-    this.mMiniMapTranslucent.getXform().setPosition(this.mMiniMap.getWCCenter()[0], this.mMiniMap.getWCCenter()[1]);
     this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
 };
 
