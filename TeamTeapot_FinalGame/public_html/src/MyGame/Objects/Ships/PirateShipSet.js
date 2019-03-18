@@ -169,4 +169,4 @@ PirateShipSet.prototype.getShipsOnCamera = function(camera)
     }
     
     return ret;
-}
+};

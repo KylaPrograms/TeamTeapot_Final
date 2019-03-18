@@ -1,6 +1,5 @@
 /*
  * File: GameOver.js 
- * This is the logic of our game. 
  */
 /*jslint node: true, vars: true */
 /*global gEngine: false, Scene: false, MyGame: false, SceneFileParser: false */

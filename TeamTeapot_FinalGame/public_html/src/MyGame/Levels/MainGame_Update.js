@@ -21,20 +21,20 @@ MainGame.prototype.update = function ()
     
     this.mWaterfallSet.update();
     
-    this.mHeroTest.update();
-    if (!this.mHeroTest.getWithinBounds(this.mWorldBounds))
+    this.mHero.update();
+    if (!this.mHero.getWithinBounds(this.mWorldBounds))
     {
         this.mGameState.setGameOver(true);
     }
     
-    this.updatePirateLight(this.mPirateTest);
-    this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
+    this.updatePirateLight();
+    this.mPirateSet.update(this.mMiniMap, this.mHero.getPosition());
     this.mCharybdis.update();
     if (this.mCharybdis.checkIfCanSpawn())
     {
         gEngine.AudioClips.playBackgroundAudio(this.kCharybdisMusic);
         console.log(this.mStormSet.size());
-        this.mCharybdis.spawn(this.mHeroTest);
+        this.mCharybdis.spawn(this.mHero);
         //this.mStormSet.addToSet(this.mCharybdis);
     }
     else if (this.mCharybdis.mJustFinished)
@@ -46,22 +46,22 @@ MainGame.prototype.update = function ()
     
     this.mGameState.update();
     
-    var heroPos = this.mHeroTest.getPosition();
+    var heroPos = this.mHero.getPosition();
     this.mCamera.setWCCenter(heroPos[0], heroPos[1]);
     this.mMiniMap.setWCCenter(heroPos[0], heroPos[1]);
     
-    if(this.mTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
+    if(this.mTreasureSet.collectAt(heroPos[0], heroPos[1]))
     {
-        this.mHeroTest.addTreasure();
+        this.mHero.addTreasure();
         gEngine.AudioClips.playACue(this.kTreasureSFX);
-        this.mHeroTest.regenHealth(10);
-        this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
+        this.mHero.regenHealth(10);
+        this.mHealthBar.setCurrentHP(this.mHero.getHealth());
         this.mHealthBar.update();
         this.mGameState.addTreasure();
         this.mTreasureUI.fillSlot();
     }
     
-    this.mTreasureSetTest.update();
+    this.mTreasureSet.update();
     this.mCamera.update();
     this.mMiniMap.update();
     
@@ -80,7 +80,7 @@ MainGame.prototype.update = function ()
     
     // Hero previously collided
     // check whether or not to shake camera
-    if (this.mHeroTest.mInvincible === true) 
+    if (this.mHero.mInvincible === true) 
     {
         var camShake = this.mCamera.getCameraShake();
         if (camShake !== null && !camShake.shakeDone())
@@ -90,25 +90,6 @@ MainGame.prototype.update = function ()
     this.checkCharybdisCollision();
     this.checkAllStormShipCollisions();
     this.checkPirateCollisionsWithPlayer();
-
-    //Pressing 'x' deals damage to the ship.
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.X))
-    {
-        this.mHeroTest.hit();
-        //this.mHeroTest.incHealthBy(10);
-    }
-    
-//    //Manually lose the game
-//    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.C))
-//    {
-//        this.mGameState.setGameOver(true);
-//    }
-//    
-//    //Manually win the game
-//    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.V))
-//    {
-//        this.mGameState.setGameWin(true);
-//    }
     
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.M))
     {
@@ -120,15 +101,15 @@ MainGame.prototype.update = function ()
         }
     }
     
-    this.mSpaceBG.getXform().setPosition(this.mHeroTest.getXform().getPosition()[0], this.mHeroTest.getXform().getPosition()[1]);
+    this.mSpaceBG.getXform().setPosition(this.mHero.getXform().getPosition()[0], this.mHero.getXform().getPosition()[1]);
 };
 
 
 
 MainGame.prototype.checkCharybdisCollision = function()
 {
-    var OnScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
-    OnScreenShips.unshift(this.mHeroTest);
+    var OnScreenShips = this.mPirateSet.getShipsOnCamera(this.mCamera);
+    OnScreenShips.unshift(this.mHero);
     
    for (var i = 0; i < OnScreenShips.length; i++)
    {
@@ -148,20 +129,20 @@ MainGame.prototype.checkCharybdisCollision = function()
         result = false;
     }
    }
-}
+};
 
 MainGame.prototype.checkAllStormShipCollisions = function()
 {
-    this.checkStormShipCollision(this.mHeroTest);
+    this.checkStormShipCollision(this.mHero);
     
-    var OnScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    var OnScreenShips = this.mPirateSet.getShipsOnCamera(this.mCamera);
     for (var i = 0; i < OnScreenShips.length; i++)
     {
         var pShip = OnScreenShips[i];
         this.checkStormShipCollision(pShip);
     }
     
-}
+};
 
 MainGame.prototype.checkStormShipCollision = function(ship)
 {
@@ -182,7 +163,7 @@ MainGame.prototype.checkStormShipCollision = function(ship)
             ship.incSpeedBy(ship.getSpeedDelta() + ship.getSpeedDelta() * distanceRatio * speedRatio * sizeRatio);
         }    
     }
-}
+};
 
 MainGame.prototype.checkRockCollisions = function()
 {
@@ -192,7 +173,7 @@ MainGame.prototype.checkRockCollisions = function()
         var rock = this.mRockSet.mSet[i];
 
         // Check Collision with all rocks in Rock set 
-        var isHit = this.mHeroTest.checkHit(rock);
+        var isHit = this.mHero.checkHit(rock);
 
         // if touching rock, then hit
         if (isHit)
@@ -204,11 +185,11 @@ MainGame.prototype.checkRockCollisions = function()
 
             this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
 
-            this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
+            this.mHealthBar.setCurrentHP(this.mHero.getHealth());
             this.mHealthBar.update();
         }
 
-        var onScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+        var onScreenShips = this.mPirateSet.getShipsOnCamera(this.mCamera);
         
         for (var j = 0; j < onScreenShips.length; j++)
         {
@@ -216,11 +197,11 @@ MainGame.prototype.checkRockCollisions = function()
             pShip.checkHit(rock);
         }
     }
-}
+};
 
 MainGame.prototype.checkCannonballCollision = function()
 {
-    var onScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    var onScreenShips = this.mPirateSet.getShipsOnCamera(this.mCamera);
     
     for (var i = 0; i < onScreenShips.length; i++)
     {
@@ -232,9 +213,9 @@ MainGame.prototype.checkCannonballCollision = function()
             if (cannonballs.size() > 0)
             {
                 var cannonball = cannonballs.getObjectAt(0);
-                if (cannonball.getBBox().intersectsBound(this.mHeroTest.getBBox()))
+                if (cannonball.getBBox().intersectsBound(this.mHero.getBBox()))
                 {
-                    this.mHeroTest.hit(cannonball);
+                    this.mHero.hit(cannonball);
                     cannonball.kill();
 
                                     // camera shake
@@ -244,29 +225,29 @@ MainGame.prototype.checkCannonballCollision = function()
 
                     this.mCamera.setCameraShake(displacement, displacement, frequency, duration);
 
-                    this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
+                    this.mHealthBar.setCurrentHP(this.mHero.getHealth());
                     this.mHealthBar.update();
                 }
             }
         }
     }
-}
+};
 
 MainGame.prototype.checkPirateCollisionsWithPlayer = function()
 {
-    var onScreenShips = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    var onScreenShips = this.mPirateSet.getShipsOnCamera(this.mCamera);
     
     for (var i = 0; i < onScreenShips.length; i++)
     {    
         var pShip = onScreenShips[i];
         
         var c = new CollisionInfo();
-        if (this.mHeroTest.getRigidBody().collisionTest(pShip.getRigidBody(), c))
+        if (this.mHero.getRigidBody().collisionTest(pShip.getRigidBody(), c))
         {
-            gEngine.Physics.resolveCollision(this.mHeroTest.getRigidBody(), pShip.getRigidBody(), c);
-            this.mHeroTest.getRigidBody().setAngularVelocity(0);
+            gEngine.Physics.resolveCollision(this.mHero.getRigidBody(), pShip.getRigidBody(), c);
+            this.mHero.getRigidBody().setAngularVelocity(0);
             pShip.getRigidBody().setAngularVelocity(0);
 
         }
     }
-}
+};

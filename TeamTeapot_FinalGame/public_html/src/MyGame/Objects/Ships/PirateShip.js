@@ -28,7 +28,7 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     this.mCbTimer = 0;
 
     this.mSpot = false;
-    this.mAngryAnim = new PopUp(mAngryAnim, 128,0, 100, 100, 61, 0, 180)
+    this.mAngryAnim = new PopUp(mAngryAnim, 128,0, 100, 100, 61, 0, 180);
     
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
@@ -103,7 +103,7 @@ PirateShip.prototype.draw = function(camera)
         this.mAngryAnim.draw(camera);
         this.mAngryAnim.updatePopUp();
     }
-}
+};
 
 PirateShip.prototype.drawForMap = function(aCamera)
 {
@@ -113,12 +113,12 @@ PirateShip.prototype.drawForMap = function(aCamera)
 PirateShip.prototype.isChasingPlayer = function()
 {
     return this.mSpot;
-}
+};
 
 PirateShip.prototype.getCannonballSet = function()
 {
     return this.mCannonballSet;
-}
+};
 
 PirateShip.prototype.isDead = function()
 {
