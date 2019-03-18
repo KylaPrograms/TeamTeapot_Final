@@ -170,11 +170,8 @@ MainGame.prototype.checkStormShipCollision = function()
         
         if (distanceRatio > 0)
         {   
-            var speedRatio = storm.getRotSpeed() / 10;
-            var sizeRatio = storm.getSize() / 15;
-
-            console.log("suck " + distance);
-            console.log("ratio " + distanceRatio);
+            var speedRatio = storm.getRotSpeed() / 10 + .25;
+            var sizeRatio = storm.getSize() / 15 + .25;
 
             this.mHeroTest.moveTowards(storm.getXform().getPosition(), this.mHeroTest.getTurningDelta() * distanceRatio * speedRatio * sizeRatio);
             this.mHeroTest.incSpeedBy(this.mHeroTest.getSpeedDelta() + this.mHeroTest.getSpeedDelta() * distanceRatio * speedRatio * sizeRatio);
