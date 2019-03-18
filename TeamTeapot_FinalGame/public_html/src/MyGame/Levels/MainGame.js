@@ -83,6 +83,8 @@ function MainGame(mode) {
     
     this.kSpawnPosFile = "assets/JSON/SpawnPositions.json";
     
+    this.kDeathMessage = "You died";
+    
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniMap = null;
@@ -192,7 +194,7 @@ MainGame.prototype.unloadScene = function ()
     {
         nextLevel = new WinScreen();
     } else {
-        nextLevel = new GameOver();
+        nextLevel = new GameOver(this.kDeathMessage);
     }
     gEngine.Core.startScene(nextLevel);
 };
