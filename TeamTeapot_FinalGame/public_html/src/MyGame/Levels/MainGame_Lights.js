@@ -66,8 +66,6 @@ MainGame.prototype.updateAmbientLighting = function()
 {
     var newLight = this.kMaxBrightness - (this.kMaxBrightness - this.kMinBrightness) * this.mElapsedTime / this.kDarkestTime;
     
-    console.log(this.mElapsedTime);
-    
     newLight = Math.max(newLight, this.kMinBrightness);
     
     gEngine.DefaultResources.setGlobalAmbientIntensity(newLight);
