@@ -12,7 +12,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PlayerShip(spriteTexture, collisionTexture, wakeTexture, popupAnim)
+function PlayerShip(spriteTexture, miniMapTexture, collisionTexture, wakeTexture, popupAnim)
 {
     this.kSpeedDelta = 0.5; 
     this.kInvincibleTime = 120;
@@ -34,9 +34,9 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture, popupAnim)
     this.mTreasureCollected = 0;
         
     //The renderable for the minimap    
-    this.mMapRenderable = new UIRenderable();
+    this.mMapRenderable = new UISpriteRenderable(miniMapTexture);
     this.mMapRenderable.setColor([0, 0, 0, 1.0]);
-    this.mMapRenderable.getXform().setSize(8, 8);
+    this.mMapRenderable.getXform().setSize(10, 10);
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
 }

@@ -14,7 +14,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballTexture, mAngryAnim)
+function PirateShip(spriteTexture, miniMapTex, collisionTexture, wakeTexture, cannonballTexture, mAngryAnim)
 {    
     //GameObject.call(this, this.mPirateShip);
     
@@ -38,9 +38,9 @@ function PirateShip(spriteTexture, collisionTexture, wakeTexture, cannonballText
     this.kInvincibleTime = 60;
     this.mHitColor = [1.0, 0, 0, 1];
     
-    this.mMapRenderable = new UIRenderable();
+    this.mMapRenderable = new UISpriteRenderable(miniMapTex);
     this.mMapRenderable.setColor([1, 0, 0, 1.0]);
-    this.mMapRenderable.getXform().setSize(8, 8);
+    this.mMapRenderable.getXform().setSize(10, 10);
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
                                  

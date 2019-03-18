@@ -12,9 +12,10 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function RockSet(spriteTexture, spawnPosSet)
+function RockSet(spriteTexture, miniMapTexture, spawnPosSet)
 {
     this.kRockTex = spriteTexture;
+    this.kMiniMapMarker = miniMapTexture;
     this.mSpawnPosSet = spawnPosSet;
     
     GameObjectSet.call(this);
@@ -42,7 +43,7 @@ RockSet.prototype._createRock = function ()
     }
     
     this.mSpawnPosSet[index].markInUse();
-    var rock = new Rock(this.kRockTex, this.mSpawnPosSet[index].getPosition()[0], this.mSpawnPosSet[index].getPosition()[1]);
+    var rock = new Rock(this.kRockTex, this.kMiniMapMarker, this.mSpawnPosSet[index].getPosition()[0], this.mSpawnPosSet[index].getPosition()[1]);
     rock.getXform().setRotationInRad(Math.random() * 2 * Math.PI);
     
     var scale = Math.random() * .5;

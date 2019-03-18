@@ -62,10 +62,8 @@ Credits.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
             
-    this.mBG = new SpriteRenderable(this.kBG);
-    this.mBG.setElementPixelPositions(0, 2048, 0, 2048);
-    this.mBG.getXform().setPosition(0, 0);
-    this.mBG.getXform().setSize(100, 75);
+    var uvs = [0, 2048, 0, 2048];
+    this.mBG = new UISprite(this.kBG, [400, 300], [802, 602], [0, 1, 0, 1]);
     
     this.mCredits = new UISprite(this.kCredits, [400, 295], [590, 590], [0, 1, 0, 1]);
     this.mCredits.getRenderable().setColor([1,1,1,1]);

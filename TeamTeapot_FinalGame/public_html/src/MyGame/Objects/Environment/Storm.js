@@ -12,7 +12,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Storm(spriteTexture, atX, atY)
+function Storm(spriteTexture, miniMapTex, atX, atY)
 {   
     this.kSpeedDelta = 0.002; // use 0.05 when using rigid body, 0.002 when not
     this.kRot1 = Math.random() * 10 + 5;
@@ -27,7 +27,7 @@ function Storm(spriteTexture, atX, atY)
     this.mStorm.getXform().setPosition(atX, atY);
     this.mStorm.getXform().setSize(0.01, 0.01);
     
-    this.mMapRenderable = new UIRenderable();
+    this.mMapRenderable = new UISpriteRenderable(miniMapTex);
     this.mMapRenderable.setColor([0, 0, 1.0, 1.0]);
     this.mMapRenderable.getXform().setSize(0.01, 0.01);
     
@@ -99,6 +99,11 @@ Storm.prototype.draw = function (aCamera)
 Storm.prototype.drawForMap = function (aCamera)
 {
     this.mMapRenderable.draw(aCamera);
+};
+
+Storm.prototype.getMiniRenderable = function ()
+{
+    return this.mMapRenderable;
 };
 
 Storm.prototype.isDead = function() 

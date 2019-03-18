@@ -12,9 +12,10 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function StormSet(spriteTexture, xRange, yRange, shipPosition)
+function StormSet(spriteTexture,miniMapTex, xRange, yRange, shipPosition)
 {
     this.kStormTex = spriteTexture;
+    this.kMiniMapStorm = miniMapTex;
     this.mTotalStorms = 50;
     this.mOffsetX = xRange / 2 + 5;
     this.mOffsetY = yRange / 2 + 5;
@@ -27,14 +28,14 @@ function StormSet(spriteTexture, xRange, yRange, shipPosition)
 
 gEngine.Core.inheritPrototype(StormSet, GameObjectSet);
 
-StormSet.prototype.createStorm = function (spriteTexture)
+StormSet.prototype.createStorm = function ()
 {
     //For now I am hardcoding the size of our world to be 300 WC X 300 WC
     var xspawn = -300 + Math.random() * 600;
     var yspawn = -300 + Math.random() * 600;
     var randomizer = Math.floor(Math.random() + 0.5);
 
-    var storm = new Storm(spriteTexture, xspawn, yspawn);
+    var storm = new Storm(this.kStormTex, this.kMiniMapStorm, xspawn, yspawn);
     this.addToSet(storm);
 };
 
@@ -49,7 +50,7 @@ StormSet.prototype.update = function(minimapCam)
     {
         this.mStormSpawnTimer = Math.random() * 60 + 120;
         if(this.size() < this.mTotalStorms) {
-            this.createStorm(this.kStormTex);
+            this.createStorm();
         } 
     }
 
