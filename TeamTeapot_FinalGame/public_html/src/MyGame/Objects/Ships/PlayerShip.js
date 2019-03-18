@@ -14,7 +14,7 @@
 
 function PlayerShip(spriteTexture, collisionTexture, wakeTexture, popupAnim)
 {
-    this.kSpeedDelta = 0.1; 
+    this.kSpeedDelta = 0.5; 
     this.kInvincibleTime = 120;
     this.mInvincible = false;
     
@@ -35,7 +35,7 @@ function PlayerShip(spriteTexture, collisionTexture, wakeTexture, popupAnim)
         
     //The renderable for the minimap    
     this.mMapRenderable = new UIRenderable();
-    this.mMapRenderable.setColor([1, 0, 0, 1.0]);
+    this.mMapRenderable.setColor([0, 0, 0, 1.0]);
     this.mMapRenderable.getXform().setSize(8, 8);
     this.mMapRenderable.getXform().setPosition(this.getXform().getXPos(), 
                                                         this.getXform().getYPos());
