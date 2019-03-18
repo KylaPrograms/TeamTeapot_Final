@@ -52,8 +52,6 @@ MainGame.prototype.updatePirateLight = function()
 MainGame.prototype.updateAmbientLighting = function()
 {
     var newLight = this.kMaxBrightness - (this.kMaxBrightness - this.kMinBrightness) * this.mElapsedTime / this.kDarkestTime;
-    
-    newLight = Math.max(newLight, this.kMinBrightness)
-    
+    newLight = Math.max(newLight, this.kMinBrightness);
     gEngine.DefaultResources.setGlobalAmbientIntensity(newLight);
 };

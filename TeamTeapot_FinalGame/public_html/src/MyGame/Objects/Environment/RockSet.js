@@ -34,7 +34,6 @@ RockSet.prototype._createRock = function ()
     while(skip)
     {
         var index = Math.floor(Math.random() * (this.mSpawnPosSet.length - 1));
-        console.log(index);
         if(!this.mSpawnPosSet[index].inUse())
         {
             skip = false;

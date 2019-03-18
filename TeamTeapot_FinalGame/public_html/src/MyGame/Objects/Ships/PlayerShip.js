@@ -143,10 +143,13 @@ PlayerShip.prototype.changeSpeed = function(speed)
     vec2.scaleAndAdd(pos,pos,dir, speed);
 };
 
-PlayerShip.prototype.regenHealth = function()
+PlayerShip.prototype.regenHealth = function(incHealth)
 {
-    if(this.mHealth > 0) {
-        this.mHealth -=1 ;   
+    if(this.mHealth < this.mMaxHealth) {
+        this.mHealth += incHealth ;   
+    }
+    if (this.mHealth > this.mMaxHealth) {
+        this.mHealth = this.mMaxHealth;
     }
 };
 
