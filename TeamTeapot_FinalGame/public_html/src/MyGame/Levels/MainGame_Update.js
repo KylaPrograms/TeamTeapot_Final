@@ -38,6 +38,7 @@ MainGame.prototype.update = function ()
     if(this.mTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
         this.mHeroTest.addTreasure();
+        gEngine.AudioClips.playACue(this.kTreasureSFX);
         this.mHeroTest.regenHealth(10);
         this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
         this.mHealthBar.update();
