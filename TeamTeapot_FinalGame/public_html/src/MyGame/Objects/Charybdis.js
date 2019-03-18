@@ -88,8 +88,6 @@ Charybdis.prototype.checkIfCanSpawn = function(chance)
 {
     var rand = Math.random() * chance;
     
-//    if (!this.mIsActive)
-//        console.log(rand);
     return !this.mIsActive && !this.mIsShrinking && (rand <= 1);
 };
 
