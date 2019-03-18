@@ -175,6 +175,8 @@
         
         <!-- Game Scenes -->
         <script type="text/javascript" src="src/MyGame/Levels/StartMenu.js"></script>
+        <script type="text/javascript" src="src/MyGame/Levels/Credits.js"></script>
+        <script type="text/javascript" src="src/MyGame/Levels/Controls.js"></script>
         <script type="text/javascript" src="src/MyGame/Levels/MainGame.js"></script>
         <script type="text/javascript" src="src/MyGame/Levels/MainGame_Update.js"></script>
         <script type="text/javascript" src="src/MyGame/Levels/MainGame_Lights.js"></script>
@@ -187,7 +189,7 @@
     </head>
 
     <body onload="
-        var myGame = new MainGame();
+        var myGame = new StartMenu();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
      ">
         <table id="display">
