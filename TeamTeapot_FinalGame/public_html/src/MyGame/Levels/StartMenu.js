@@ -16,8 +16,12 @@
 function StartMenu() {
     this.kUIButton = "assets/UI/button.png";
     
+    this.kBG = "assets/NightOcean2.png";
+    
     // The camera to view the scene
     this.mCamera = null;
+    
+    this.mBG = null;
     
     this.UIText = null;
     
@@ -32,10 +36,15 @@ gEngine.Core.inheritPrototype(StartMenu, Scene);
 
 StartMenu.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kUIButton);
+    
+    gEngine.Textures.loadTexture(this.kBG);
 };
 
 StartMenu.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kUIButton);
+    
+    gEngine.Textures.unloadTexture(this.kBG);
+    
     if(this.LevelSelect==="Play"){
         gEngine.Core.startScene(new MainGame());
     }
@@ -56,6 +65,12 @@ StartMenu.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
+            
+    this.mBG = new SpriteRenderable(this.kBG);
+    this.mBG.setElementPixelPositions(0, 2048, 0, 2048);
+    this.mBG.getXform().setPosition(0, 0);
+    this.mBG.getXform().setSize(100, 75);
+    
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
     this.UIText = new UIText("Game Engine Tech Demo",[400,600],8,1,0,[0,0,0,1]);
@@ -73,6 +88,7 @@ StartMenu.prototype.draw = function () {
     
     
     this.mCamera.setupViewProjection();
+    this.mBG.draw(this.mCamera);
     this.mPlayButton.draw(this.mCamera);
     this.mControlsButton.draw(this.mCamera);
     this.mCreditsButton.draw(this.mCamera);
