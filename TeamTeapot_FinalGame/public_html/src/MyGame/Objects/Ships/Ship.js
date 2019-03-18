@@ -40,6 +40,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
     this.mOriginalColor = [0.75, 0, 0, 1];
+    this.mHitColor = [1, 1, 1, 1];
     this.mShip.setColor(this.mOriginalColor);
     
     this.mWakeSet = new ProjectileSet();
@@ -70,9 +71,9 @@ gEngine.Core.inheritPrototype(Ship, GameObject);
 
 Ship.prototype.draw = function(camera)
 {
+    this.mWakeSet.draw(camera);
     GameObject.prototype.draw.call(this, camera);
     //this.mShipLowRes.draw(camera);
-    this.mWakeSet.draw(camera);
 };
 
 Ship.prototype.getSpeedDelta = function() { return this.kSpeedDelta; }
@@ -227,7 +228,7 @@ Ship.prototype._createWake = function(sprite)
     ///////////////
     
     var xPos = xform.getPosition()[0]-(xform.getSize()[0]/2);
-    var yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    var yPos = xform.getPosition()[1]+(xform.getSize()[1]/8);
     
     // Get vector
     var newPos = [xPos - xform.getPosition()[0], yPos - xform.getPosition()[1]];
@@ -253,7 +254,7 @@ Ship.prototype._createWake = function(sprite)
     ////////////////
     
     xPos = xform.getPosition()[0]+(xform.getSize()[0]/2);
-    yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    yPos = xform.getPosition()[1]+(xform.getSize()[1]/8);
     
     // Get vector
     newPos = [xPos - xform.getPosition()[0], yPos - xform.getPosition()[1]];
@@ -269,6 +270,7 @@ Ship.prototype._createWake = function(sprite)
     forward = [-Math.cos(theta), -Math.sin(theta)];
     
     var rightWake = new Wake(sprite, newPos, forward);
+    //rightWake.mRenderable.setElementPixelPositions(677, 0, 0, 256);
     rightWake.getXform().setRotationInRad(theta);
     
     this.mWakeSet.addToSet(rightWake);

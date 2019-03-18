@@ -13,7 +13,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function SunkenTreasure(texture, position)
+function SunkenTreasure(texture, position, lifeSpan)
 {
     var xPos = position[0];
     var yPos = position[1];
@@ -37,13 +37,14 @@ function SunkenTreasure(texture, position)
         2);                 // yMultiplier
         
     this.setSizeBase(0.1);
+    this.mLifeSpan = lifeSpan;
+    this.mLifeTimer = 0;
     
     // So can spawn less than 1 particle per update:
     // mSpawnRate is how many updates between particle creation
     // (e.g. mSpawnElapse of 10 is 1 particle per 10 updates)
     this.mSpawnRate = 10;
     this.mUpdatesElapsed = 0;
-    this.mCollectedStatus = false;
     
     this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([1, 1, 0, 1.0]);
@@ -59,20 +60,14 @@ SunkenTreasure.prototype.update = function(){
     this.mUpdatesElapsed = 0;
     }
     this.mUpdatesElapsed++;
+    this.mLifeTimer++;
     gEngine.ParticleSystem.update(this.mAllParticles);
-    
-    return this.mCollectedStatus;
 };
 
 SunkenTreasure.prototype.getBBox = function()
 {
     var b = new BoundingBox(this.getPos(), 10, 10);
     return b;
-};
-
-SunkenTreasure.prototype.collect = function()
-{
-    this.mCollectedStatus = true;
 };
 
 SunkenTreasure.prototype.createParticle = function(atX,atY) {
@@ -106,4 +101,9 @@ SunkenTreasure.prototype.createParticle = function(atX,atY) {
 SunkenTreasure.prototype.drawForMap = function (aCamera)
 {
     this.mMapRenderable.draw(aCamera);
+};
+
+SunkenTreasure.prototype.isDead = function()
+{
+    return this.mLifeTimer >= this.mLifeSpan;
 };

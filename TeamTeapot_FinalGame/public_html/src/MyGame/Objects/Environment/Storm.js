@@ -86,6 +86,11 @@ Storm.prototype.growStorm = function ()
     }
 };
 
+Storm.prototype.getPosition = function ()
+{
+    return this.mStorm.getXform().getPosition();
+};
+
 Storm.prototype.draw = function (aCamera)
 {
     this.mStorm.draw(aCamera);

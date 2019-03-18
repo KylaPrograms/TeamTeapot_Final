@@ -16,6 +16,9 @@
 function StartMenu() {
     this.kUIButton = "assets/UI/button.png";
     this.kGameTitle = "assets/StormySeas_Title.png";
+    this.kPlay = "assets/Play.png";
+    this.kControls = "assets/Controls.png";
+    this.kCredits = "assets/CreditsButton.png";
     
     this.kBG = "assets/NightOcean2.png";
     
@@ -40,12 +43,18 @@ StartMenu.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kUIButton);
     gEngine.Textures.loadTexture(this.kBG);
     gEngine.Textures.loadTexture(this.kGameTitle);
+    gEngine.Textures.loadTexture(this.kPlay);
+    gEngine.Textures.loadTexture(this.kControls);
+    gEngine.Textures.loadTexture(this.kCredits);
 };
 
 StartMenu.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kUIButton);
     gEngine.Textures.unloadTexture(this.kBG);
     gEngine.Textures.unloadTexture(this.kGameTitle);
+    gEngine.Textures.unloadTexture(this.kPlay);
+    gEngine.Textures.unloadTexture(this.kControls);
+    gEngine.Textures.unloadTexture(this.kCredits);
     
     if(this.LevelSelect==="Play"){
         gEngine.Core.startScene(new MainGame());
@@ -78,9 +87,9 @@ StartMenu.prototype.initialize = function () {
     var uvs = [(15/1024), (995/1024), (330/1024), (690/1024)];
     this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
     
-    this.mPlayButton = new UIButton(this.kUIButton,this.playSelect,this,[400,300],[600,100],"Play",8,[1,1,1,1],[0,0,0,1]);
-    this.mControlsButton = new UIButton(this.kUIButton,this.controlsSelect,this,[400,200],[500,100],"Controls",8,[1,1,1,1],[0,0,0,1]);
-    this.mCreditsButton =  new UIButton(this.kUIButton,this.creditsSelect,this,[400,100],[320,100],"Credits",8,[1,1,1,1],[0,0,0,1]);
+    this.mPlayButton = new UIButton(this.kPlay,this.playSelect,this,[400,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mControlsButton = new UIButton(this.kControls,this.playSelect,this,[400,200],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mCreditsButton =  new UIButton(this.kCredits,this.playSelect,this,[400,75],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more

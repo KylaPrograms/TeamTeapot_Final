@@ -48,13 +48,17 @@ Ship.prototype.updateInvincibility = function()
         {
             var freq = 16;
             var color = [this.mOriginalColor[0], this.mOriginalColor[1], this.mOriginalColor[2], this.mOriginalColor[3]];
-            for (var i = 0; i < 4; i++)
-            {
-                if (this.mHitTimer % freq / freq > .5)
-                    color[i] = this.mOriginalColor[i];
-                else
-                    color[i] = 1;
-            }
+//            for (var i = 0; i < 4; i++)
+//            {
+//                if (this.mHitTimer % freq / freq > .5)
+//                    color[i] = this.mOriginalColor[i];
+//                else
+//                    color[i] = 1;
+//            }
+            if (this.mHitTimer % freq / freq > .5)
+                color = this.mOriginalColor;
+            else
+                color = this.mHitColor;
             
             this.mShip.setColor(color);
             this.mHitTimer++;

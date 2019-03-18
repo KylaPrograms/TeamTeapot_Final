@@ -13,11 +13,9 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Projectile(spriteTexture, position, size, forwardDir, speed, lifeSpan)
+function Projectile(renderable, forwardDir, speed, lifeSpan)
 {
-    this.mRenderable = new LightRenderable(spriteTexture);
-    this.mRenderable.getXform().setPosition(position[0], position[1]);
-    this.mRenderable.getXform().setSize(size[0], size[1]);
+    this.mRenderable = renderable;
         
     this.mSpeed = speed;
     
@@ -51,9 +49,4 @@ Projectile.prototype.isDead = function()
 Projectile.prototype.kill = function()
 {
     this.mLifeTimer = this.mLifeSpan;
-};
-
-Projectile.prototype.getmRenderable = function()
-{
-    return this.mRenderable;
 };
