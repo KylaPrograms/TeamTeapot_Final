@@ -53,13 +53,13 @@ MainGame.prototype.update = function ()
     {
         this.mHero.addTreasure();
         gEngine.AudioClips.playACue(this.kTreasureSFX);
-        this.mHero.regenHealth(10);
+        this.mHero.regenHealth(this.kRegenRate);
         this.mHealthBar.setCurrentHP(this.mHero.getHealth());
         this.mHealthBar.update();
         this.mGameState.addTreasure();
         this.mTreasureUI.fillSlot();
-        this.mPirateSetTest.incSpawnRateBy(-this.kSpawnRate / 2 / 6);
-        console.log("Decrementing Spawn RAte: " + this.mPirateSetTest.mSpawnRate);
+        this.mPirateSet.incSpawnRateBy(-this.kSpawnRate / 2 / 6);
+        console.log("Decrementing Spawn RAte: " + this.mPirateSet.mSpawnRate);
     }
     
     this.mTreasureSet.update();
