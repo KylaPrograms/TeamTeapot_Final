@@ -18,13 +18,30 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function MainGame() {
+function MainGame(mode) {
     this.mAmbientLight = null;
     this.mGlobalLightSet = null;
     
     this.kMaxBrightness = 3;
     this.kMinBrightness = 1.25;
-    this.kDarkestTime =  120 * 60; // 2 minutes 
+    
+    this.kDarkestTime =  2 * 60 * 60; // 2 minutes 
+    if (mode === "easy")
+        this.kDarkestTime = 10 * 60 * 60; // 10 minutes
+    else if (mode === "hard")
+        this.kDarkestTime = 10 * 60 // 10 seconds
+    
+    this.kSpawnRate = 240;
+    if (mode === "easy")
+        this.kSpawnRate = 480;
+    else if (mode === "hard")
+        this.kSpawnRate = 120;
+    
+    this.kRegenRate = 10;
+    if (mode === "easy")
+        this.kRegenRate = 20;
+    else if (mode === "hard")
+        this.kRegenRate = 0;
     
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     
@@ -163,6 +180,7 @@ MainGame.prototype.initialize = function ()
     
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
     this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
+    this.mPirateSetTest.setSpawnRate(this.kSpawnRate);
     
     this._initializeLights();
     

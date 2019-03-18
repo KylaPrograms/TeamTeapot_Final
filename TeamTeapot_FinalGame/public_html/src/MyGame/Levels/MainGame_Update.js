@@ -38,7 +38,7 @@ MainGame.prototype.update = function ()
     if(this.mTreasureSetTest.collectAt(heroPos[0], heroPos[1]))
     {
         this.mHeroTest.addTreasure();
-        this.mHeroTest.regenHealth(10);
+        this.mHeroTest.regenHealth(this.kRegenRate);
         this.mHealthBar.setCurrentHP(this.mHeroTest.getHealth());
         this.mHealthBar.update();
         this.mGameState.addTreasure();
