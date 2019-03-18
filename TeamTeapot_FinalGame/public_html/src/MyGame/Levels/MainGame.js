@@ -29,7 +29,7 @@ function MainGame(mode) {
     if (mode === "easy")
         this.kDarkestTime = 10 * 60 * 60; // 10 minutes
     else if (mode === "hard")
-        this.kDarkestTime = 10 * 60 // 10 seconds
+        this.kDarkestTime = 10 * 60; // 10 seconds
     
     this.kSpawnRate = 240;
     if (mode === "easy")
@@ -51,7 +51,7 @@ function MainGame(mode) {
     
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     if (mode === "hard")
-        this.kBGMusic = "assets/Sounds/HardMode.mp3"
+        this.kBGMusic = "assets/Sounds/HardMode.mp3";
     
     this.kCharybdisMusic = "assets/Sounds/Charybdis.mp3";
     this.kTreasureSFX = "assets/Sounds/TreasurePickUp.mp3";
