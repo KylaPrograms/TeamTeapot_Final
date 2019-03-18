@@ -101,14 +101,6 @@ PlayerShip.prototype.update = function()
         this.getXform().setRotationInRad(Math.atan2(dir[0], -dir[1]));
     }
     
-    // temp code
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
-    {
-        this.hit();
-    }
-    
-    
-    
     // set ship velocity in new direction
     var theta = Math.atan2(dir[1], dir[0]);
     this.setVelocity(this.mSpeed * Math.cos(theta), this.mSpeed * Math.sin(theta));
@@ -143,10 +135,13 @@ PlayerShip.prototype.changeSpeed = function(speed)
     vec2.scaleAndAdd(pos,pos,dir, speed);
 };
 
-PlayerShip.prototype.regenHealth = function()
+PlayerShip.prototype.regenHealth = function(incHealth)
 {
-    if(this.mHealth > 0) {
-        this.mHealth -=1 ;   
+    if(this.mHealth < this.mMaxHealth) {
+        this.mHealth += incHealth;   
+    }
+    if(this.mHealth > this.mMaxHealth) {
+        this.mHealth = this.mMaxHealth;   
     }
 };
 

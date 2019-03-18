@@ -16,6 +16,7 @@
 function Credits() {
     this.kUIButton = "assets/UI/button.png";
     this.kCredits = "assets/Credits.png";
+    this.kCreditsBG = "assets/CreditsBG.png";
     this.kBack = "assets/Back.png";
     
     this.kBG = "assets/NightOcean2.png";
@@ -24,6 +25,7 @@ function Credits() {
     this.mCamera = null;
     
     this.mCredits = null;
+    this.mCreditsBG = null;
     
     this.mBackButton = null;
     
@@ -35,6 +37,7 @@ gEngine.Core.inheritPrototype(Credits, Scene);
 Credits.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kUIButton);
     gEngine.Textures.loadTexture(this.kCredits);
+    gEngine.Textures.loadTexture(this.kCreditsBG);
     gEngine.Textures.loadTexture(this.kBack);
     gEngine.Textures.loadTexture(this.kBG);
 };
@@ -42,6 +45,7 @@ Credits.prototype.loadScene = function () {
 Credits.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kUIButton);
     gEngine.Textures.unloadTexture(this.kCredits);
+    gEngine.Textures.unloadTexture(this.kCreditsBG);
     gEngine.Textures.unloadTexture(this.kBack);
     gEngine.Textures.unloadTexture(this.kBG);
     
@@ -63,9 +67,11 @@ Credits.prototype.initialize = function () {
     this.mBG.getXform().setPosition(0, 0);
     this.mBG.getXform().setSize(100, 75);
     
-    this.mCredits = new UISprite(this.kCredits, [400, 300], [610, 610], [0, 1, 0, 1]);
+    this.mCredits = new UISprite(this.kCredits, [400, 295], [590, 590], [0, 1, 0, 1]);
+    this.mCredits.getRenderable().setColor([1,1,1,1]);
+    this.mCreditsBG = new UISprite(this.kCreditsBG, [400, 300], [805, 605], [0, 1, 0, 1]);
     
-    this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[100,50],[200,100],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[50,25],[100,50],"",0,[1,1,1,1],[0,0,0,1]);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -76,6 +82,7 @@ Credits.prototype.draw = function () {
     
     this.mCamera.setupViewProjection();
     this.mBG.draw(this.mCamera);
+    this.mCreditsBG.draw(this.mCamera);
     this.mCredits.draw(this.mCamera);
     this.mBackButton.draw(this.mCamera);
 };

@@ -31,20 +31,20 @@ MainGame.prototype._createALight = function (pos, color, n, f, intensity) {
 MainGame.prototype._initializeLights = function () {
     this.mGlobalLightSet = new LightSet();
 
-    this.mGlobalLightSet.addToSet(this.mHeroTest.mLight);
+    this.mGlobalLightSet.addToSet(this.mHero.mLight);
 
 };
 
 MainGame.prototype.updatePirateLight = function()
 {
-    var OnScreenPirates = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
+    var OnScreenPirates = this.mPirateSet.getShipsOnCamera(this.mCamera);
 
-    this.mTempBG.removeAllLights();
-    this.mTempBG.addLight(this.mHeroTest.mLight);
-    for (var i = 0; i < this.mPirateSetTest.size(); i++)
+    this.mBG.removeAllLights();
+    this.mBG.addLight(this.mHero.mLight);
+    for (var i = 0; i < this.mPirateSet.size(); i++)
     {
-        var light = this.mPirateSetTest.getObjectAt(i).mLight
-        this.mTempBG.addLight(light);
+        var light = this.mPirateSet.getObjectAt(i).mLight
+        this.mBG.addLight(light);
     }
 
 };
