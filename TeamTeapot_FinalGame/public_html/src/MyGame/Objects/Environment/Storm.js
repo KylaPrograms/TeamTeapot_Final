@@ -113,14 +113,14 @@ Storm.prototype.getSuctionBBox = function()
     var width = xform.getWidth()* 2; 
     var height = xform.getHeight()* 2;
     return new BoundingBox(pos, width, height);
-}
+};
 
 Storm.prototype.getSize = function()
 {
     return this.kSize;
-}
+};
 
 Storm.prototype.getRotSpeed = function()
 {
     return this.kRot1;
-}
+};

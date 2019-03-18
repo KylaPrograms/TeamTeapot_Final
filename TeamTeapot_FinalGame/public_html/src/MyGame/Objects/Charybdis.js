@@ -56,7 +56,7 @@ Charybdis.prototype.update = function ()
 Charybdis.prototype.draw = function(camera)
 {
     Storm.prototype.draw.call(this, camera);
-}
+};
 
 Charybdis.prototype.shrink = function()
 {

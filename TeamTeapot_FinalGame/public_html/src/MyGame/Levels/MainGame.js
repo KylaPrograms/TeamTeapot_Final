@@ -88,15 +88,15 @@ function MainGame(mode) {
     this.mWorldWCxRange = this.mWorldBounds[1]-this.mWorldBounds[0];
     this.mWorldWCyRange = this.mWorldBounds[3]-this.mWorldBounds[2];
     
-    this.mTempBG = null;
+    this.mBG = null;
     this.mWaterfallSet = null;
     this.mSpaceBG = null;
-    this.mHeroTest = null;
-    this.mPirateTest = null;
-    this.mCharybdis = null
+    this.mHero = null;
+    this.mPirateSet = null;
+    this.mCharybdis = null;
     
     this.mSpawnPosSet = [];
-    this.mTreasureSetTest = null;
+    this.mTreasureSet = null;
     
     this.mRockSet = null;
     this.mStormSet = null;
@@ -187,20 +187,9 @@ MainGame.prototype.initialize = function ()
     var jsonParser = new JSONParser(this.kSpawnPosFile);
     jsonParser.parsePosition(this.mSpawnPosSet);
     
-    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
-    gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
-    
-//    this.mAmbientLight = [];
-//    this.mAmbientLight[0] = 0.8;
-//    this.mAmbientLight[1] = 0.8;
-//    this.mAmbientLight[2] = 0.8;
-    
-
-    
-    
-    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
-    this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
-    this.mPirateSetTest.setSpawnRate(this.kSpawnRate);
+    this.mHero = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
+    this.mPirateSet = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
+    this.mPirateSet.setSpawnRate(this.kSpawnRate);
     
     this._initializeLights();
     
@@ -229,13 +218,13 @@ MainGame.prototype.initialize = function ()
     this.mUIBG = new UISprite(this.kUIBG, [130, 550], [250, 100], uvs);
     
     // Create the ocean background
-    this.mTempBG = new IllumRenderable(this.kOcean, this.kOceanNormal);
-    this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
-    this.mTempBG.getXform().setPosition(0, 0);
-    this.mTempBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
+    this.mBG = new IllumRenderable(this.kOcean, this.kOceanNormal);
+    this.mBG.setElementPixelPositions(0, 4096, 0, 4096);
+    this.mBG.getXform().setPosition(0, 0);
+    this.mBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
 
     for (var i = 0; i < this.mGlobalLightSet.numLights(); i++) {
-        this.mTempBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
+        this.mBG.addLight(this.mGlobalLightSet.getLightAt(i));   // all the lights
     }
     
     this.mWaterfallSet = new WaterfallSet(this.kWaterfallTex);
@@ -246,26 +235,24 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
-    
     this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
-                                                    this.mHeroTest);
+                                                    this.mHero);
 
     this.mCharybdis = new Charybdis(this.kCharybdisTex, 0, 75);
     this.mStormSet.addToSet(this.mCharybdis);
 
     // Spawn the rocks
     this.mRockSet = new RockSet(this.kRocksTex, this.mSpawnPosSet);
-    this.mGameState = new GameState(this.mHeroTest);
+    this.mGameState = new GameState(this.mHero);
     
     // Spawn the treasure
-    this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
+    this.mTreasureSet = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
     
     this.mHealthBarBorder = new UISprite(this.kHealthBarBorder, [125, 575], [205, 25], [0, 1, 0, 1]);
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [125, 575], [200, 20], 0);
     
     this.mTreasureUI = new UIItemSlotSet([30, 535]);
-    for(var i = 0; i < this.mTreasureSetTest.size(); i++)
+    for(var i = 0; i < this.mTreasureSet.size(); i++)
     {
         this.mTreasureUI.addToSet(this.kGemTex, [30, 30], [0, 0.5, 0, 1], [0.5, 1, 0, 1]);
     }
@@ -282,16 +269,16 @@ MainGame.prototype.draw = function ()
     //Draw for the main camera
     this.mCamera.setupViewProjection();
     this.mSpaceBG.draw(this.mCamera);
-    this.mTempBG.draw(this.mCamera);
+    this.mBG.draw(this.mCamera);
     this.mWaterfallSet.draw(this.mCamera);
-    this.mPirateSetTest.draw(this.mCamera);
-    this.mTreasureSetTest.draw(this.mCamera);
-    this.mHeroTest.draw(this.mCamera);
+    this.mPirateSet.draw(this.mCamera);
+    this.mTreasureSet.draw(this.mCamera);
+    this.mHero.draw(this.mCamera);
     
     this.mRockSet.draw(this.mCamera);
     
-    this.mStormSet.draw(this.mCamera);
     this.mCharybdis.draw(this.mCamera);
+    this.mStormSet.draw(this.mCamera);
     
     this.mUIBG.draw(this.mCamera);
     this.mHealthBarBorder.draw(this.mCamera);
@@ -302,11 +289,11 @@ MainGame.prototype.draw = function ()
     //Draw for the minimap
     this.mMiniMap.setupViewProjection();
     
-    this.mPirateSetTest.drawForMap(this.mMiniMap);
-    this.mTreasureSetTest.drawForMap(this.mMiniMap);
-    this.mHeroTest.drawForMap(this.mMiniMap);
-    this.mStormSet.drawForMap(this.mMiniMap);
+    this.mPirateSet.drawForMap(this.mMiniMap);
+    this.mTreasureSet.drawForMap(this.mMiniMap);
+    this.mHero.drawForMap(this.mMiniMap);
     this.mRockSet.drawForMap(this.mMiniMap);
+    this.mStormSet.drawForMap(this.mMiniMap);
     
 };
 

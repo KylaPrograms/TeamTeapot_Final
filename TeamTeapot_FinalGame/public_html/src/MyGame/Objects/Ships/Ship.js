@@ -76,7 +76,7 @@ Ship.prototype.draw = function(camera)
     //this.mShipLowRes.draw(camera);
 };
 
-Ship.prototype.getSpeedDelta = function() { return this.kSpeedDelta; }
+Ship.prototype.getSpeedDelta = function() { return this.kSpeedDelta; };
 
 Ship.prototype.getSpeed = function() { return this.mSpeed; };
 Ship.prototype.setSpeed = function(value)
@@ -210,7 +210,7 @@ Ship.prototype.hit = function()
         this.incHealthBy(-10);  
         this.mInvincible = true;
     }
-}
+};
 
 Ship.prototype.setVelocity = function(x,y)
 {
@@ -310,4 +310,4 @@ Ship.prototype.moveTowards = function (target, rot)
     vec2.rotate(dir,dir, rotateBy);
     
     this.mMapRenderable.getXform().setPosition(currXform.getXPos(), currXform.getYPos());  
-}
+};
