@@ -15,12 +15,13 @@
 
 function PlayMenu() {
     this.kUIButton = "assets/UI/button.png";
-    this.kEasy = "assets/Play.png";
-    this.kNormal = "assets/ControlsButton.png";
-    this.kHard = "assets/CreditsButton.png";
+    this.kEasy = "assets/EasyMode.png";
+    this.kNormal = "assets/NormalMode.png";
+    this.kHard = "assets/HardMode.png";
+    this.kEasyDesc = "assets/EasyDescription.png";
     
     this.kBG = "assets/NightOcean2.png";
-    this.kBack = "assets/Back.png";
+    this.kBack = "assets/MenuButton.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -32,6 +33,8 @@ function PlayMenu() {
     this.mPlayButtonHard = null;
     this.mBackButton = null;
     
+    this.mEasyDescription = null;
+    
     this.LevelSelect = null;
 }
 gEngine.Core.inheritPrototype(PlayMenu, Scene);
@@ -41,6 +44,7 @@ PlayMenu.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kUIButton);
     gEngine.Textures.loadTexture(this.kBG);
     gEngine.Textures.loadTexture(this.kEasy);
+    gEngine.Textures.loadTexture(this.kEasyDesc);
     gEngine.Textures.loadTexture(this.kNormal);
     gEngine.Textures.loadTexture(this.kHard);
     gEngine.Textures.loadTexture(this.kBack);
@@ -50,6 +54,7 @@ PlayMenu.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kUIButton);
     gEngine.Textures.unloadTexture(this.kBG);
     gEngine.Textures.unloadTexture(this.kEasy);
+    gEngine.Textures.unloadTexture(this.kEasyDesc);
     gEngine.Textures.unloadTexture(this.kNormal);
     gEngine.Textures.unloadTexture(this.kHard);
     gEngine.Textures.unloadTexture(this.kBack);
@@ -83,14 +88,19 @@ PlayMenu.prototype.initialize = function () {
     this.mBG.getXform().setPosition(0, 0);
     this.mBG.getXform().setSize(100, 75);
     
+    this.mEasyDescription = new SpriteRenderable(this.kEasyDesc);
+    this.mEasyDescription.setElementPixelPositions(84,971, 216, 343);
+    this.mEasyDescription.getXform().setPosition(-31, 8);
+    this.mEasyDescription.getXform().setSize(28,4);
+    
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
     
     var uvs = [(15/1024), (995/1024), (330/1024), (690/1024)];
     //this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
     
-    this.mPlayButtonEasy = new UIButton(this.kEasy,this.playSelectEasy,this,[400,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
-    this.mPlayButtonNormal = new UIButton(this.kNormal,this.playSelectNormal,this,[400,200],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
-    this.mPlayButtonHard = new UIButton(this.kHard,this.playSelectHard,this,[400,75],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mPlayButtonEasy = new UIButton(this.kEasy,this.playSelectEasy,this,[150,450],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mPlayButtonNormal = new UIButton(this.kNormal,this.playSelectNormal,this,[400,450],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mPlayButtonHard = new UIButton(this.kHard,this.playSelectHard,this,[650,450],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     
     this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[100,50],[200,100],"",0,[1,1,1,1],[0,0,0,1]);
 };
@@ -103,10 +113,13 @@ PlayMenu.prototype.draw = function () {
     
     this.mCamera.setupViewProjection();
     this.mBG.draw(this.mCamera);
+    this.mEasyDescription.draw(this.mCamera);
     //this.mGameTitle.draw(this.mCamera);
+    
     this.mPlayButtonEasy.draw(this.mCamera);
     this.mPlayButtonNormal.draw(this.mCamera);
     this.mPlayButtonHard.draw(this.mCamera);
+    
     this.mBackButton.draw(this.mCamera);
 };
 
