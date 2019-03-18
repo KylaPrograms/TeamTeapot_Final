@@ -200,6 +200,7 @@ MainGame.prototype.unloadScene = function ()
 MainGame.prototype.initialize = function ()
 {
     gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    //gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
     
     var jsonParser = new JSONParser(this.kSpawnPosFile);
     jsonParser.parsePosition(this.mSpawnPosSet);
@@ -207,8 +208,6 @@ MainGame.prototype.initialize = function ()
     this.mHero = new PlayerShip(this.kShipTex, this.kMiniMapMarker, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
     this.mPirateSet = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kMiniMapMarker, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
     this.mPirateSet.setSpawnRate(this.kSpawnRate);
-    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
-    //gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
     
     this._initializeLights();
     
