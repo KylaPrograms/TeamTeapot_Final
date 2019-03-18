@@ -26,10 +26,11 @@ function MainGame() {
     
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kShipTex = "assets/Ships.png";
-    this.kShipLowResTex = "assets/Ships128.png"
-    this.kAngryAnim = "assets/AngrySkullSpriteSheet.png"
+    this.kShipLowResTex = "assets/Ships128.png";
+    this.kChickenTex = "assets/ChickenFromAbove.png";
+    this.kAngryAnim = "assets/AngrySkullSpriteSheet.png";
     this.kOceanNormal = "assets/OceanNormal.png";
-    this.kOceanPlaceHolder = "assets/Ocean.png";
+    this.kOcean = "assets/Ocean.png";
     this.kSpaceTex = "assets/Space.png";
     this.kHealthBar = "assets/UI/healthbar.png";
     
@@ -75,8 +76,9 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kShipTex);
     gEngine.Textures.loadTexture(this.kShipLowResTex);
+    gEngine.Textures.loadTexture(this.kChickenTex);
     gEngine.Textures.loadTexture(this.kAngryAnim);
-    gEngine.Textures.loadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.loadTexture(this.kOcean);
     gEngine.Textures.loadTexture(this.kOceanNormal);
     gEngine.Textures.loadTexture(this.kSpaceTex);
     gEngine.Textures.loadTexture(this.kHealthBar);
@@ -97,8 +99,9 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kShipTex);
     gEngine.Textures.unloadTexture(this.kShipLowResTex);
+    gEngine.Textures.unloadTexture(this.kChickenTex);
     gEngine.Textures.unloadTexture(this.kAngryAnim);
-    gEngine.Textures.unloadTexture(this.kOceanPlaceHolder);
+    gEngine.Textures.unloadTexture(this.kOcean);
     gEngine.Textures.unloadTexture(this.kOceanNormal);
     gEngine.Textures.unloadTexture(this.kSpaceTex);
     gEngine.Textures.unloadTexture(this.kHealthBar);
@@ -165,7 +168,7 @@ MainGame.prototype.initialize = function ()
 //    }
     
     // Create the ocean background
-    this.mTempBG = new IllumRenderable(this.kOceanPlaceHolder, this.kOceanNormal);
+    this.mTempBG = new IllumRenderable(this.kOcean, this.kOceanNormal);
     this.mTempBG.setElementPixelPositions(0, 4096, 0, 4096);
     this.mTempBG.getXform().setPosition(0, 0);
     this.mTempBG.getXform().setSize(this.mWorldWCxRange, this.mWorldWCyRange);
@@ -180,7 +183,7 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setSize(100, 100);
     
     this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
-    this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kPlaceHolder, this.kAngryAnim);
+    this.mPirateTest = new PirateShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kChickenTex, this.kAngryAnim);
     
     this.mTreasureSetTest = new SunkenTreasureSet(this.kTreasureTex, this.kTreasureSpawnFile);
     
