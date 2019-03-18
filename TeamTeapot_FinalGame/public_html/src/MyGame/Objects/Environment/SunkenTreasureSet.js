@@ -13,18 +13,14 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function SunkenTreasureSet(spriteTexture, spawnPosFile)
+function SunkenTreasureSet(spriteTexture, spawnPosSet)
 {
     GameObjectSet.call(this);
     
     this.kTreasureTex = spriteTexture;
-    this.mSpawnPosSet = [];
+    this.mSpawnPosSet = spawnPosSet;
     
-    var jsonParser = new JSONParser(spawnPosFile);
-    jsonParser.parsePosition(this.mSpawnPosSet);
-    console.log(this.mSpawnPosSet);
-    
-    for(var i = 0; i < 3; i++)
+    for(var i = 0; i < 7; i++)
     {
         this._createTreasure();
     }

@@ -19,7 +19,7 @@
  * @returns {UIRButton}
  */
 function UIRButton(callback, context, position, text, textSize, textColor, aCamera) {
-    this.mBack = new SpriteRenderable("assets/UI/radarbutton.png");
+    this.mBack = new UISpriteRenderable("assets/UI/radarbutton.png");
     this.mBack.setElementUVCoordinate(0.0, 1.0, 0.5, 1.0);
     
     var pixSize=textSize*(aCamera.getViewport()[2]/aCamera.getWCWidth());

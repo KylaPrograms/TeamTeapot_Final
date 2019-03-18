@@ -26,7 +26,7 @@ GameState.prototype.update = function()
     {
         this.setGameOver(true);
     }
-    if(this.mTreasureCollected >= 3)
+    if(this.mTreasureCollected >= 7)
     {
         this.setGameWin(true);
     }

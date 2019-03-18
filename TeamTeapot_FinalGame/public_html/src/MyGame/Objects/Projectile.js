@@ -18,7 +18,7 @@ function Projectile(spriteTexture, position, size, forwardDir, speed, lifeSpan)
     this.mRenderable = new LightRenderable(spriteTexture);
     this.mRenderable.getXform().setPosition(position[0], position[1]);
     this.mRenderable.getXform().setSize(size[0], size[1]);
-    
+        
     this.mSpeed = speed;
     
     this.mLifeSpan = lifeSpan;
@@ -28,6 +28,8 @@ function Projectile(spriteTexture, position, size, forwardDir, speed, lifeSpan)
     
     this.mCurrentFrontDir = vec2.fromValues(forwardDir[0], forwardDir[1]);
     vec2.normalize(this.mCurrentFrontDir, this.mCurrentFrontDir);
+    
+
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
@@ -49,4 +51,9 @@ Projectile.prototype.isDead = function()
 Projectile.prototype.kill = function()
 {
     this.mLifeTimer = this.mLifeSpan;
-}
+};
+
+Projectile.prototype.getmRenderable = function()
+{
+    return this.mRenderable;
+};

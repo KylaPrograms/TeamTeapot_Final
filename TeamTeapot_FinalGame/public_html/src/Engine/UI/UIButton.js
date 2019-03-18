@@ -20,7 +20,7 @@
  * @returns {UIButton}
  */
 function UIButton(buttonSprite, callback, context, position, size, text, textSize, textColor, clickTextColor) {
-    this.mBack = new SpriteRenderable(buttonSprite);
+    this.mBack = new UISpriteRenderable(buttonSprite);
     this.mBack.setElementUVCoordinate(0.0, 1.0, 0.5, 1.0);
     UIElement.call(this, this.mBack, position, size);
     

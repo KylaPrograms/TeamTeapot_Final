@@ -18,5 +18,6 @@
 function UISpriteRenderable(myTexture) {
     SpriteRenderable.call(this, myTexture);
     Renderable.prototype._setShader.call(this, gEngine.DefaultResources.getUISpriteShader());
+    this.getXform().setZPos(3);
 }
 gEngine.Core.inheritPrototype(UISpriteRenderable, SpriteRenderable);

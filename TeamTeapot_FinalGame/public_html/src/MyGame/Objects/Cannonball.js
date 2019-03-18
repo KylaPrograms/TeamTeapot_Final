@@ -17,7 +17,11 @@ function Cannonball(spriteTexture, position, target)
 {
     var x = target[0] - position[0];
     var y = target[1] - position[1];
-    Projectile.call(this, spriteTexture, position, [2, 2], [x,y], 1, 60);
+    Projectile.call(this, spriteTexture, position, [8, 8], [x,y], 1, 60);
+    
+    var angle = Math.atan2(y, x);
+    angle = angle * (180/Math.PI) - 90;
+    this.getXform().setRotationInDegree(angle);
 }
 gEngine.Core.inheritPrototype(Cannonball, Projectile);
 
