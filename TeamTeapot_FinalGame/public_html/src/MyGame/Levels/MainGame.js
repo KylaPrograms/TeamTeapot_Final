@@ -31,6 +31,7 @@ function MainGame() {
     this.kPlaceHolder = "assets/PlaceHolder.png";
     this.kShipTex = "assets/Ships.png";
     this.kShipLowResTex = "assets/Ships128.png";
+    this.kWakeTex = "assets/Wake.png";
     this.kChickenTex = "assets/ChickenFromAbove.png";
     this.kAngryAnim = "assets/AngrySkullSpriteSheet.png";
     this.kOceanNormal = "assets/OceanNormal.png";
@@ -86,6 +87,7 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kPlaceHolder);
     gEngine.Textures.loadTexture(this.kShipTex);
     gEngine.Textures.loadTexture(this.kShipLowResTex);
+    gEngine.Textures.loadTexture(this.kWakeTex);
     gEngine.Textures.loadTexture(this.kChickenTex);
     gEngine.Textures.loadTexture(this.kAngryAnim);
     gEngine.Textures.loadTexture(this.kOcean);
@@ -111,6 +113,7 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kPlaceHolder);
     gEngine.Textures.unloadTexture(this.kShipTex);
     gEngine.Textures.unloadTexture(this.kShipLowResTex);
+    gEngine.Textures.unloadTexture(this.kWakeTex);
     gEngine.Textures.unloadTexture(this.kChickenTex);
     gEngine.Textures.unloadTexture(this.kAngryAnim);
     gEngine.Textures.unloadTexture(this.kOcean);
@@ -196,7 +199,7 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
+    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
 
     this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kChickenTex, this.kAngryAnim]);
     

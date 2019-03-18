@@ -14,7 +14,11 @@
 
 function Wake(spriteTexture, position, forwardDir)
 {
-    Projectile.call(this, spriteTexture, position, [2, 1], forwardDir, 0.01, 60);
+    this.mRenderable = new LightRenderable(spriteTexture);
+    this.mRenderable.getXform().setPosition(position[0], position[1]);
+    this.mRenderable.getXform().setSize(2, 1);
+    
+    Projectile.call(this, this.mRenderable, forwardDir, 0.01, 60);
 }
 gEngine.Core.inheritPrototype(Wake, Projectile);
 
