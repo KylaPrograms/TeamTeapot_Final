@@ -13,16 +13,16 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Rock(spriteTexture, atX, atY)
+function Rock(spriteTexture, miniMapTexture, atX, atY)
 {
     this.mRock = new SpriteRenderable(spriteTexture);
     this.mRock.getXform().setPosition(atX, atY);
     this.mRock.getXform().setSize(7, 8);
     this.mRock.setElementPixelPositions(15, 500, 60, 560);
     
-    this.mMapRenderable = new UIRenderable();
-    this.mMapRenderable.setColor([1, 1, 1, 1.0]);
-    this.mMapRenderable.getXform().setSize(7, 8);
+    this.mMapRenderable = new UISpriteRenderable(miniMapTexture);
+    this.mMapRenderable.setColor([0.8, 0.8, 0.8, 1.0]);
+    this.mMapRenderable.getXform().setSize(10, 10);
     this.mMapRenderable.getXform().setPosition(atX, atY);
     
     GameObject.call(this, this.mRock);

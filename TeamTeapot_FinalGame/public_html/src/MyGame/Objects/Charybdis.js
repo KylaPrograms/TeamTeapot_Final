@@ -12,15 +12,16 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Charybdis(spriteTexture, atX, atY)
+function Charybdis(spriteTexture, miniMapTex, atX, atY)
 {       
     this.mIsActive = false;
     this.mIsShrinking = false;
     this.mJustFinished = false;
     
-    Storm.call(this, spriteTexture, atX, atY);
+    Storm.call(this, spriteTexture, miniMapTex, atX, atY);
     
     this.mStorm.getXform().setSize(0, 0);
+    this.mMapRenderable.setColor([1.0, 1.0, 1.0, 0.0]);
     this.mXdelta = 0;
     this.mYdelta = 0;
     this.kRot1 = 2.5;

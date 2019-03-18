@@ -71,6 +71,10 @@ function MainGame(mode) {
     this.kRocksTex = "assets/Rocks.png";
     this.kGemTex = "assets/Gems.png";
     this.kMiniMapBG = "assets/Minimap_Bg.png";
+    this.kMiniMapMarker = "assets/MiniMapMarker.png";
+    this.kMiniMapTreasure = "assets/MiniMapTreasure.png";
+    this.kMiniMapStorm = "assets/MiniMapStorm.png";
+    this.kMiniMapBoss = "assets/MiniMapCharybdis.png";
     this.kUIBG = "assets/UI_BG.png";
     this.kTreasureTex = "assets/Diamond.png";
     
@@ -131,6 +135,10 @@ MainGame.prototype.loadScene = function ()
     gEngine.Textures.loadTexture(this.kRocksTex);
     gEngine.Textures.loadTexture(this.kGemTex);
     gEngine.Textures.loadTexture(this.kMiniMapBG);
+    gEngine.Textures.loadTexture(this.kMiniMapMarker);
+    gEngine.Textures.loadTexture(this.kMiniMapTreasure);
+    gEngine.Textures.loadTexture(this.kMiniMapStorm);
+    gEngine.Textures.loadTexture(this.kMiniMapBoss);
     gEngine.Textures.loadTexture(this.kUIBG);
     gEngine.Textures.loadTexture(this.kTreasureTex);
     
@@ -161,6 +169,10 @@ MainGame.prototype.unloadScene = function ()
     gEngine.Textures.unloadTexture(this.kRocksTex);
     gEngine.Textures.unloadTexture(this.kGemTex);
     gEngine.Textures.unloadTexture(this.kMiniMapBG);
+    gEngine.Textures.unloadTexture(this.kMiniMapMarker);
+    gEngine.Textures.unloadTexture(this.kMiniMapTreasure);
+    gEngine.Textures.unloadTexture(this.kMiniMapStorm);
+    gEngine.Textures.unloadTexture(this.kMiniMapBoss);
     gEngine.Textures.unloadTexture(this.kUIBG);
     gEngine.Textures.unloadTexture(this.kTreasureTex);
     
@@ -187,9 +199,11 @@ MainGame.prototype.initialize = function ()
     var jsonParser = new JSONParser(this.kSpawnPosFile);
     jsonParser.parsePosition(this.mSpawnPosSet);
     
-    this.mHero = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
-    this.mPirateSet = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
+    this.mHero = new PlayerShip(this.kShipTex, this.kMiniMapMarker, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
+    this.mPirateSet = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kMiniMapMarker, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
     this.mPirateSet.setSpawnRate(this.kSpawnRate);
+    gEngine.AudioClips.playBackgroundAudio(this.kBGMusic);
+    //gEngine.DefaultResources.setGlobalAmbientIntensity(this.kMaxBrightness);
     
     this._initializeLights();
     
@@ -235,18 +249,18 @@ MainGame.prototype.initialize = function ()
     this.mSpaceBG.getXform().setPosition(0, 0);
     this.mSpaceBG.getXform().setSize(100, 100);
     
-    this.mStormSet = new StormSet(this.kStormTex, this.mWorldWCxRange, this.mWorldWCyRange,
+    this.mStormSet = new StormSet(this.kStormTex, this.kMiniMapMarker, this.mWorldWCxRange, this.mWorldWCyRange,
                                                     this.mHero);
 
-    this.mCharybdis = new Charybdis(this.kCharybdisTex, 0, 75);
+    this.mCharybdis = new Charybdis(this.kCharybdisTex, this.kMiniMapBoss, 0, 75);
     this.mStormSet.addToSet(this.mCharybdis);
 
     // Spawn the rocks
-    this.mRockSet = new RockSet(this.kRocksTex, this.mSpawnPosSet);
+    this.mRockSet = new RockSet(this.kRocksTex, this.kMiniMapMarker, this.mSpawnPosSet);
     this.mGameState = new GameState(this.mHero);
     
     // Spawn the treasure
-    this.mTreasureSet = new SunkenTreasureSet(this.kTreasureTex, this.mSpawnPosSet);
+    this.mTreasureSet = new SunkenTreasureSet(this.kTreasureTex, this.kMiniMapTreasure, this.mSpawnPosSet);
     
     this.mHealthBarBorder = new UISprite(this.kHealthBarBorder, [125, 575], [205, 25], [0, 1, 0, 1]);
     this.mHealthBar = new UIHealthBar(this.kHealthBar, [125, 575], [200, 20], 0);

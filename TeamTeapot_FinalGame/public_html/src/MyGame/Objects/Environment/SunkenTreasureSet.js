@@ -13,11 +13,12 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function SunkenTreasureSet(spriteTexture, spawnPosSet)
+function SunkenTreasureSet(spriteTexture, miniMapTex, spawnPosSet)
 {
     GameObjectSet.call(this);
     
     this.kTreasureTex = spriteTexture;
+    this.kMiniMapTex = miniMapTex;
     this.mSpawnPosSet = spawnPosSet;
     this.mSpawnPointsUsed = [];
     
@@ -46,7 +47,7 @@ SunkenTreasureSet.prototype._createTreasure = function()
     var lifeSpan = Math.round((Math.random()*(1500-600)))+600;
     this.mSpawnPosSet[index].markInUse();
     this.mSpawnPointsUsed.push(index);
-    var newTreasure = new SunkenTreasure(this.kTreasureTex, this.mSpawnPosSet[index].getPosition(), lifeSpan);
+    var newTreasure = new SunkenTreasure(this.kTreasureTex, this.kMiniMapTex, this.mSpawnPosSet[index].getPosition(), lifeSpan);
     this.addToSet(newTreasure);
 };
 

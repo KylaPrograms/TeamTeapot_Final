@@ -13,7 +13,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function SunkenTreasure(texture, position, lifeSpan)
+function SunkenTreasure(texture, miniMapTexture, position, lifeSpan)
 {
     var xPos = position[0];
     var yPos = position[1];
@@ -46,9 +46,9 @@ function SunkenTreasure(texture, position, lifeSpan)
     this.mSpawnRate = 10;
     this.mUpdatesElapsed = 0;
     
-    this.mMapRenderable = new UIRenderable();
+    this.mMapRenderable = new UISpriteRenderable(miniMapTexture);
     this.mMapRenderable.setColor([1, 1, 0, 1.0]);
-    this.mMapRenderable.getXform().setSize(10, 10);
+    this.mMapRenderable.getXform().setSize(9, 9);
     this.mMapRenderable.getXform().setPosition(xPos, yPos);
 }
 gEngine.Core.inheritPrototype(SunkenTreasure, ParticleSystem);
