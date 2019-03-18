@@ -30,9 +30,7 @@ function StartMenu() {
     this.UIText = null;
     this.mGameTitle = null;
     
-    this.mPlayButtonEasy = null;
-    this.mPlayButtonNormal = null;
-    this.mPlayButtonHard = null;
+    this.mPlayButton = null;
     
     this.mControlsButton = null;
     this.mCreditsButton = null;
@@ -59,14 +57,8 @@ StartMenu.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kControls);
     gEngine.Textures.unloadTexture(this.kCredits);
     
-    if(this.LevelSelect==="PlayEasy"){
-        gEngine.Core.startScene(new MainGame("easy"));
-    }
-    else if(this.LevelSelect==="PlayNormal"){
-        gEngine.Core.startScene(new MainGame("normal"));
-    }
-    else if(this.LevelSelect==="PlayHard"){
-        gEngine.Core.startScene(new MainGame("hard"));
+    if(this.LevelSelect==="Play"){
+        gEngine.Core.startScene(new PlayMenu());
     }
     else if(this.LevelSelect==="Controls"){
         gEngine.Core.startScene(new Controls());
@@ -96,9 +88,7 @@ StartMenu.prototype.initialize = function () {
     var uvs = [(15/1024), (995/1024), (330/1024), (690/1024)];
     this.mGameTitle = new UISprite(this.kGameTitle, [400, 500], [500, 184], uvs);
     
-    this.mPlayButtonEasy = new UIButton(this.kPlay,this.playSelectEasy,this,[150,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
-    this.mPlayButtonNormal = new UIButton(this.kPlay,this.playSelectNormal,this,[400,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
-    this.mPlayButtonHard = new UIButton(this.kPlay,this.playSelectHard,this,[650,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mPlayButton = new UIButton(this.kPlay,this.playSelect,this,[400,325],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     this.mControlsButton = new UIButton(this.kControls,this.controlsSelect,this,[400,200],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
     this.mCreditsButton =  new UIButton(this.kCredits,this.creditsSelect,this,[400,75],[250,125],"",0,[1,1,1,1],[0,0,0,1]);
 };
@@ -112,33 +102,19 @@ StartMenu.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     this.mBG.draw(this.mCamera);
     this.mGameTitle.draw(this.mCamera);
-    this.mPlayButtonEasy.draw(this.mCamera);
-    this.mPlayButtonNormal.draw(this.mCamera);
-    this.mPlayButtonHard.draw(this.mCamera);
+    this.mPlayButton.draw(this.mCamera);
     this.mControlsButton.draw(this.mCamera);
     this.mCreditsButton.draw(this.mCamera);
 };
 
 StartMenu.prototype.update = function () {
-    this.mPlayButtonEasy.update();
-    this.mPlayButtonNormal.update();
-    this.mPlayButtonHard.update();
+    this.mPlayButton.update();
     this.mControlsButton.update();
     this.mCreditsButton.update();
 };
 
-StartMenu.prototype.playSelectEasy = function(){
-    this.LevelSelect="PlayEasy";
-    gEngine.GameLoop.stop();
-};
-
-StartMenu.prototype.playSelectNormal = function(){
-    this.LevelSelect="PlayNormal";
-    gEngine.GameLoop.stop();
-};
-
-StartMenu.prototype.playSelectHard = function(){
-    this.LevelSelect="PlayHard";
+StartMenu.prototype.playSelect = function(){
+    this.LevelSelect="Play";
     gEngine.GameLoop.stop();
 };
 
