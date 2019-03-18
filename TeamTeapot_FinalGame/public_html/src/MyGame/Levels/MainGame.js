@@ -43,6 +43,12 @@ function MainGame(mode) {
     else if (mode === "hard")
         this.kRegenRate = 0;
     
+    this.kCharybdisSpawnChance = 100000;
+    if (mode === "easy")
+        this.kCharybdisSpawnChance = 1000000;
+    else if (mode === "hard")
+        this.kCharybdisSpawnChance = 50000;
+    
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     this.kCharybdisMusic = "assets/Sounds/Charybdis.mp3";
     this.kTreasureSFX = "assets/Sounds/TreasurePickUp.mp3";

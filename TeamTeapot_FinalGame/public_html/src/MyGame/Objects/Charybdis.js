@@ -84,9 +84,9 @@ Charybdis.prototype.shrink = function()
     
 };
 
-Charybdis.prototype.checkIfCanSpawn = function()
+Charybdis.prototype.checkIfCanSpawn = function(chance)
 {
-    var rand = Math.random() * 100000;
+    var rand = Math.random() * chance;
     
 //    if (!this.mIsActive)
 //        console.log(rand);
