@@ -24,7 +24,7 @@ function MainGame() {
     
     this.kMaxBrightness = 3;
     this.kMinBrightness = 1.25;
-    this.kDarkestTime =  120 * 60; // 2 minutes 
+    this.kDarkestTime =  5000 * 60; // 2 minutes 
     
     this.kBGMusic = "assets/Sounds/GameBackground.mp3";
     this.kTreasureSFX = "assets/Sounds/TreasurePickUp.mp3";
@@ -165,8 +165,8 @@ MainGame.prototype.initialize = function ()
 
     
     
-    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kAngryAnim);
-    this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kPlaceHolder, this.kChickenTex, this.kAngryAnim]);
+    this.mHeroTest = new PlayerShip(this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kAngryAnim);
+    this.mPirateSetTest = new PirateShipSet(this.mWorldBounds, [this.kShipTex, this.kShipLowResTex, this.kWakeTex, this.kChickenTex, this.kAngryAnim]);
     
     this._initializeLights();
     

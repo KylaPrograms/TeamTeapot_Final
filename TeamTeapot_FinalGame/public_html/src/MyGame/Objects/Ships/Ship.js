@@ -65,7 +65,7 @@ function Ship(spriteTexture, collisionTexture, wakeTexture,
     r.setFriction(0);
     r.setVelocity(0, 0);
     this.setRigidBody(r);
-    this.toggleDrawRigidShape();
+    //this.toggleDrawRigidShape();
 }
 gEngine.Core.inheritPrototype(Ship, GameObject);
 
