@@ -30,7 +30,6 @@ MainGame.prototype.update = function ()
     this.updatePirateLight(this.mPirateTest);
     this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
     var shipsOnMainCam = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
-    console.log(shipsOnMainCam);
     
     this.mGameState.update();
     
