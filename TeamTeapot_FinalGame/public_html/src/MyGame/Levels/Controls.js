@@ -117,10 +117,13 @@ Controls.prototype.initialize = function () {
     this.mRight = new UISprite(this.kRight, [675, 325], [75, 75], [0, 1, 0, 1]);
     this.mM = new UISprite(this.kM, [225, 175], [75, 75], [0, 1, 0, 1]);
     this.mMoveWith = new UISprite(this.kMoveWith, [400, 475], [300, 300], [0, 1, 0, 1]);
+    this.mMoveWith.getRenderable().setColor([1,1,1,1]);
     this.mOr = new UISprite(this.kOr, [400, 375], [150, 150], [0, 1, 0, 1]);
+    this.mOr.getRenderable().setColor([1,1,1,1]);
     this.mToMute = new UISprite(this.kToMute, [450, 150], [375, 375], [0, 1, 0, 1]);
+    this.mToMute.getRenderable().setColor([1,1,1,1]);
     
-    this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[100,50],[200,100],"",0,[1,1,1,1],[0,0,0,1]);
+    this.mBackButton = new UIButton(this.kBack,this.backSelect,this,[50,25],[100,50],"",0,[1,1,1,1],[0,0,0,1]);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
