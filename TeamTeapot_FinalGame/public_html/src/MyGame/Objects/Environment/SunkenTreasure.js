@@ -45,7 +45,6 @@ function SunkenTreasure(texture, position, lifeSpan)
     // (e.g. mSpawnElapse of 10 is 1 particle per 10 updates)
     this.mSpawnRate = 10;
     this.mUpdatesElapsed = 0;
-    this.mCollectedStatus = false;
     
     this.mMapRenderable = new UIRenderable();
     this.mMapRenderable.setColor([1, 1, 0, 1.0]);
@@ -69,11 +68,6 @@ SunkenTreasure.prototype.getBBox = function()
 {
     var b = new BoundingBox(this.getPos(), 10, 10);
     return b;
-};
-
-SunkenTreasure.prototype.collect = function()
-{
-    this.mCollectedStatus = true;
 };
 
 SunkenTreasure.prototype.createParticle = function(atX,atY) {
@@ -107,11 +101,6 @@ SunkenTreasure.prototype.createParticle = function(atX,atY) {
 SunkenTreasure.prototype.drawForMap = function (aCamera)
 {
     this.mMapRenderable.draw(aCamera);
-};
-
-SunkenTreasure.prototype.isCollected = function()
-{
-    return this.mCollectedStatus;
 };
 
 SunkenTreasure.prototype.isDead = function()

@@ -218,7 +218,7 @@ Ship.prototype._createWake = function(sprite)
     ///////////////
     
     var xPos = xform.getPosition()[0]-(xform.getSize()[0]/2);
-    var yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    var yPos = xform.getPosition()[1]+(xform.getSize()[1]/8);
     
     // Get vector
     var newPos = [xPos - xform.getPosition()[0], yPos - xform.getPosition()[1]];
@@ -244,7 +244,7 @@ Ship.prototype._createWake = function(sprite)
     ////////////////
     
     xPos = xform.getPosition()[0]+(xform.getSize()[0]/2);
-    yPos = xform.getPosition()[1]-(xform.getSize()[1]/2);
+    yPos = xform.getPosition()[1]+(xform.getSize()[1]/8);
     
     // Get vector
     newPos = [xPos - xform.getPosition()[0], yPos - xform.getPosition()[1]];

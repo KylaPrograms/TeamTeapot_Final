@@ -54,16 +54,13 @@ SunkenTreasureSet.prototype.update = function () {
     var i;
     for (i = 0; i < this.mSet.length; i++) {
         this.mSet[i].update();
-        if(this.mSet[i].isCollected())
-        {
-            this.removeFromSet(this.mSet[i]);
-        }
         if(this.mSet[i].isDead())
         {
             var pos = this.mSet[i].getPos();
             this._resetSpawnPoint(pos);
             this.removeFromSet(this.mSet[i]);
             this._createTreasure();
+            console.log("treasure died:", this.mSet);
         }
     }
 };
@@ -76,8 +73,9 @@ SunkenTreasureSet.prototype.collectAt = function(atX, atY)
         var bBox = this.mSet[i].getBBox();
         if(bBox.containsPoint(atX, atY))
         {
-            this.mSet[i].collect();
+            this.removeFromSet(this.mSet[i]);
             treasureFound = true;
+            console.log("treasure collected:", this.mSet);
         }
     }
     
