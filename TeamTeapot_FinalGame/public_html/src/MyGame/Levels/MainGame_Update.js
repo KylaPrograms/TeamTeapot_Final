@@ -29,7 +29,6 @@ MainGame.prototype.update = function ()
     //this.updatePirateLight(this.mPirateTest);
     this.mPirateSetTest.update(this.mMiniMap, this.mHeroTest.getPosition());
     var shipsOnMainCam = this.mPirateSetTest.getShipsOnCamera(this.mCamera);
-    console.log(shipsOnMainCam);
     
     this.mGameState.update();
     
@@ -48,7 +47,7 @@ MainGame.prototype.update = function ()
     this.mCamera.update();
     this.mMiniMap.update();
     
-    this.mStormSet.update();
+    this.mStormSet.update(this.mMiniMap);
     
     // Spawn the storms
     if(this.mAutoSpawnTimer <= 0)

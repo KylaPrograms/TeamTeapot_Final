@@ -30,15 +30,15 @@ gEngine.Core.inheritPrototype(StormSet, GameObjectSet);
 StormSet.prototype.createStorm = function (spriteTexture)
 {
     //For now I am hardcoding the size of our world to be 300 WC X 300 WC
-    var xspawn = -150 + Math.random() * 300;
-    var yspawn = -150 + Math.random() * 300;
+    var xspawn = -300 + Math.random() * 600;
+    var yspawn = -300 + Math.random() * 600;
     var randomizer = Math.floor(Math.random() + 0.5);
 
     var storm = new Storm(spriteTexture, xspawn, yspawn);
     this.addToSet(storm);
 };
 
-StormSet.prototype.update = function()
+StormSet.prototype.update = function(minimapCam)
 {
     //Update timer
     this.mTimer++;
@@ -54,13 +54,20 @@ StormSet.prototype.update = function()
     }
 
     //Lastly update all storms
+    var center = minimapCam.getWCCenter();
+    var width = minimapCam.getWCWidth();
+    var height = minimapCam.getWCHeight();
+    var left = center[0] - (width/2);
+    var right = center[0] + (width/2);
+    var bottom = center[1] - (height/2);
+    var top = center[1] + (height/2);
     var i;
     for (i = 0; i < this.mSet.length; i++)
     {
         //First update the object
         this.mSet[i].update();
         
-        if (this.mSet[i].isDead())
+        if (this.mSet[i].isDead() && this._checkStormOffMinimap(this.mSet[i], left, right, bottom, top))
         {
             this.mSet.splice(i, 1);
             i--;
@@ -74,4 +81,16 @@ StormSet.prototype.drawForMap = function(aCamera)
     {
         this.mSet[i].drawForMap(aCamera);
     }
+};
+
+StormSet.prototype._checkStormOffMinimap = function(storm, left, right, bottom, top)
+{
+    var stormPos = storm.getPosition();
+    if(stormPos[0] < (left - 20) || stormPos[0] > (right + 20) ||
+            stormPos[1] < (bottom - 20) || stormPos[1] > (top + 20)) {
+        return true;
+    } else {
+        return false;
+    }
+        
 };
