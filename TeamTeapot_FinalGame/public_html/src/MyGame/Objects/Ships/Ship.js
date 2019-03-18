@@ -260,6 +260,7 @@ Ship.prototype._createWake = function(sprite)
     forward = [-Math.cos(theta), -Math.sin(theta)];
     
     var rightWake = new Wake(sprite, newPos, forward);
+    //rightWake.mRenderable.setElementPixelPositions(677, 0, 0, 256);
     rightWake.getXform().setRotationInRad(theta);
     
     this.mWakeSet.addToSet(rightWake);
