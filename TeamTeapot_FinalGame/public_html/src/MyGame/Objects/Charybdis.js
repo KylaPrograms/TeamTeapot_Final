@@ -86,7 +86,7 @@ Charybdis.prototype.shrink = function()
 
 Charybdis.prototype.checkIfCanSpawn = function()
 {
-    var rand = Math.random() * 100;
+    var rand = Math.random() * 100000;
     
 //    if (!this.mIsActive)
 //        console.log(rand);
