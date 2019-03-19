@@ -20,7 +20,7 @@ function PlayerShip(spriteTexture, miniMapTexture, collisionTexture, wakeTexture
     
     this.mHitTimer = 0;                                 // Timer that tracks how much longer the player remains invincible after getting hit
     this.mHitCheckTimer = 0;                            // Timer that tracks when to check for rock collision again
-    Ship.call(this, spriteTexture,collisionTexture, wakeTexture, [0, 0], [5, 12], 100, 0, -25, 25, 0.02);
+    Ship.call(this, spriteTexture,collisionTexture, wakeTexture, [0, 0], [5, 10], 100, 0, -25, 25, 0.02);
 
     console.log(this);
     
@@ -28,7 +28,7 @@ function PlayerShip(spriteTexture, miniMapTexture, collisionTexture, wakeTexture
     this.mShip.setColor(this.mOriginalColor);
     this.mShip.getXform().setRotationInRad(Math.PI);
 
-    this.mShip.setElementPixelPositions(106, 512, 0, 1024);
+    this.mShip.setElementPixelPositions(510, 1024, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(64, 115, 0, 128);
     
     this.mTreasureCollected = 0;

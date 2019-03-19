@@ -20,7 +20,7 @@ function PirateShip(spriteTexture, miniMapTex, collisionTexture, wakeTexture, ca
     
     this.kSpeedDelta = 0.05;
     
-    Ship.call(this, spriteTexture, collisionTexture, wakeTexture, [50, 0], [5, 12], 10, 0, -15, 15, .02);
+    Ship.call(this, spriteTexture, collisionTexture, wakeTexture, [50, 0], [5, 10], 10, 0, -15, 15, .02);
     
     this.mCannonballTex = cannonballTexture;
     this.mCannonballSet = new ProjectileSet();
@@ -33,7 +33,7 @@ function PirateShip(spriteTexture, miniMapTex, collisionTexture, wakeTexture, ca
     this.mOriginalColor = [1, 1, 1, 0];
     this.mShip.setColor(this.mOriginalColor);
     
-    this.mShip.setElementPixelPositions(518, 916, 0, 1024);
+    this.mShip.setElementPixelPositions(0, 510, 0, 1024);
     this.mCollisionTex.setElementPixelPositions(13, 64, 0, 128);
     this.kInvincibleTime = 60;
     this.mHitColor = [1.0, 0, 0, 1];
